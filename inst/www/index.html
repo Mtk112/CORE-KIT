@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>CORE-KIT renewable energy esitmation tool for Shan State, Myanmar</title>
+<link rel="stylesheet" href="./css/style.css">
+<link rel="stylesheet" href="./css/search.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+crossorigin=""/>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+
+</head>
+<body>
+<div class="se-pre-con"></div>
+<div class="container">
+    <!-- Step 1. Welcome -->
+    <div id="welcome">
+        <h1>CORE-KIT</h1>
+        <p>
+            CORE-KIT is an easy to use opensource minigrid desining tool that supports wind, solar, minihydro and biomass. 
+            The design process is structured in 7 steps. Step 1 is selecting the location of the village that the minigrid is for.
+            Step 2 is defining the Community Charasterictics. Step 3 contains electricity demand and load curves. Step 4 shows the
+             resource availability in the area. Step 5 Generation, where restrictions are defined and each resources potential is shown.
+            Step 6 is Minigrid sizing, where you define which resources are to be used. Step 8 is viability chart where the cost effiency is shown. 
+        </p>
+        <p>
+            By filling in these steps, you can estimate demand, potential, viable resources and economical viability of the minigrid.</br>
+        </p>
+        <h2>NOTE</h2>
+        <p>
+            It is important to gather information about the specific village and resources in the area. Visual-CORE is based on
+            freely available data and is working around ESTIMATIONS.
+        </p>
+        <button class="submit" id="next" onclick="next('welcome')">Lets get started</button>
+    </div>
+    <!-- Step 2. Map Section -->
+    <div id="mapSection">
+            <h1>Location</h1>
+            <div id="map"></div>
+            <div clss="third">
+                <h3>Tips</h3>
+                <p>Click on the map to select the location for your project. Change the "Radius of the area (km)" value to increase or 
+                    decrease the area from which the available resources will be gathered. If you click a village point, the available
+                    data from that village is displayed in "General village information".</p>
+            </div>
+            <div id="console">
+                <p id="content">Radius of the area (km): <input type="number" id="radiusArea" placeholder="Radius:" value = "2.5"></p>
+            </div>
+            <div clss="third">
+                <h3>General Village Information: </h3>
+                <a> Village name: <input type="text" id="villageName" value=""></a>
+                </br>
+                <a> Village population: <input type="number" id="villagePopulation" value="0"></a>
+                </br>
+                <a> Households in the village: <input type="number" id="villageHouseholds" value="0"></a>
+            </div>
+            <button class="submit" id="next" onclick="next('mapSection')">Confirm location</button>
+            <button class="submit" id="back" onclick="back('mapSection')">Back</button>
+    </div>
+    <!-- Step 3. Community Characteristics -->
+    <div id="community">
+        <form>
+            <h1>Community</h1>
+            <h2>Required information</h2>
+            <a>Village name: <input id="name" type="text" placeholder="Name of the village..."></a>
+            <a>Population: <input id="population" type="number" placeholder="Village population..." required></a>
+            <a>Households: <input id="households" type="number" placeholder="Number of households..." required></a>
+            </br>
+            <a>Willingness to Pay for electricity (US$/kWh): <input id="wtp" type="number" placeholder="US$" required></a>
+            </br>
+            <h3>Additional Information</h3>
+            <a>Poverty rate (%): <input id="poverty" type="number" placeholder="Poverty rate (%)"></a>
+            <a>Majority Ethnicity: <input id="ethnicity" type="text" placeholder="Majority ethnicity..."></a>
+            <a>Average monthly household income (US$): <input id="mhi" type="number" placeholder="Monthly hh income..."></a>
+            </br>
+            <a>Population density (population / km<sup>2</sup>): <input id="density" type="number" placeholder="Population density..."></a>
+            <a>Population growth over last decade( % ): <input id="growth" type="number" placeholder="Population growth..."></a>
+            </br>
+            <a>Number of housholds with access to potable water: <input id="potable" type="number" placeholder="Number of households..."></a>
+            <a>Number of households with improved sanitation facilities (sanitary toilet): <input id="sanitation" type="number" placeholder="Number of households"></a>
+            </br>
+            <a>Number of households with access to electricity: <input id="electricity" type="number" placeholder="Number of households..."></a>
+            <a>Number of households with access to sealed road: <input id="road" type="number" placeholder="Number of households..."></a>
+        </form>
+        <div id="incomeSources" class="fiftyfifty">
+            <h1>Sources of income</h1>
+            <h3>Add new item</h3>
+            <div>
+                Select income:
+                <select id="incomeItem" required>
+                    <option value="No Income">No Income</option>
+                    <option value="custom">Other Income</option>
+                    <option value="Casual Labor">Casual Labor</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Livestock Production">Livestock Production</option>
+                    <option value="Small Business">Small Business</option>
+                    <option value="Fish Production (Aquaculture)">Fish Production (Aquaculture)</option>
+                    <option value="Fish Production (Capture Fisheries)">Fish Production (Capture Fisheries)</option>
+                    <option value="Forestry Products">Forestry Products</option>
+                </select>
+                </br>
+                <div id="customIncome">
+                    Name income income:
+                    <input type="text" id="incomeName" placeholder="Define other income..." required>
+                </div>
+                </br>
+                Number of workers:
+                <input type="number" id="iWorkers" placeholder="Number of workers...">
+                </br>
+                Portion of population:
+                <input type="number" id="iPortion" placeholder="Portion of population..." required>
+                </br>
+                <button class="submit" onclick="populateIncome(document.getElementById('incomeItem').value, document.getElementById('iWorkers').value, document.getElementById('iPortion').value)">Add income!</button>
+            </div>
+            <div>
+                <h3>List income sources:</h3>
+                <ul id="incomeItemList"></ul>
+            </div>
+        </div>
+        <div id="employment" class="fiftyfifty">
+            <h1>Employment</h1>
+            <h3>Add new item</h3>
+            <div>
+                Select primary employment:
+                <select id="employmentItem" required>
+                    <option value="Unemployed">Unemployed</option>
+                    <option value="custom">Other Employment</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Forestry">Forestry</option>
+                    <option value="Fisheries">Fisheries</option>
+                    <option value="Administration / Education / Health and Social Work">Administration / Education / Health and Social Work</option>
+                    <option value="Mining / Quarrying">Mining / Quarrying</option>
+                    <option value="Construction">Construction</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Housework">Housework</option>
+                    <option value="Public Employment">Public Employment</option>
+                </select>
+                </br>
+                <div id="customEmployment">
+                    Name other employment:
+                    <input type="text" id="employmentName" placeholder="Define other employment..." required>
+                </div>  
+                </br>
+                Number of workers:
+                <input type="number" id="eWorkers" placeholder="Number of workers...">
+                </br>
+                Portion of population:
+                <input type="number" id="ePortion" placeholder="Portion of population..." required>
+                </br>
+                <button class="submit" onclick="populateEmployment(document.getElementById('employmentItem').value, document.getElementById('eWorkers').value, document.getElementById('ePortion').value)">Add employment!</button>
+            </div>
+            <div>
+                <h3>List of Employment:</h3>
+                <ul id="employmentItemList"></ul>
+            </div>
+        </div>
+        <button class="submit" id="next" onclick="next('community')">Continue to Demand</button>
+        <button class="submit" id="back" onclick="back('community')">Back</button>
+    </div>
+    <!-- Step 4. Demand -->
+    <div id="demand">
+        <h1>Demand</h1>
+        <!-- Tab links -->
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'household')">Household</button>
+            <button class="tablinks" onclick="openTab(event, 'productiveUses')">Productive Uses</button>
+            <button class="tablinks" onclick="openTab(event, 'publicUtilities')">Public Utilities</button>
+        </div>
+        <!-- Tab contents -->
+        <div id="household" class="tabcontent">
+            <h3>Household appliances</h3>
+            <button type="submit" onclick="addAppliance()">Add new appliance</button>
+            <table id="hhTable" cellpadding="0"; cellspacing="0">
+                <thead>
+                    <tr id="hh">
+                        <th>Item</th>
+                        <th>Usage (W)</th>
+                        <th>Time in use (h)</th>
+                        <th>Item Daily Usage (kWh)</th>
+                        <th>Units</th>
+                        <th>00 - 01</th><th>01 - 02</th><th>02 - 03</th><th>03 - 04</th><th>04 - 05</th>
+                        <th>05 - 06</th><th>06 - 07</th><th>07 - 08</th><th>08 - 09</th><th>09 - 10</th>
+                        <th>10 - 11</th><th>11 - 12</th><th>12 - 13</th><th>13 - 14</th><th>14 - 15</th>
+                        <th>15 - 16</th><th>16 - 17</th><th>17 - 18</th><th>18 - 19</th><th>19 - 20</th>
+                        <th>20 - 21</th><th>21 - 22</th><th>22 - 23</th><th>23 - 24</th>
+                    </tr>
+                </thead>
+                <tbody>  
+                </tbody> 
+            </table>
+            <h3>Load Curves</h3>
+            <button type="submit" onclick="drawFromTables()">Update Graph</button>
+            <div id="hhLC" class="third"></div>
+            <div id="hhMLC" class="third">Here is a monthly load curve in the fututre?</div>
+            <div id="hhInfo" class="third">Here will be shown the following info: Night Load, Day Load, Peak Load \
+                Monthly Load, Daily Load, Yearly Load.
+            </div>
+        </div>
+      
+        <div id="productiveUses" class="tabcontent">
+            <h3>Productive Uses</h3>
+            <button type="submit" onclick="addProductiveUse()">Add new productive use</button>
+            <table id="productiveTable" cellpadding="0"; cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Usage (kW / h)</th>
+                        <th>Time in use (h)</th>
+                        <th>Item Daily Usage (kWh)</th>
+                        <th>Units</th>
+                        <th>00 - 01</th><th>01 - 02</th><th>02 - 03</th><th>03 - 04</th><th>04 - 05</th>
+                        <th>05 - 06</th><th>06 - 07</th><th>07 - 08</th><th>08 - 09</th><th>09 - 10</th>
+                        <th>10 - 11</th><th>11 - 12</th><th>12 - 13</th><th>13 - 14</th><th>14 - 15</th>
+                        <th>15 - 16</th><th>16 - 17</th><th>17 - 18</th><th>18 - 19</th><th>19 - 20</th>
+                        <th>20 - 21</th><th>21 - 22</th><th>22 - 23</th><th>23 - 24</th>
+                    </tr>
+                </thead>
+                <tbody>  
+                </tbody> 
+            </table>
+            <h3>Load Curves</h3>
+            <button type="submit" onclick="drawFromTables()">Update Graph</button>
+            <div id="proLC"></div> 
+        </div>
+        
+        <div id="publicUtilities" class="tabcontent">
+            <h3>Public Utilities</h3>
+            <button type="submit" onclick="addPublicUtility()">Add new public utility</button>
+            <table id="publicTable" cellpadding="0"; cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Usage (kW / h)</th>
+                        <th>Time in use (h)</th>
+                        <th>Item Daily Usage (kWh)</th>
+                        <th>Units</th>
+                        <th>00 - 01</th><th>01 - 02</th><th>02 - 03</th><th>03 - 04</th><th>04 - 05</th>
+                        <th>05 - 06</th><th>06 - 07</th><th>07 - 08</th><th>08 - 09</th><th>09 - 10</th>
+                        <th>10 - 11</th><th>11 - 12</th><th>12 - 13</th><th>13 - 14</th><th>14 - 15</th>
+                        <th>15 - 16</th><th>16 - 17</th><th>17 - 18</th><th>18 - 19</th><th>19 - 20</th>
+                        <th>20 - 21</th><th>21 - 22</th><th>22 - 23</th><th>23 - 24</th>
+                    </tr>
+                </thead>
+                <tbody>  
+                </tbody> 
+            </table>
+            <h3>Load Curves</h3>
+            <button type="submit" onclick="drawFromTables()">Update Graph</button>
+            <div id="pubLC"></div>
+        </div>
+        <button class="submit" id="next" onclick="next('demand')">Continue to Resources</button>
+        <button class="submit" id="back" onclick="back('demand')">Back</button>
+    </div>
+    <!-- Resources -->
+    <div id="resources">
+        <h1>Resources</h1>
+        <div id="selectResources">
+            <div id="switches">
+                <h3>Which resources would you like to consider?</h3>
+                <a>Solar</a>
+                <label class="switch">
+                        <input type="checkbox" id="solarSwitch" onclick="toggleSwitch(this)">
+                        <span class="slider"></span>
+                </label>
+                </br>
+                <a>Wind</a>
+                <label class="switch">
+                        <input type="checkbox" id="windSwitch" onclick="toggleSwitch(this)">
+                        <span class="slider"></span>
+                </label>
+                </br>
+                <a>Micro-hydro</a>
+                <label class="switch">
+                        <input type="checkbox" id="hydroSwitch" onclick="toggleSwitch(this)">
+                        <span class="slider"></span>
+                </label>
+                </br>
+                <a>Biomass</a>
+                <label class="switch">
+                        <input type="checkbox" id="biomassSwitch" onclick="toggleSwitch(this)">
+                        <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <div id ="solar">
+            bla bla solar
+            <div id = rSolar></div>
+
+        </div>
+        <div id ="wind">
+            bla bla wind
+            <div id = rWind></div>
+
+        </div>
+        <div id ="hydro">
+            <h1>Micro-hydro</h1>
+            <!-- Circular area map -->
+            <div class="third">
+                <h1>Select river segment</h1>
+                <div id="areaMap"></div>
+            </div>
+            <!-- Hydrological chart(s) and controls -->
+            <div id="hydroChart" class="sixsix">
+                <div id="third">
+                    <div id="30flow" class="third"></div>
+                    <h1>30-Year Flow Options</h1>
+                    <h3>Choose specific hydrological model and climate forcing set.</h3>
+                    <select id="model" name="Model">
+                        <option value = "all">All</option>
+                        <option value = "caraib_gswp3">CarAIB & GSWP3</option>
+                        <option value = "caraib_princeton">CarAIB & Princeton</option>
+                        <option value = "caraib_wfdei">CarAIB & WFDEI</option>
+                        <option value = "dbh_gswp3">DBH & GSWP3</option>
+                        <option value = "dbh_princeton">DBH & Princeton</option>
+                        <option value = "dbh_wfdei">DBH & WFDEI</option>
+                        <option value = "dlem_gswp3">DLEM & GSWP3</option>
+                        <option value = "dlem_princeton">DLEM & Princeton</option>
+                        <option value = "dlem_wfdei">DLEM & WFDEI</option>
+                        <option value = "h08_gswp3">H08 & GSWP3</option>
+                        <option value = "h08_princeton">H08 & Prineton</option>
+                        <option value = "lpjml_gswp3">LPJML & GSWP3</option>
+                        <option value = "lpjml_princeton">LPJML & Princeton</option>
+                        <option value = "lpjml_wfdei">LPJML & WFDEI</options>
+                        <option value = "matsiro_gswp3">Matsiro & GSWP3</options>
+                        <option value = "matsiro_princeton">Matsiro & Princeton</options>
+                        <option value = "matsiro_wfdei">Matsiro & WFDEI</option>
+                        <option value = "pcr-globwb_gswp3">PCR-GLOBWB & GSWP3</option>
+                        <option value = "pcr-globwb_wfdei">PCR-GLOBWB & WFDEI</option>
+                        <option value = "vegas_gswp3">Vegas & GSWP3</option>
+                        <option value = "vegas_wfdei">Vegas & WFDEI</option>
+                        <option value = "vic_princeton">VIC & Princeton</option>
+                        <option value = "watergap2_princeton">Watergap2 & Princeton</option>
+                        <option value = "watergap2_wfdei">Watergap2 & WFDEI</option>
+                        <option value = "LORA">LORA</option>
+                    </select>
+                    <h3>Select mode</h3>
+                    <select id="mode" name="Mode">
+                        <option value="mean">Average</option>
+                        <option value="min">Minimum</option>
+                        <option value="max">Maximum</option>
+                        <option value="median">Median</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div id ="biomass">
+            <h1>Biomass</h1>
+            <h3> Crops </h3>
+            <button type="submit" onclick="addCrop()">Add new crop</button>
+            <table id="cropTable" cellpadding="0"; cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Crop type</th>
+                        <th>Designated area (ha)</th>
+                        <th>Crop yield, (tons / ha)</th>
+                        <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th>
+                        <th>June</th><th>July</th><th>Aug</th><th>Sept</th><th>Oct</th>
+                        <th>Nov</th><th>Dec</th>
+                        <th>Total yield / year (tons)</th>
+                    </tr>
+                </thead>
+                <tbody>  
+                </tbody> 
+            </table>
+            
+        </div>
+        <button class="submit" id="next" onclick="next('resources')">Continue to Generation</button>
+        <button class="submit" id="back" onclick="back('resources')">Back</button>
+    </div>
+    <div id="generation">
+        <h1>Generation</h1>
+        <div id="solarGen">
+            <h3>Solar</h3>
+            <div class="fiftyfifty">
+                <!-- TODO! inputs for calculating the out put based on various inputs about the solar panels -->
+                <!--<a>Area for solar panels (m<sup>2</sup>):</a>
+                <input type="number" id="solarArea" placeholder="Area...">-->
+                <a>Planned power (kWp): </a>
+                <input type="number" id="solarPlan" placeholder="System kWp..." value="5">
+                </br>
+                <a>Battery size (kWh):</a>
+                <input type="number" id="batterySize" placeholder="Battery size..." value="0">
+            </div>
+            <div id="sGen" class="fiftyfifty"></div>
+        </div>
+        <div id="windGen">
+            <h3>Wind</h3>
+            <div class="fiftyfifty">
+                <a>Number of units:</a>
+                <input type="number" id="wUnits" placeholder="Number of units..." value="1">
+                </br>
+                <a>Turbine coeffiency (%):</a>
+                <input type="number" id="cp" placeholder="Coeffiency %..." value="30">
+                </br>
+                <a>Rotor blade length (m):</a>
+                <input type="number" id="blade" placeholder="Length of the blade..." value="2.5">
+                </br>
+                <a>Cutoff windspeed (m/s):</a>
+                <input type="number" id="cutoff" placeholder="Cutoff windspeed..." value="1.5">
+            </div>
+            <div id="wGen" class="fiftyfifty"></div>
+        </div>
+        <div id="hydroGen">
+            <h3>Micro-hydro</h3>
+            <div>
+                <h3>Select intake, powerhouse, pipeline and penstock locations.</h3>
+                <div id="hydroMap"></div>
+            </div>
+        </div>
+        <div id="bioGen">
+            <h3>Biomass</h3>
+            <!-- Modifiable biomass values -->
+            <div class="sixsix">
+                <table id="residueTable" cellpadding="0"; cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Residue Type</th>
+                            <th>Residue to Product Ratio (RPR)</th>
+                            <th>Residue availability (%)</th>
+                            <th>Lower Heating Value (LHV)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th><a id="cropType" class="excel">Rice husk</a></th>
+                            <th><input class="excel" type="number" id="rhRPR" value="0.2685"></th>
+                            <th><input class="excel" type="number" id="rhAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="rhLHV" value="12.85"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Rice straw</a></th>
+                            <th><input class="excel" type="number" id="rsRPR" value="1.37719"></th>
+                            <th><input class="excel" type="number" id="rsAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="rsLHV" value="8.83"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Sugarcane tops & trashes</a></th>
+                            <th><input class="excel" type="number" id="sttRPR" value="0.206725"></th>
+                            <th><input class="excel" type="number" id="sttAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="sttLHV" value="6.82"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Sugarcane bagasse</a></th>
+                            <th><input class="excel" type="number" id="sbRPR" value="0.31"></th>
+                            <th><input class="excel" type="number" id="sbAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="sbLHV" value="6.43"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Maize / Corn cob</a></th>
+                            <th><input class="excel" class="excel" type="number" id="mcRPR" value="0.2615"></th>
+                            <th><input class="excel" class="excel" type="number" id="mcAEP" value="80"></th>
+                            <th><input class="excel" class="excel" type="number" id="mcLHV" value="15.75"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Maize / Corn stalk</a></th>
+                            <th><input class="excel" type="number" id="msRPR" value="2.28"></th>
+                            <th><input class="excel" type="number" id="msAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="msLHV" value="15.105"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Maize / Corn husk</a></th>
+                            <th><input class="excel" type="number" id="mhRPR" value="0.2"></th>
+                            <th><input class="excel" type="number" id="mhAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="mhLHV" value="16.38"></th>
+                        </tr> 
+                    </tbody> 
+                </table>
+                <div id="bGen"></div>
+            </div>
+            <div class="third">
+                <a>Heat to electricity conversion effiency (%):</a>
+                <input type="number" id="conversionRate" value="30">
+                </br>
+                <a>Battery size (kWh):</a>
+                <input type="number" id="bBattery" value="0">
+                </br>
+                <h3>Explanations</h3>
+                <p>Residue to Product Ratio, determines the biomass produced as a by-product of crop production and processing. In general, it determines the amount of unused biomass material after harvesting and processing.</p>
+                <p>Residue Availabiliy, determines what percentage of the residue is available for conversion to electricity.</p>
+                <p>Lower Heating Value,  the net calorific value of a fuel, determining the amount of heat released by the combustion of a specified amount. </p>
+            </div>
+        </div>
+        <button class="submit" id="next" onclick="next('generation')">Continue to grid-sizing</button>
+        <button class="submit" id="back" onclick="back('generation')">Back</button>
+    </div>
+    <div id="gridSize">
+        <h1>Grid sizing</h1>
+        <button class="submit" id="next" onclick="next('gridSize')">Continue to viability</button>
+        <button class="submit" id="back" onclick="back('gridSize')">Back</button>
+    </div>
+    <div id="viability">
+        <h1>System viability chart</h1>
+        <div id="viabilityChart"></div>
+        <button class="submit" id="next" onclick="next('viability')">Continue to report</button>
+        <button class="submit" id="back" onclick="back('viability')">Back</button>
+    </div>
+    <div id="report">
+        <h1>End report</h1>
+        <button class="submit" id="back" onclick="back('report')">Back</button>
+    </div>
+</div>
+    <!-- Dependencies -->
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+    <script src="js/libraries/jquery-3.3.1.min.js"></script> 
+    <script src="js/libraries/opencpu-0.4.js"></script>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="js/libraries/leaflet-providers.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="js/libraries/leaflet-search.src.js"></script>
+    <script src="js/libraries/underscore-min.js"></script>
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+    <!-- Data files -->
+    <script src="data/city_town.geojson" type="text/javascript"></script>
+    <script src="data/townships.GeoJSON" type="text/javascript"></script>
+    <script src="data/districts.geojson" type="text/javascript"></script>
+    <script src="data/rivers.GeoJSON" type="text/javascript"></script>
+    <script src="data/village_points.GeoJSON" type="text/javascript"></script>
+    <script src="data/load_profiles.js" type="text/javascript"></script>
+    <script src="data/power_usage_by_item.js" type="text/javascript"></script>
+    <!-- Javascript files -->
+    <script src= "js/index.js"></script>
+    <script src= "js/drawLoadProfile.js"></script>
+    <script src= "js/drawTotalDemand.js"></script>
+    <script src= "js/map.js"></script>
+    <script src= "js/drawRiverInfo.js"></script>
+    <script src= "js/drawArea.js"></script>
+    <script src= "js/getResources.js"></script>
+    <script src= "js/readTablesAndDraw.js"></script>
+    <script src= "js/incomeEmployment.js"></script>
+    <script src= "js/tables.js"></script>
+</body>
+</html>
