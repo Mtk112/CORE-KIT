@@ -1,6 +1,6 @@
-# Visual-CORE
+# CORE-KIT
 
-What is Visual-CORE?
+What is CORE-KIT?
 
 Update later...
 
