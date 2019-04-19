@@ -23,7 +23,7 @@ Step 3.
 
 In R write "library(opencpu)" in the console.
 Then write "ocpu_start_server()".
-In VSC open /Visual-CORE/inst/www folder from the downloaded project.
+In VSC open /CORE-KIT/inst/www folder from the downloaded project.
 
 Step 4.
 
