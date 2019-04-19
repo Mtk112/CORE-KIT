@@ -12,6 +12,7 @@ Step 1.
 
 Download R (https://cran.r-project.org/bin/windows/base/).
 Launch R and write "install.packages(c("opencpu","raster","dplyr","sf","units"), dependencies=TRUE)" in the console to install OpenCPU, and other dependencies.
+Build corekit R-package.
 Download Visual Code Studio (https://code.visualstudio.com/) or equivalent.
 Install Live Server extension or equivalent. In VSC you can access extensions by hitting (Ctrl + Shift + X).
 
