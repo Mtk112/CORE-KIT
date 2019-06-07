@@ -8,31 +8,14 @@ Update later...
 
 Installation
 
-Step 1.
+Download and install R. https://lib.ugent.be/CRAN/ Download and install RStudio. https://www.rstudio.com/products/rstudio/download/ Clone the project from https://github.com/Mtk112/CORE-KIT
 
-Download R (https://cran.r-project.org/bin/windows/base/) and RStudio (https://www.rstudio.com/products/rstudio/download/).
-Launch RStudio and write "install.packages(c("opencpu","raster","dplyr","sf","units"), dependencies=TRUE)" in the console to install OpenCPU, and other dependencies.
-Build corekit R-package.
-Download Visual Code Studio (https://code.visualstudio.com/) or equivalent.
-Install Live Server extension or equivalent. In VSC you can access extensions by hitting (Ctrl + Shift + X).
+Open RStudio and navigate to the CORE-KIT folder and click on corekit.Rproj (bottom right area in RStudio). Next write the following line in RStudio's console to install dependencies (console is the big text area in RStudio). install.packages(c("opencpu","raster","dplyr","sf","units"), dependencies=TRUE)
 
-Step 2.
+After RStudio has finished installing requirements, click on "Build" in the toolbar at top. Click on "Install and Build".
 
-Clone or download the application from Github (https://github.com/Mtk112/Visual-CORE).
+Then write the following lines to the console: library(opencpu) ocpu_start_server()
 
-Step 3.
+Then download and install Visual Studio Code, or equivalent. https://code.visualstudio.com/ Install Live Server extension or equivalent. In VSC you can access extensions by hitting (Ctrl + Shift + X). In VSC open /Visual-CORE/inst/www folder from the downloaded project.
 
-In RStudio write "library(opencpu)" in the console.
-Then write "ocpu_start_server()".
-In VSC open /CORE-KIT/inst/www folder from the downloaded project.
-
-Step 4.
-
-Once Live Server or equivalent has been installed host the application locally.
-With Live Server click the "Go Live" button, at the bottom middle of the screen.
-Image: https://gyazo.com/2b27dada0af24e0e778a34593dba49ff
-
-Pressing the "Go Live" button should launch the application on your browser.
-You can also access the application by opening browser and going to "localhost:yourPortNumber". For example "localhost:5500".
-  
-  
+Pressing the "Go Live" button should launch the application on your browser. You can also access the application by opening browser and going to "localhost:yourPortNumber". For example "localhost:5500".
