@@ -8,6 +8,9 @@ var households;
 var hhTable = document.getElementById("hhTable");
 var productiveTable = document.getElementById("productiveTable");
 var hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+var sunset = document.getElementById("sunset").value;
+var sunrise = document.getElementById("sunrise").value;
+var day = 0, night = 0;
 
 /*  Goes through all the tables and parses through them calculating hourly electricity usage and draws Load Curve
     based on that */
@@ -16,6 +19,9 @@ function drawFromTables(){
     var householdUsage = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     var productiveUsage = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     var publicUsage = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    var householdNU = 0, householdDU = 0;
+    var publicNU = 0, publicDU = 0;
+    var productiveNU = 0, productiveDU = 0;
     households = parseInt(document.getElementById("households").value);
     $("#hhTable tr").each(function () {
         var wattage = parseFloat($(this).find('#wattage').val());
@@ -43,10 +49,9 @@ function drawFromTables(){
             if(button.style.background == "forestgreen"){
                 var tempHour = parseInt(button.id);
                 productiveUsage[tempHour] = productiveUsage[tempHour] + (wattage * units);
-                }
             }
+        }
     })
-    //console.log(productiveUsage);
     /* Parses through public utilities table and creates hourly usage */
     $('#publicTable tr').each(function(){
         var wattage = parseFloat($(this).find('#wattage').val());
@@ -57,14 +62,25 @@ function drawFromTables(){
             if(button.style.background == "forestgreen"){
                 var tempHour = parseInt(button.id);
                 publicUsage[tempHour] = publicUsage[tempHour] + (wattage * units);
-                }
             }
+        }
     })
+
+    var totalDay = householdDU + productiveDU + publicDU;
+    var totalNight = householdNU + productiveNU + publicNU;
     //console.log(publicUsage);
     /* Calculates total hourly usage */
     var total = [];
+    var totalDem = 0;
     for(var i = 0; i <= 23; i++){
         total.push(publicUsage[i] + productiveUsage[i] + householdUsage[i]);
+        if( i >= sunrise && i < sunset){
+            day = day + publicUsage[i] + productiveUsage[i] + householdUsage[i];
+        }
+        if( i >= sunset || i < sunrise){
+            night = night + publicUsage[i] + productiveUsage[i] + householdUsage[i];
+        }
+        totalDem = totalDem + publicUsage[i] + productiveUsage[i] + householdUsage[i];
     }
     /* Creating traces based on the arrays created earlier */
     var householdTrace = {
@@ -143,6 +159,13 @@ function drawFromTables(){
     Plotly.newPlot('hhLC', graphData, layout, {displayModeBar: false});
     Plotly.newPlot('proLC', graphData, layout, {displayModeBar: false});
     Plotly.newPlot('pubLC', graphData, layout, {displayModeBar: false});
+    /* Sets Values to the infograph */
+    document.getElementById("totalDemand").innerHTML = "Total demand : " + totalDem + " kWh";
+    document.getElementById("totalDay").innerHTML = "Daytime demand : " + day + " kWh";
+    document.getElementById("totalNight").innerHTML = "Night time demand : " + night + " kWh";
+    night = 0;
+    day = 0;
+
 }
 /* Produces monthly biomass estimate */
 function drawBiomass(rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){

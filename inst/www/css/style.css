@@ -106,6 +106,9 @@ body{
     display:none;
     text-align: center;
 }
+#demandInfo{
+    font-size: 15px;
+}
 /* Style the tab */
 .tab {
     overflow: hidden;

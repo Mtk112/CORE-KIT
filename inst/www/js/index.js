@@ -10,6 +10,7 @@ var solarSw = document.getElementById("solarSwitch");
 var windSw = document.getElementById("windSwitch");
 var hydroSw = document.getElementById("hydroSwitch");
 var hydroCheck = false, bioCheck = false, windCheck = false, solarCheck = false;
+var sunrise, sunset;
 /* "Pages" */
 var welcome = document.getElementById("welcome");
 var mapSection = document.getElementById("mapSection");
@@ -142,10 +143,12 @@ function next(page){
     }
     if(page == "community"){
         // checks if required information has been inputted.
-        if(document.getElementById("population").value != "" && document.getElementById("households").value != "" && document.getElementById("wtp").value != "" && document.getElementById("name").value != ""){
+        if(document.getElementById("population").value != "" && document.getElementById("households").value != "" && document.getElementById("wtp").value != "" && document.getElementById("name").value != ""  && document.getElementById("sunrise").value !="" && document.getElementById("sunset").value !=""){
         community.style.display = "none";
         demand.style.display = "block";
         document.getElementById("household").style.display = "block";
+        sunrise = document.getElementById("sunrise").value;
+        sunset = document.getElementById("sunset").value;
         }else{
             alert("Please fill in required information.");
         }

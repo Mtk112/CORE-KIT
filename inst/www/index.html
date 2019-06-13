@@ -70,6 +70,8 @@ crossorigin=""/>
             <a>Households: <input id="households" type="number" placeholder="Number of households..." required></a>
             </br>
             <a>Willingness to Pay for electricity (US$/kWh): <input id="wtp" type="number" placeholder="US$" required></a>
+            <a>Sunrise: <input id="sunrise" type="number" value="5" required></a>
+            <a>Sunset: <input id="sunset" type="number" value="18" required></a>
             </br>
             <h3>Additional Information</h3>
             <a>Poverty rate (%): <input id="poverty" type="number" placeholder="Poverty rate (%)"></a>
@@ -194,10 +196,11 @@ crossorigin=""/>
             <h3>Load Curves</h3>
             <button type="submit" onclick="drawFromTables()">Update Graph</button>
             <div id="hhLC" class="third"></div>
-            <div id="hhMLC" class="third">Here is a monthly load curve in the fututre?</div>
+            <!-- 
             <div id="hhInfo" class="third">Here will be shown the following info: Night Load, Day Load, Peak Load \
                 Monthly Load, Daily Load, Yearly Load.
             </div>
+            -->
         </div>
       
         <div id="productiveUses" class="tabcontent">
@@ -253,6 +256,13 @@ crossorigin=""/>
         </div>
         <button class="submit" id="next" onclick="next('demand')">Continue to Resources</button>
         <button class="submit" id="back" onclick="back('demand')">Back</button>
+        <div id="demandInfo">
+            <a id="totalDemand">Total demand : 0 kWh</a>
+            </br>
+            <a id="totalDay">Daytime demand : 0 kWh</a>
+            </br>
+            <a id="totalNight">Night time demand : 0 kWh</a>
+        </div>
     </div>
     <!-- Resources -->
     <div id="resources">
