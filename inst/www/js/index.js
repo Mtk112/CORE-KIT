@@ -180,6 +180,7 @@ function next(page){
     if(page == "generation"){
         generation.style.display = "none";
         gridSize.style.display = "block";
+        initGrid();
     }
     if(page == "gridSize"){
         gridSize.style.display = "none";
