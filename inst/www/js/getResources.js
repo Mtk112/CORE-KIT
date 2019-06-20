@@ -1,10 +1,9 @@
 'use strict'
 var solarSize;
 var months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-var windPtp = [];
-var solar = [];
-var tempSolar = [];
-var tempWindPtp = [];
+var tempSolar = [], tempWindPtp = [], solar = [], windPtp = [];
+var savedWind = [], savedSolar = [];
+
 
 function getResources(reverse, radius){
     ocpu.seturl("http://localhost:5656/ocpu/library/corekit/R");
@@ -128,8 +127,9 @@ function drawWind(){
       tempWindPtp.push((0.5 * 1.225 * rotorSweepArea * (windPtp[i] * windPtp[i] * windPtp[i]) * cp) / 1000 * 24 * units);
     }else{
       tempWindPtp.push(0);
-    }
+    } 
   }
+  savedWind = tempWindPtp;
 
   var windTrace = {
     type : "scatter",
@@ -183,6 +183,7 @@ function drawSolar(){
   for(var i = 0; i < 12; i++){
     tempSolar.push(solar[i] * solarSize);
   }
+  savedSolar = tempSolar;
   var solarTrace = {
     type : "scatter",
     mode : "lines",
@@ -228,4 +229,12 @@ function drawSolar(){
     }; 
   Plotly.newPlot('solarGen', graphData, layout, {displayModeBar: false});
   tempSolar = [];
+}
+
+function getWind(){
+  return savedWind;
+}
+
+function getSolar(){
+  return savedSolar;
 }

@@ -366,6 +366,7 @@ function updateYields(currentElement){
     $row.find('#totalYield').text(total);
 }
 
+
 function getYields(){
     //Residue to energy factors.
     var RPR, AEP, LHV;

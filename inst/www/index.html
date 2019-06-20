@@ -257,11 +257,11 @@ crossorigin=""/>
         <button class="submit" id="next" onclick="next('demand')">Continue to Resources</button>
         <button class="submit" id="back" onclick="back('demand')">Back</button>
         <div id="demandInfo">
-            <a id="totalDemand">Total demand : 0 kWh</a>
+            <a>Total demand (kWh) : </a><a id="totalDemand">0</a>
             </br>
-            <a id="totalDay">Daytime demand : 0 kWh</a>
+            <a>Daytime demand (kWh) : </a><a id="totalDay">0</a>
             </br>
-            <a id="totalNight">Night time demand : 0 kWh</a>
+            <a>Night time demand (kWh) : </a><a id="totalNight">0</a>
         </div>
     </div>
     <!-- Resources -->
@@ -499,7 +499,33 @@ crossorigin=""/>
     </div>
     <div id="gridSize">
         <h1>Grid sizing</h1>
+        <select id="month" required>
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+        </select>
         <div id="grid">
+        </div>
+        <div class=fiftyfifty id=day>
+            <h2>Day time</h2>
+            <a>Day time generation: </a><a id=dtGen>0 kWh</a></br>
+            <a>Day time demand: </a><a id=dtDem>0 kWh</a></br>
+            <a>Day time demand met: </a><a id=dtMet>0%</a>
+        </div>
+        <div class=fiftyfifty id=night>
+            <h2>Night time</h2>
+            <a>Night time generation (kWh): </a><a id=ntGen>0</a></br>
+            <a>Night time demand (kWh): </a><a id=ntDem>0</a></br>
+            <a>Night time met: </a><a id=ntMet>0%</a>
         </div>
         <button class="submit" id="next" onclick="next('gridSize')">Continue to viability</button>
         <button class="submit" id="back" onclick="back('gridSize')">Back</button>

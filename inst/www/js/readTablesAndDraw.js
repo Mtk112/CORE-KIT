@@ -160,13 +160,15 @@ function drawFromTables(){
     Plotly.newPlot('proLC', graphData, layout, {displayModeBar: false});
     Plotly.newPlot('pubLC', graphData, layout, {displayModeBar: false});
     /* Sets Values to the infograph */
-    document.getElementById("totalDemand").innerHTML = "Total demand : " + totalDem + " kWh";
-    document.getElementById("totalDay").innerHTML = "Daytime demand : " + day + " kWh";
-    document.getElementById("totalNight").innerHTML = "Night time demand : " + night + " kWh";
+    document.getElementById("totalDemand").innerHTML = totalDem;
+    document.getElementById("totalDay").innerHTML = day;
+    document.getElementById("totalNight").innerHTML = night;
     night = 0;
     day = 0;
 
 }
+
+var riceResult = [0,0,0,0,0,0,0,0,0,0,0,0], sugarResult = [0,0,0,0,0,0,0,0,0,0,0,0], maizeResult = [0,0,0,0,0,0,0,0,0,0,0,0];
 /* Produces monthly biomass estimate */
 function drawBiomass(rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){
     var months = [1,2,3,4,5,6,7,8,9,10,11,12];
@@ -182,17 +184,21 @@ function drawBiomass(rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){
         var harvest = rHar[i] - 1;
         rhResult[harvest] = rh;
         rsResult[harvest] = rs;
+        riceResult[harvest] = rs + rh;
+
     }
     for(var i = 0; i <= sHar.length; i++){
         var harvest = sHar[i] - 1;
         sttResult[harvest] = stt;
         sbResult[harvest] = sb;
+        sugarResult[harvest] = stt + sb;
     }
     for(var i = 0; i <= mHar.length; i++){
         var harvest = mHar[i] - 1;
         mcResult[harvest] = mc;
         msResult[harvest] = ms;
         mhResult[harvest] = mh;
+        maizeResult[harvest] = mc + ms + mh;
     }
     var riceHusk = {
         type : "bar",
@@ -250,7 +256,7 @@ function drawBiomass(rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){
         y: mhResult,
         stackgroup: 'Maize'
     }
-    var graphData = [riceHusk, riceStraw, sugarcaneTT, sugarcaneBagasse, maizeCob, maizeStalk, maizeStalk];
+    var graphData = [riceHusk, riceStraw, sugarcaneTT, sugarcaneBagasse, maizeCob, maizeStalk, maizeHusk];
 
     var layout = {
         width: 420,
@@ -283,4 +289,15 @@ function drawBiomass(rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){
           },
       };
     Plotly.newPlot('bGen', graphData, layout, {displayModeBar: false});
+}
+
+/* Gets overall biomass result for sankey chart */
+function getBio(){
+    var bio = [];
+    for(var i = 0; i <= riceResult.length; i++){
+        bio.push(riceResult[i] + sugarResult[i] + maizeResult[i]);
+    }
+    console.log(bio);
+    return bio
+    
 }

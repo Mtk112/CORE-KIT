@@ -265,3 +265,10 @@ residues.oninput = function(e){
 hteRate.oninput = function(e){
     getYields();
 }
+
+/* Redraws sankey chart when month is changed */
+var sankey = document.getElementById("month");
+
+sankey.oninput = function(e) {
+    initGrid();
+}
