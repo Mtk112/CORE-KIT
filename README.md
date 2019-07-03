@@ -16,6 +16,6 @@ After RStudio has finished installing requirements, click on "Build" in the tool
 
 Then write the following lines to the console: library(opencpu) ocpu_start_server()
 
-Then download and install Visual Studio Code, or equivalent. https://code.visualstudio.com/ Install Live Server extension or equivalent. In VSC you can access extensions by hitting (Ctrl + Shift + X). In VSC open /Visual-CORE/inst/www folder from the downloaded project.
+Then download and install Visual Studio Code, or equivalent. https://code.visualstudio.com/ Install Live Server extension or equivalent. In VSC you can access extensions by hitting (Ctrl + Shift + X). In VSC open /CORE-KIT/inst/www folder from the downloaded project.
 
 Pressing the "Go Live" button should launch the application on your browser. You can also access the application by opening browser and going to "localhost:yourPortNumber". For example "localhost:5500".
