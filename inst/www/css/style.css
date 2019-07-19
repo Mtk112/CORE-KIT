@@ -11,6 +11,72 @@ body{
     height:100%;
     width:100%;
 }
+/* Progression bar (steps)*/
+.progress{
+    counter-reset: step;
+}
+.progress li{
+    list-style-type: none;
+    float: left;
+    width: 11.11%;
+    position: relative;
+    text-align: center;
+    font-size: 15px;
+}
+.progress li:before{
+    content: counter(step);
+    counter-increment: step;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border: 2px solid #ddd;
+    display: block;
+    text-align: center;
+    margin: 0px auto 0px auto;
+    border-radius: 50%;
+    background-color:whitesmoke;
+}
+.progress li:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #ddd;
+    top:15px;
+    left: -50%;
+    z-index: -1;
+}
+.progress li:first-child:after{
+    content:none;
+}
+
+.progress li.active{
+    color:forestgreen;
+}
+.progress li.inprogress{
+    color:blue;
+}
+.progress li.undone{
+    color:red;
+}
+.progress li.active:before{
+    border-color:forestgreen;
+}
+.progress li.inprogress:before{
+    border-color:blue;
+}
+.progress li.undone:before{
+    border-color:red;
+}
+.progress li.active + li:after{
+    background-color: forestgreen;
+}
+.progress li.inprogress + li:after{
+    background-color: blue;
+}
+.progress li.undone + li:after{
+    background-color: red;
+}
 
 #next{
     text-align: center;

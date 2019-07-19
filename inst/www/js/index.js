@@ -127,6 +127,10 @@ function next(page){
         mapSection.style.display = "block";
         // rerenders the map (map is faulty if this is not called)
         map.invalidateSize(7);
+        document.getElementById("pbWelcome").classList.remove('inprogress');
+        document.getElementById("pbWelcome").classList.add('active');
+        document.getElementById("pbLocation").classList.remove('undone');
+        document.getElementById("pbLocation").classList.add('inprogress');
     }
     if(page == "mapSection"){
         if(hasAreaLayer()){
@@ -137,6 +141,10 @@ function next(page){
             document.getElementById("name").value = document.getElementById("villageName").value;
             document.getElementById("customIncome").style.display = "none";
             document.getElementById("customEmployment").style.display = "none";
+            document.getElementById("pbLocation").classList.remove('inprogress');
+            document.getElementById("pbLocation").classList.add('active');
+            document.getElementById("pbCommunity").classList.remove('undone');
+            document.getElementById("pbCommunity").classList.add('inprogress');
         }else{
             alert("Please select an area by clicking the map.");
         } 
@@ -149,6 +157,10 @@ function next(page){
         document.getElementById("household").style.display = "block";
         sunrise = document.getElementById("sunrise").value;
         sunset = document.getElementById("sunset").value;
+        document.getElementById("pbCommunity").classList.remove('inprogress');
+        document.getElementById("pbCommunity").classList.add('active');
+        document.getElementById("pbDemand").classList.remove('undone');
+        document.getElementById("pbDemand").classList.add('inprogress');
         }else{
             alert("Please fill in required information.");
         }
@@ -156,10 +168,18 @@ function next(page){
     if(page == "demand"){
         demand.style.display = "none";
         resources.style.display = "block";
+        document.getElementById("pbDemand").classList.remove('inprogress');
+        document.getElementById("pbDemand").classList.add('active');
+        document.getElementById("pbResources").classList.remove('undone');
+        document.getElementById("pbResources").classList.add('inprogress');
     }
     if(page == "resources"){
         resources.style.display = "none";
         generation.style.display = "block";
+        document.getElementById("pbResources").classList.remove('inprogress');
+        document.getElementById("pbResources").classList.add('active');
+        document.getElementById("pbGeneration").classList.remove('undone');
+        document.getElementById("pbGeneration").classList.add('inprogress');
         if(hydroCheck == true){
             document.getElementById("hydroGen").style.display = "block";
             initDesignMap();
@@ -181,14 +201,26 @@ function next(page){
         generation.style.display = "none";
         gridSize.style.display = "block";
         initGrid();
+        document.getElementById("pbGeneration").classList.remove('inprogress');
+        document.getElementById("pbGeneration").classList.add('active');
+        document.getElementById("pbGrid").classList.remove('undone');
+        document.getElementById("pbGrid").classList.add('inprogress');
     }
     if(page == "gridSize"){
         gridSize.style.display = "none";
         viability.style.display = "block";
+        document.getElementById("pbGrid").classList.remove('inprogress');
+        document.getElementById("pbGrid").classList.add('active');
+        document.getElementById("pbViability").classList.remove('undone');
+        document.getElementById("pbViability").classList.add('inprogress');
     }
     if(page == "viability"){
         viability.style.display = "none";
         report.style.display = "block";
+        document.getElementById("pbViability").classList.remove('inprogress');
+        document.getElementById("pbViability").classList.add('active');
+        document.getElementById("pbReport").classList.remove('undone');
+        document.getElementById("pbReport").classList.add('active');
     }
 }
 
@@ -196,34 +228,66 @@ function back(page){
     if(page == "mapSection"){
         mapSection.style.display = "none";
         welcome.style.display = "block";
+        document.getElementById("pbLocation").classList.remove('inprogress');
+        document.getElementById("pbLocation").classList.add('undone');
+        document.getElementById("pbWelcome").classList.remove('active');
+        document.getElementById("pbWelcome").classList.add('inprogress');
     }
     if (page == "community"){
         community.style.display = "none";
         mapSection.style.display = "block";
+        document.getElementById("pbCommunity").classList.remove('inprogress');
+        document.getElementById("pbCommunity").classList.add('undone');
+        document.getElementById("pbLocation").classList.remove('active');
+        document.getElementById("pbLocation").classList.add('inprogress');
     }
     if(page == "demand"){
         demand.style.display = "none";
         community.style.display = "block";
+        document.getElementById("pbDemand").classList.remove('inprogress');
+        document.getElementById("pbDemand").classList.add('undone');
+        document.getElementById("pbCommunity").classList.remove('active');
+        document.getElementById("pbCommunity").classList.add('inprogress');
     }
     if(page == "resources"){
         resources.style.display = "none";
         demand.style.display = "block";
+        document.getElementById("pbResources").classList.remove('inprogress');
+        document.getElementById("pbResources").classList.add('undone');
+        document.getElementById("pbDemand").classList.remove('active');
+        document.getElementById("pbDemand").classList.add('inprogress');
     }
     if(page == "generation"){
         generation.style.display = "none";
         resources.style.display = "block";
+        document.getElementById("pbGeneration").classList.remove('inprogress');
+        document.getElementById("pbGeneration").classList.add('undone');
+        document.getElementById("pbResources").classList.remove('active');
+        document.getElementById("pbResources").classList.add('inprogress');
     }
     if(page == "gridSize"){
         gridSize.style.display = "none";
         generation.style.display = "block";
+        document.getElementById("pbGrid").classList.remove('inprogress');
+        document.getElementById("pbGrid").classList.add('undone');
+        document.getElementById("pbGeneration").classList.remove('active');
+        document.getElementById("pbGeneration").classList.add('inprogress');
     }
     if(page == "viability"){
         viability.style.display = "none";
         gridSize.style.display = "block";
+        document.getElementById("pbViability").classList.remove('inprogress');
+        document.getElementById("pbViability").classList.add('undone');
+        document.getElementById("pbGrid").classList.remove('active');
+        document.getElementById("pbGrid").classList.add('inprogress');
     }
     if(page == "report"){
         report.style.display = "none";
         viability.style.display = "block";
+        document.getElementById("pbReport").classList.remove('active');
+        document.getElementById("pbReport").classList.add('undone');
+        document.getElementById("pbViability").classList.remove('active');
+        document.getElementById("pbViability").classList.add('inprogress');
     }
 }
 
@@ -250,6 +314,7 @@ windCutoff.oninput = function(e){
 var solarSize = document.getElementById("solarPlan");
 //var batterySize = document.getElementById("batterySize");
 solarSize.oninput = function(e){
+    console.log("calling drawSolar()...");
     drawSolar();
 }
 
