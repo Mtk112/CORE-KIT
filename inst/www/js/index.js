@@ -61,49 +61,15 @@ function openTab(evt, tabName) {
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
+    if(tabName == "hydro"){
+        initCircleMap();
+    }
+    if(tabName == "hydroGen"){
+        initDesignMap();
+    }
 }
 
-/* Switch */
-function toggleSwitch(currentElement){
-    var id = currentElement.id;
-    if(id == "solarSwitch"){
-        if(currentElement.checked){
-            document.getElementById("solar").style.display = "block";
-            solarCheck = true; 
-        }else{
-            document.getElementById("solar").style.display = "none";
-            solarCheck = false;
-        }
-    }
-    if(id == "windSwitch"){
-        if(currentElement.checked){
-            document.getElementById("wind").style.display = "block";
-            windCheck = true; 
-        }else{
-            document.getElementById("wind").style.display = "none";
-            windCheck = false;
-        }
-    }
-    if(id == "hydroSwitch"){
-        if(currentElement.checked){
-            document.getElementById("hydro").style.display = "block";
-            hydroCheck = true;
-            initCircleMap();
-        }else{
-            document.getElementById("hydro").style.display = "none";
-            hydroCheck = false;
-        }
-    }
-    if(id == "biomassSwitch"){
-        if(currentElement.checked){
-            document.getElementById("biomass").style.display = "block";
-            bioCheck = true;
-        }else{
-            document.getElementById("biomass").style.display = "none";
-            bioCheck = false;
-        }
-    }
-}
+
 
 /* 30 year flow chart options */
 var model = document.getElementById("model");
@@ -120,7 +86,7 @@ function saveId(id){
     lastRiverId = id;
 }
 
-/* Checks what "page" user is on and moves to the next (switch cases better?) */
+/* Checks what "page" user is on and moves to the next  */
 function next(page){
     if(page == "welcome"){
         welcome.style.display = "none";

@@ -280,45 +280,23 @@ crossorigin=""/>
     <!-- Resources -->
     <div id="resources">
         <h1>Resources</h1>
-        <div id="selectResources">
-            <div id="switches">
-                <h3>Which resources would you like to consider?</h3>
-                <a>Solar</a>
-                <label class="switch">
-                        <input type="checkbox" id="solarSwitch" onclick="toggleSwitch(this)">
-                        <span class="slider"></span>
-                </label>
-                </br>
-                <a>Wind</a>
-                <label class="switch">
-                        <input type="checkbox" id="windSwitch" onclick="toggleSwitch(this)">
-                        <span class="slider"></span>
-                </label>
-                </br>
-                <a>Micro-hydro</a>
-                <label class="switch">
-                        <input type="checkbox" id="hydroSwitch" onclick="toggleSwitch(this)">
-                        <span class="slider"></span>
-                </label>
-                </br>
-                <a>Biomass</a>
-                <label class="switch">
-                        <input type="checkbox" id="biomassSwitch" onclick="toggleSwitch(this)">
-                        <span class="slider"></span>
-                </label>
-            </div>
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'solar')">Solar</button>
+            <button class="tablinks" onclick="openTab(event, 'wind')">Wind</button>
+            <button class="tablinks" onclick="openTab(event, 'hydro')">Micro-Hydro</button>
+            <button class="tablinks" onclick="openTab(event, 'biomass')">Biomass</button>
         </div>
-        <div id ="solar">
+        <div id="solar" class="tabcontent">
             bla bla solar
             <div id = rSolar></div>
 
         </div>
-        <div id ="wind">
+        <div id ="wind" class="tabcontent">
             bla bla wind
             <div id = rWind></div>
 
         </div>
-        <div id ="hydro">
+        <div id ="hydro" class="tabcontent">
             <h1>Micro-hydro</h1>
             <!-- Circular area map -->
             <div class="third">
@@ -370,7 +348,7 @@ crossorigin=""/>
             </div>
 
         </div>
-        <div id ="biomass">
+        <div id ="biomass" class="tabcontent">
             <h1>Biomass</h1>
             <h3> Crops </h3>
             <button type="submit" onclick="addCrop()">Add new crop</button>
@@ -396,7 +374,13 @@ crossorigin=""/>
     </div>
     <div id="generation">
         <h1>Generation</h1>
-        <div id="solarGen">
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'solarGen')">Solar</button>
+            <button class="tablinks" onclick="openTab(event, 'windGen')">Wind</button>
+            <button class="tablinks" onclick="openTab(event, 'hydroGen')">Micro-Hydro</button>
+            <button class="tablinks" onclick="openTab(event, 'bioGen')">Biomass</button>
+        </div>
+        <div id="solarGen" class="tabcontent">
             <h3>Solar</h3>
             <div class="fiftyfifty">
                 <!-- TODO! inputs for calculating the out put based on various inputs about the solar panels -->
@@ -410,7 +394,7 @@ crossorigin=""/>
             </div>
             <div id="sGen" class="fiftyfifty"></div>
         </div>
-        <div id="windGen">
+        <div id="windGen" class="tabcontent">
             <h3>Wind</h3>
             <div class="fiftyfifty">
                 <a>Number of units:</a>
@@ -427,14 +411,14 @@ crossorigin=""/>
             </div>
             <div id="wGen" class="fiftyfifty"></div>
         </div>
-        <div id="hydroGen">
+        <div id="hydroGen" class="tabcontent">
             <h3>Micro-hydro</h3>
             <div>
                 <h3>Select intake, powerhouse, pipeline and penstock locations.</h3>
                 <div id="hydroMap"></div>
             </div>
         </div>
-        <div id="bioGen">
+        <div id="bioGen" class="tabcontent">
             <h3>Biomass</h3>
             <!-- Modifiable biomass values -->
             <div class="sixsix">
@@ -492,7 +476,7 @@ crossorigin=""/>
                         </tr> 
                     </tbody> 
                 </table>
-                <div id="bGen"></div>
+                <div id="bioGen" class="tabcontent"></div>
             </div>
             <div class="third">
                 <a>Heat to electricity conversion effiency (%):</a>
