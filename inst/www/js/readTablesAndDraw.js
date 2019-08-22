@@ -82,6 +82,15 @@ function drawFromTables(){
         }
         totalDem = totalDem + publicUsage[i] + productiveUsage[i] + householdUsage[i];
     }
+    /* Getting the peak demand and displaying it in the html */
+    var peak = 0;
+    for(var i = 0; i <= 23; i++){
+        if (total[i] > peak ){
+            peak = total[i];
+        }
+    }
+
+
     /* Creating traces based on the arrays created earlier */
     var householdTrace = {
         type : "scatter",
@@ -163,6 +172,7 @@ function drawFromTables(){
     document.getElementById("totalDemand").innerHTML = totalDem;
     document.getElementById("totalDay").innerHTML = day;
     document.getElementById("totalNight").innerHTML = night;
+    document.getElementById("peakDemand").innerHTML = peak;
     night = 0;
     day = 0;
 
