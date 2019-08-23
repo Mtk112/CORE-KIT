@@ -89,6 +89,7 @@ function drawFromTables(){
             peak = total[i];
         }
     }
+    rememberTotal(total);
 
 
     /* Creating traces based on the arrays created earlier */
@@ -298,7 +299,7 @@ function drawBiomass(rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){
             y: -0.1
           },
       };
-    Plotly.newPlot('bGen', graphData, layout, {displayModeBar: false});
+    Plotly.newPlot('bioGen', graphData, layout, {displayModeBar: false});
 }
 
 /* Gets overall biomass result for sankey chart */
