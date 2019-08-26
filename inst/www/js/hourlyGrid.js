@@ -29,7 +29,7 @@ function initGrid(){
     /* Checks how many hours of sunlight there is in a day */
     for(var i = 1; i <= 24; i++){
         if(i >= sunrise && i < sunset){
-            sunlight++
+            sunlight++;
         }
     }
     console.log(sunrise);
@@ -56,7 +56,12 @@ function initGrid(){
     for(var i = 1 ; i <= 24; i++){
         hourlyHydro.push(100 / 24);
     }
-
+    /* Calculates total hourly generation */
+    var totalGeneration = [];
+    for(var i = 0; i <= 23; i++){
+        var hourlyGeneration = hourlyBio[i] + hourlyHydro[i] + hourlySolar[i] + hourlyWind[i];
+        totalGeneration.push(hourlyGeneration);
+    }
     /* Creating traces based on the arrays created earlier */
     var demand = {
         type : "scatter",
@@ -64,7 +69,7 @@ function initGrid(){
         name : "Demand",
         x: hours,
         y: totalUsage,
-        stackgroup: 'one',
+        //stackgroup: 'one',
         line: {color: '#2eb2ff'}
     }
 
@@ -74,7 +79,7 @@ function initGrid(){
         name : "Wind",
         x: hours,
         y: hourlyWind,
-        stackgroup: 'two',
+        stackgroup: 'one',
         line: {color: '#f8c972'}
     }
 
@@ -84,7 +89,7 @@ function initGrid(){
         name : "Solar",
         x: hours,
         y: hourlySolar,
-        stackgroup: 'two',
+        stackgroup: 'one',
         line: {color: '#e05a47'}
     }
 
@@ -94,6 +99,7 @@ function initGrid(){
         name : "Biomass",
         x: hours,
         y: hourlyBio,
+        stackgroup: 'one',
         line: {color: '#ff7f50'}
     }
 
@@ -103,10 +109,20 @@ function initGrid(){
         name : "Micro-Hydro",
         x: hours,
         y: hourlyHydro,
+        stackgroup: 'one',
         line: {color: '#ffd700'}
     }
 
-    var graphData = [demand, wind, solar, biomass, hydro];
+    var total = {
+        type : "scatter",
+        mode : "lines",
+        name : "Total generation",
+        x: hours,
+        y: totalGeneration,
+        line: {color: '#228b22'}
+    }
+
+    var graphData = [demand, solar, wind, hydro, biomass, total];
 
     var layout = {
         width: 420,
@@ -114,7 +130,7 @@ function initGrid(){
         margin: {
             l: 25,
             r: 5,
-            b: 5,
+            b: 25,
             t: 25,
             pad: 2
         },
@@ -124,7 +140,8 @@ function initGrid(){
         xaxis: {
           range: Math.max(hours),
           type: 'linear',
-          autorange: true
+          autorange: true,
+          title: "hour"
         },
         yaxis: {
           autorange: true,
