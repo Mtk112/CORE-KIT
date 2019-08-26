@@ -514,17 +514,23 @@ crossorigin=""/>
         </select>
         <div id="grid">
         </div>
-        <div class=fiftyfifty id=day>
+        <div class="third" id="day">
             <h2>Day time</h2>
             <a>Day time generation: </a><a id=dtGen>0 kWh</a></br>
             <a>Day time demand: </a><a id=dtDem>0 kWh</a></br>
             <a>Day time demand met: </a><a id=dtMet>0%</a>
         </div>
-        <div class=fiftyfifty id=night>
+        <div class="third" id="night">
             <h2>Night time</h2>
-            <a>Night time generation (kWh): </a><a id=ntGen>0</a></br>
-            <a>Night time demand (kWh): </a><a id=ntDem>0</a></br>
-            <a>Night time met: </a><a id=ntMet>0%</a>
+            <a>Night time generation (kWh): </a><a id="ntGen">0</a></br>
+            <a>Night time demand (kWh): </a><a id="ntDem">0</a></br>
+            <a>Night time met: </a><a id="ntMet">0%</a>
+        </div>
+        <div class="third" id="daily">
+            <h2>Daily</h2>
+            <a>Daily generation (kWh): </a><a id="dailyGen">0</a></br>
+            <a>Daily demand (kWh): </a><a id="dailyDem">0</a></br>
+            <a>Daily demand met: </a><a id="dailyMet">0%</a>
         </div>
         <button class="submit" id="next" onclick="next('gridSize')">Continue to viability</button>
         <button class="submit" id="back" onclick="back('gridSize')">Back</button>

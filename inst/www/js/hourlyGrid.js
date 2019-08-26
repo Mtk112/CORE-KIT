@@ -1,15 +1,10 @@
 'use strict'
-/* Variables */
-var bio; 
-var savedSolar, savedWind;
-var night = parseFloat(document.getElementById("totalNight").text);
-var day = parseFloat(document.getElementById("totalDay").text);
-document.getElementById("dtDem").innerHTML = day;
-document.getElementById("ntDem").innerHTML = night;
-var totalUsage = [];
+/* Variables */ 
+var savedSolar, savedWind, bio;
 var sunrise = parseInt(document.getElementById("sunrise").value);
-var sunset = parseInt(document.getElementById("sunset").value);
+var sunset = parseInt(document.getElementById("sunset").value); 
 var sunlight = 0;
+var totalUsage = [];
 var hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 
 function rememberTotal(total){
@@ -17,6 +12,12 @@ function rememberTotal(total){
 }
 
 function initGrid(){
+    var night = parseFloat(document.getElementById("totalNight").text);
+    var day = parseFloat(document.getElementById("totalDay").text);
+    var totalDem = parseFloat(document.getElementById("totalDemand").text);
+    console.log(night);
+    console.log(day);
+    console.log(totalDem);
     var month = document.getElementById("month").value;
     savedSolar = getSolar();
     savedWind = getWind();
@@ -56,12 +57,23 @@ function initGrid(){
     for(var i = 1 ; i <= 24; i++){
         hourlyHydro.push(100 / 24);
     }
-    /* Calculates total hourly generation */
+    /* Calculates total hourly generation and total daily generation */
     var totalGeneration = [];
+    var dailyGeneration = 0;
     for(var i = 0; i <= 23; i++){
         var hourlyGeneration = hourlyBio[i] + hourlyHydro[i] + hourlySolar[i] + hourlyWind[i];
         totalGeneration.push(hourlyGeneration);
+        dailyGeneration = dailyGeneration + hourlyGeneration;
     }
+    /* Calculates daily demand met % */
+    var demandMet = dailyGeneration / totalDem * 100;
+    /* Sets values to the information box */
+    document.getElementById("dailyDem").innerHTML = totalDem;
+    document.getElementById("dailyGen").innerHTML = dailyGeneration;
+    document.getElementById("dailyMet").innerHTML = demandMet;
+    document.getElementById("dtDem").innerHTML = day;
+    document.getElementById("ntDem").innerHTML = night;
+
     /* Creating traces based on the arrays created earlier */
     var demand = {
         type : "scatter",
@@ -125,12 +137,12 @@ function initGrid(){
     var graphData = [demand, solar, wind, hydro, biomass, total];
 
     var layout = {
-        width: 420,
-        height: 400,
+        width: 480,
+        height: 480,
         margin: {
             l: 25,
             r: 5,
-            b: 25,
+            b: 75,
             t: 25,
             pad: 2
         },
