@@ -1,4 +1,5 @@
 'use strict'
+/* Function for drawing the hourly comparison chart between demand and electricity generation */
 /* Variables */ 
 var savedSolar, savedWind, bio;
 var sunrise = parseInt(document.getElementById("sunrise").value);
