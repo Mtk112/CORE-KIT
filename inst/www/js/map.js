@@ -205,29 +205,44 @@ function initDesignMap(){
         zoomControl:false
     });
     drawDesignMapArea(lat, lng);
+    // clears map
+    function clearMap(){
+        console.log("clearMap was called.");
+        for(var i in designMap._layers) {
+            if(designMap._layers[i]._path != undefined) {
+                try {
+                    designMap.removeLayer(designMap._layers[i]);
+                }
+                catch(e) {
+                    console.log("problem with " + e + designMap._layers[i]);
+                }
+            }
+        }
+        designMap._panes.markerPane.remove();
+        drawDesignMapArea(lat, lng);
+        designCoords = [];
+        clickNr = 0;
+    }
 
     /* Design map onclick */
     designMap.on('click', function (e){
         var lat = e.latlng.lat;
         var lng = e.latlng.lng;
         designClicks(lat, lng);
-        if(clickNr != 0 && clickNr != 4){
-            marker = new L.marker(e.latlng).addTo(designMap);
-            var pathLine = new L.polyline(line).addTo(designMap);
+        if(clickNr == 3){
+            clearMap(); 
         }
-        if(clickNr == 4){
-            for (i in designMap._layers) {
-                if (designMap._layers[i].options.format == undefined) {
-                    try {
-                        designMap.removeLayer(designMap._layers[i]);
-                    } catch (e) {
-                        console.log("problem with " + e + designMap._layers[i]);
-                    }
-                }
+        else{
+            if(clickNr <3){
+                marker = new L.marker(e.latlng).addTo(designMap);
             }
+            if(clickNr != 0){
+                var pathLine = new L.polyline(line).addTo(designMap);
+            }  
         }
         
         console.log("designMap was clicked");
+        clickNr++;
     });
     
 }
@@ -242,7 +257,6 @@ function designClicks(lat ,lng){
     switch(clickNr){
         case 0: //first click
         designCoords.push([lat, lng]);
-        clickNr++;
         console.log(designCoords);
         break;
 
@@ -250,19 +264,16 @@ function designClicks(lat ,lng){
         designCoords.push([lat, lng]);
         line = [designCoords[0], designCoords[1]];
         console.log(designCoords);
-        clickNr++;
         break;
 
         case 2: //third click
         designCoords.push([lat, lng]);
         line = [designCoords[1], designCoords[2]];
         console.log(designCoords);
-        clickNr++;
         break;
 
-        case 4: //fourth click
-        clickNr = 0;
-        designCoords = [];
+        default:
+            console.log("Should not see this.");
         break;
     }
 }
