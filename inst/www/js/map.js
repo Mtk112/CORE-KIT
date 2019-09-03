@@ -174,6 +174,10 @@ function initCircleMap(){
 /* Copy of the circular map, but with different usage */
 var designMap;
 var marker;
+var clickNr = 0;
+var designCoords = [];
+var line;
+
 function initDesignMap(){
     var selectedRadius = parseFloat(document.getElementById("radiusArea").value);
     var fZoom;
@@ -204,26 +208,28 @@ function initDesignMap(){
 
     /* Design map onclick */
     designMap.on('click', function (e){
-        marker = new L.marker(e.latlng).addTo(designMap);
-        var template = '<form id="popup">\
-        <select id="mapItem">\
-            <option value="intake">Intake</option>\
-            <option value="power">Power House</option>\
-            <option value="pipe">Pipeline</option>\
-            <option value="pen">Penstock</option>\
-        </select>\
-        <a>Point number:</a>\
-        <input type="number" id="pNro">\
-        </form>\
-        <button class="submit" onclick="save(marker)">Save</button>\
-        <button class="submit" onclick="deleteMarker(marker)">Delete</button>';
-        if (marker.hasOwnProperty('_popup')) {
-            marker.unbindPopup();
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+        designClicks(lat, lng);
+        if(clickNr != 0 && clickNr != 4){
+            marker = new L.marker(e.latlng).addTo(designMap);
+            var pathLine = new L.polyline(line).addTo(designMap);
         }
-        marker.bindPopup(template);
-        marker.openPopup();
-        console.log("Hi");
+        if(clickNr == 4){
+            for (i in designMap._layers) {
+                if (designMap._layers[i].options.format == undefined) {
+                    try {
+                        designMap.removeLayer(designMap._layers[i]);
+                    } catch (e) {
+                        console.log("problem with " + e + designMap._layers[i]);
+                    }
+                }
+            }
+        }
+        
+        console.log("designMap was clicked");
     });
+    
 }
 function deleteMarker(marker){
     marker.closePopup();
@@ -231,6 +237,34 @@ function deleteMarker(marker){
 }
 function save(marker){
     marker.closePopup();
+}
+function designClicks(lat ,lng){
+    switch(clickNr){
+        case 0: //first click
+        designCoords.push([lat, lng]);
+        clickNr++;
+        console.log(designCoords);
+        break;
+
+        case 1: //second click
+        designCoords.push([lat, lng]);
+        line = [designCoords[0], designCoords[1]];
+        console.log(designCoords);
+        clickNr++;
+        break;
+
+        case 2: //third click
+        designCoords.push([lat, lng]);
+        line = [designCoords[1], designCoords[2]];
+        console.log(designCoords);
+        clickNr++;
+        break;
+
+        case 4: //fourth click
+        clickNr = 0;
+        designCoords = [];
+        break;
+    }
 }
 
 
