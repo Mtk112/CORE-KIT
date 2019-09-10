@@ -234,10 +234,10 @@ function initDesignMap(){
         }
         else{
             if(clickNr <3){
-                marker = new L.marker(e.latlng).addTo(designMap);
+                marker = new L.circleMarker(e.latlng,{ color: 'gray', radius : 3}).addTo(designMap);
             }
             if(clickNr != 0){
-                var pathLine = new L.polyline(line).addTo(designMap);
+                var pathLine = new L.polyline(line).setStyle({color: 'gray'}).addTo(designMap);
             }  
         }
         
