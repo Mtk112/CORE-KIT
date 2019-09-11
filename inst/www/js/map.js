@@ -173,10 +173,10 @@ function initCircleMap(){
 
 /* Copy of the circular map, but with different usage */
 var designMap;
-var marker;
 var clickNr = 0;
 var designCoords = [];
 var line;
+
 
 function initDesignMap(){
     var selectedRadius = parseFloat(document.getElementById("radiusArea").value);
@@ -208,7 +208,7 @@ function initDesignMap(){
     // clears map
     function clearMap(){
         console.log("clearMap was called.");
-        for(var i in designMap._layers) {
+        /*for(var i in designMap._layers) {
             if(designMap._layers[i]._path != undefined) {
                 try {
                     designMap.removeLayer(designMap._layers[i]);
@@ -217,14 +217,21 @@ function initDesignMap(){
                     console.log("problem with " + e + designMap._layers[i]);
                 }
             }
+        }*/
+        for(var i = 0; i<polylineGroup.length; i++){
+            designMap.removeLayer(polylineGroup[i]);
         }
-        designMap._panes.markerPane.remove();
-        drawDesignMapArea(lat, lng);
+        for(var i = 0; i<markerGroup.length; i++){
+            designMap.removeLayer(markerGroup[i]);
+        }
+        //drawDesignMapArea(lat, lng);
         designCoords = [];
         clickNr = 0;
     }
 
     /* Design map onclick */
+    var markerGroup = [];
+    var polylineGroup = [];
     designMap.on('click', function (e){
         var lat = e.latlng.lat;
         var lng = e.latlng.lng;
@@ -234,10 +241,12 @@ function initDesignMap(){
         }
         else{
             if(clickNr <3){
-                marker = new L.circleMarker(e.latlng,{ color: 'gray', radius : 3}).addTo(designMap);
+                var marker = new L.circleMarker(e.latlng,{ color: 'gray', radius : 3}).addTo(designMap);
+                markerGroup.push(marker);
             }
             if(clickNr != 0){
                 var pathLine = new L.polyline(line).setStyle({color: 'gray'}).addTo(designMap);
+                polylineGroup.push(pathLine);
             }  
         }
         
