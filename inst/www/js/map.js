@@ -207,24 +207,14 @@ function initDesignMap(){
     drawDesignMapArea(lat, lng);
     // clears map
     function clearMap(){
-        console.log("clearMap was called.");
-        /*for(var i in designMap._layers) {
-            if(designMap._layers[i]._path != undefined) {
-                try {
-                    designMap.removeLayer(designMap._layers[i]);
-                }
-                catch(e) {
-                    console.log("problem with " + e + designMap._layers[i]);
-                }
-            }
-        }*/
+        //Clears the polylines added by mapclicks.
         for(var i = 0; i<polylineGroup.length; i++){
             designMap.removeLayer(polylineGroup[i]);
         }
+        //Clears the circlemarkers added by mapclicks.
         for(var i = 0; i<markerGroup.length; i++){
             designMap.removeLayer(markerGroup[i]);
         }
-        //drawDesignMapArea(lat, lng);
         designCoords = [];
         clickNr = 0;
     }
@@ -255,15 +245,9 @@ function initDesignMap(){
     });
     
 }
-function deleteMarker(marker){
-    marker.closePopup();
-    designMap.removeLayer(marker);
-}
-function save(marker){
-    marker.closePopup();
-}
+
 function designClicks(lat ,lng){
-    switch(clickNr){
+    switch(clickNr){    
         case 0: //first click
         designCoords.push([lat, lng]);
         console.log(designCoords);
