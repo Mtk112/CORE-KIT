@@ -1,6 +1,6 @@
 'use strict'
 
-var gasoline = parseFloat(document.getElementById("gasoline").value);
+var diesel = parseFloat(document.getElementById("diesel").value);
 var wtp = parseFloat(document.getElementById("wtp").value);
 
 /* Hard-coded values for example (will be changed for estimations when economics will be added) */
