@@ -295,7 +295,7 @@ crossorigin=""/>
 
         </div>
         <div id ="wind" class="tabcontent">
-            The chart on the left displays estimated potential for solar generation on a monthly basis in the area selected.
+            The chart on the left displays average estimated windspeed in the area selected.
             <div id = rWind></div>
 
         </div>
@@ -314,6 +314,8 @@ crossorigin=""/>
                     <h3>Choose specific hydrological model and climate forcing set.</h3>
                     <select id="model" name="Model">
                         <option value = "all">All</option>
+                        <option value = "averages">Averages from all combinations</option>
+                        <option value = "75th">75th percentiles</option>
                         <option value = "caraib_gswp3">CarAIB & GSWP3</option>
                         <option value = "caraib_princeton">CarAIB & Princeton</option>
                         <option value = "caraib_wfdei">CarAIB & WFDEI</option>

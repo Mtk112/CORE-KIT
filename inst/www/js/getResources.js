@@ -47,12 +47,12 @@ function drawSolarWind(data){
     var graphData = [solarTrace];
 
       var layout = {
-        width: 320,
-        height: 300,
+        width: 420,
+        height: 360,
         margin: {
             l: 50,
-            r: 5,
-            b: 5,
+            r: 10,
+            b: 60,
             t: 25,
             pad: 2
         },
@@ -61,8 +61,14 @@ function drawSolarWind(data){
         title: 'Solar potential in the area',
         xaxis: {
           range: Math.max(months),
-          type: 'linear',
-          autorange: true
+          title: "Month",
+          autotick: false,
+          ticks: 'outside',
+          tick0: 1,
+          dtick: 1,
+          ticklen: 4,
+          tickwidth: 4,
+          tickcolor: '#000'
         },
         yaxis: {
           autorange: true,
@@ -81,12 +87,12 @@ function drawSolarWind(data){
     var graphData = [windTrace];
 
     var layout = {
-      width: 320,
-      height: 300,
+      width: 420,
+      height: 360,
       margin: {
           l: 50,
-          r: 5,
-          b: 5,
+          r: 10,
+          b: 60,
           t: 25,
           pad: 2
       },
@@ -95,8 +101,14 @@ function drawSolarWind(data){
       title: 'Average monthly wind speed in the area',
       xaxis: {
         range: Math.max(months),
-        type: 'linear',
-        autorange: true
+        title: "Month",
+        autotick: false,
+        ticks: 'outside',
+        tick0: 1,
+        dtick: 1,
+        ticklen: 4,
+        tickwidth: 4,
+        tickcolor: '#000'
       },
       yaxis: {
         autorange: true,

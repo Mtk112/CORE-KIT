@@ -88,8 +88,71 @@ function drawRiver(riverId){
     }
   }
 }
+// 75th percentile
+
+if(model == "75th"){
+  console.log("Hello 75th percentile");
+}
+
+// Average from all models & climate forcing sets
+if(model == "averages"){
+  var data = [{
+    type: 'scatter',
+    mode: 'lines',
+    x: unpack(rows, 'Month'),
+    y: unpack(rows, 'Value'),
+    text: unpack(rows, 'Stat'),
+    transforms: [
+      {
+        type: 'aggregate',
+        aggregations: [{
+          target: unpack(rows, 'Prediction'), func: 'avg', enabled: true
+        }]
+      },
+      {
+        type: 'groupby',
+        groups: unpack(rows, 'Stat'),
+        styles: [
+          {target: 'median', value: {fill: 'tonexty', fillcolor: 'rgb(139, 192, 138)', marker: {color: 'darkblue'}}},
+          {target: 'mean', value: {fill: 'tonexty',fillcolor: 'rgb(139, 192, 138)', marker: {color: 'purple'}}},
+          {target: 'min', value: {marker: {color: 'red'}}},
+          {target: 'max', value: {fill: 'tonexty', marker: {color: 'forestgreen'}}}                         
+      ]}]
+  }]
+
+  var layout = {
+    width: 280,
+    height: 300,
+    paper_bgcolor: "transparent",
+    plot_bgcolor: "transparent",
+    title: mode + " monthly streamflow",
+    showlegend: false,
+    margin: {
+        l: 50,
+        r: 5,
+        b: 10,
+        t: 25,
+        pad: 2
+    },
+    xaxis: {
+      type: 'linear',
+      autorange: true,
+      title: "Month",
+      autotick: false,
+      ticks: 'outside',
+      tick0: 1,
+      ticklen: 12
+    },
+    yaxis: {
+      range: Math.max('Value'),
+      type: 'linear',
+      autorange: true,
+      title: "Waterflow  (m^3/s)"
+    }
+  }
+}
 // If a specific model & climate forcing is selected draws all data from that
-if(model != "all"){
+if(model != "all" && model != "averages" && model != "75th"){
   var data = [{
     type: 'scatter',
     mode: 'lines',
