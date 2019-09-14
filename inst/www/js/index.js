@@ -303,3 +303,7 @@ var sankey = document.getElementById("month");
 sankey.oninput = function(e) {
     initGrid();
 }
+
+function myFunction(){
+    initGrid();
+}

@@ -11,6 +11,11 @@ body{
     height:100%;
     width:100%;
 }
+.fwr-bk{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+}
 /* Progression bar (steps)*/
 .progress{
     counter-reset: step;
@@ -246,6 +251,16 @@ table{background: #fff none repeat scroll 0 0;
     display : none;
 }
 
+.checkForm{
+    float: left;
+    width: 25%;
+    overflow: auto;
+}
+
+.checkForm a{
+    font-size: 15px;
+}
+
 /* Viability */
 #viability{
     display : none
@@ -283,6 +298,10 @@ table{background: #fff none repeat scroll 0 0;
 }
 
 #night a{
+    font-size: 15px;
+}
+
+#daily a{
     font-size: 15px;
 }
 

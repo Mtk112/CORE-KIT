@@ -16,9 +16,6 @@ function initGrid(){
     var night = parseFloat(document.getElementById("totalNight").text);
     var day = parseFloat(document.getElementById("totalDay").text);
     var totalDem = parseFloat(document.getElementById("totalDemand").text);
-    console.log(night);
-    console.log(day);
-    console.log(totalDem);
     var month = document.getElementById("month").value;
     savedSolar = getSolar();
     savedWind = getWind();
@@ -34,9 +31,6 @@ function initGrid(){
             sunlight++;
         }
     }
-    console.log(sunrise);
-    console.log(sunset);
-    console.log(sunlight);
     /* Converts monthly solar to hourly solar generation */
     var hourlySolar = [];
     for(var i = 1 ; i <= 24; i++){
@@ -47,7 +41,6 @@ function initGrid(){
             hourlySolar.push(0);
         }
     }
-    console.log(hourlySolar);
     /* Converts biomass generation to hourly generation for 1 month (Assumes steady conversion throughout the day) */
     var hourlyBio = []; 
     for(var i = 1 ; i <= 24; i++){
@@ -57,6 +50,64 @@ function initGrid(){
     var hourlyHydro = []; 
     for(var i = 1 ; i <= 24; i++){
         hourlyHydro.push(100 / 24);
+    }
+    /* Draws generation line for system option A,B,C and D */
+    var optionA = [], optionB = [], optionC = [], optionD = [];
+    var tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
+    for(var i = 0; i<=23;i++){
+        if(document.getElementById("solarCheckA").checked == true){
+            tempValueA = tempValueA + hourlySolar[i];
+        }
+        if(document.getElementById("solarCheckB").checked == true){
+            tempValueB = tempValueB + hourlySolar[i];
+        }
+        if(document.getElementById("solarCheckC").checked == true){
+            tempValueC = tempValueC + hourlySolar[i];
+        }
+        if(document.getElementById("solarCheckD").checked == true){
+            tempValueD = tempValueD + hourlySolar[i];
+        }
+        if(document.getElementById("windCheckA").checked == true){
+            tempValueA = tempValueA + hourlyWind[i];
+        }
+        if(document.getElementById("windCheckB").checked == true){
+            tempValueB = tempValueB + hourlyWind[i];
+        }
+        if(document.getElementById("windCheckC").checked == true){
+            tempValueC = tempValueC + hourlyWind[i];
+        }
+        if(document.getElementById("windCheckD").checked == true){
+            tempValueD = tempValueD + hourlyWind[i];
+        }
+        if(document.getElementById("hydroCheckA").checked == true){
+            tempValueA = tempValueA + hourlyHydro[i];
+        }
+        if(document.getElementById("hydroCheckB").checked == true){
+            tempValueB = tempValueB + hourlyHydro[i];
+        }
+        if(document.getElementById("hydroCheckC").checked == true){
+            tempValueC = tempValueC + hourlyHydro[i];
+        }
+        if(document.getElementById("hydroCheckD").checked == true){
+            tempValueD = tempValueD + hourlyHydro[i];
+        }
+        if(document.getElementById("bioCheckA").checked == true){
+            tempValueA = tempValueA + hourlyBio[i];
+        }
+        if(document.getElementById("bioCheckB").checked == true){
+            tempValueB = tempValueB + hourlyBio[i];
+        }
+        if(document.getElementById("bioCheckC").checked == true){
+            tempValueC = tempValueC + hourlyBio[i];
+        }
+        if(document.getElementById("bioCheckD").checked == true){
+            tempValueD = tempValueD + hourlyBio[i];
+        }
+        optionA.push(tempValueA);
+        optionB.push(tempValueB);
+        optionC.push(tempValueC);
+        optionD.push(tempValueD);
+        tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
     }
     /* Calculates total hourly generation and total daily generation */
     var totalGeneration = [];
@@ -135,7 +186,43 @@ function initGrid(){
         line: {color: '#228b22'}
     }
 
-    var graphData = [demand, solar, wind, hydro, biomass, total];
+    var combinationA = {
+        type : "scatter",
+        mode : "lines",
+        name : "Combination A",
+        x: hours,
+        y: optionA,
+        line: {color: 'black'}
+    }
+
+    var combinationB = {
+        type : "scatter",
+        mode : "lines",
+        name : "Combination B",
+        x: hours,
+        y: optionB,
+        line: {color: 'pink'}
+    }
+
+    var combinationC = {
+        type : "scatter",
+        mode : "lines",
+        name : "Combination C",
+        x: hours,
+        y: optionC,
+        line: {color: 'purple'}
+    }
+
+    var combinationD = {
+        type : "scatter",
+        mode : "lines",
+        name : "Combination D",
+        x: hours,
+        y: optionD,
+        line: {color: 'brown'}
+    }
+
+    var graphData = [demand, solar, wind, hydro, biomass, total, combinationA, combinationB,combinationC,combinationD];
 
     var layout = {
         width: 480,
