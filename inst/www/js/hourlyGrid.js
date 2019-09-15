@@ -288,8 +288,4 @@ function initGrid(){
     
 }
 
-/* Calculates yearly Generation for each combination */
-function saveYearlyGeneration(){
-
-}
 

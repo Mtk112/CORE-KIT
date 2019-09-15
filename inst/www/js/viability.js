@@ -4,7 +4,7 @@ function initViability(){
     var diesel = parseFloat(document.getElementById("diesel").value);
     var wtp = parseFloat(document.getElementById("wtp").value);
     var totalDem = parseFloat(document.getElementById("totalDemand").text);
-    //totalDem = totalDem * 30 * 12;
+    totalDem = totalDem * 30 * 12;
     totalDem = totalDem.toFixed(1);
     /* Hard-coded values for example (will be changed for estimations when economics will be added) */
     var yA = 0.2;
@@ -12,10 +12,12 @@ function initViability(){
     var yC = 0.6;
     var yD = 0.3;
 
-    var xA = parseFloat(document.getElementById("genA").text);
-    var xB = parseFloat(document.getElementById("genB").text);
-    var xC = parseFloat(document.getElementById("genC").text);
-    var xD = parseFloat(document.getElementById("genD").text);
+    var abcd = yearlyGeneration();
+
+    var xA = abcd[0].toFixed(1);
+    var xB = abcd[1].toFixed(1);
+    var xC = abcd[2].toFixed(1);
+    var xD = abcd[3].toFixed(1);
 
     var largestX = Math.max(xA,xB,xC,xD,totalDem);
     var largestY = Math.max(yA,yB,yC,yD,wtp,diesel);
