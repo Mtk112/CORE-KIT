@@ -533,6 +533,8 @@ crossorigin=""/>
                 <a>Wind: </a><input type="checkbox" id="windCheckA" onclick="myFunction()"><br>
                 <a>Micro-hydro:</a> <input type="checkbox" id="hydroCheckA" onclick="myFunction()"><br>
                 <a>Biomass: </a><input type="checkbox" id="bioCheckA" onclick="myFunction()"><br>
+                <a>Daily generation (kWh): </a><a id=genA> 0 </a><br>
+                <a>Daily demand met (%): </a><a id=metA> 0 </a><br>
             </form>
             <form class="checkForm" id="optionB">
                 <h2>Combination B</h2>
@@ -540,6 +542,8 @@ crossorigin=""/>
                 <a>Wind: </a><input type="checkbox" id="windCheckB" onclick="myFunction()"><br>
                 <a>Micro-hydro: </a><input type="checkbox" id="hydroCheckB" onclick="myFunction()"><br>
                 <a>Biomass: </a><input type="checkbox" id="bioCheckB" onclick="myFunction()"><br>
+                <a>Daily generation (kWh): </a><a id=genB> 0 </a><br>
+                <a>Daily demand met (%): </a><a id=metB> 0 </a><br>
             </form>
             <form class="checkForm" id="optionC">
                 <h2>Combination C</h2>
@@ -547,6 +551,8 @@ crossorigin=""/>
                 <a>Wind: </a><input type="checkbox" id="windCheckC" onclick="myFunction()"><br>
                 <a>Micro-hydro: </a><input type="checkbox" id="hydroCheckC" onclick="myFunction()"><br>
                 <a>Biomass: </a><input type="checkbox" id="bioCheckC" onclick="myFunction()"><br>
+                <a>Daily generation (kWh): </a><a id=genC> 0 </a><br>
+                <a>Daily demand met (%): </a><a id=metC> 0 </a><br>
             </form>
             <form class="checkForm" id="optionA">
                 <h2>Combination D</h2>
@@ -554,9 +560,11 @@ crossorigin=""/>
                 <a>Wind: </a><input type="checkbox" id="windCheckD" onclick="myFunction()"><br>
                 <a>Micro-hydro: </a><input type="checkbox" id="hydroCheckD" onclick="myFunction()"><br>
                 <a>Biomass: </a><input type="checkbox" id="bioCheckD" onclick="myFunction()"><br>
+                <a>Daily generation (kWh): </a><a id=genD> 0 </a><br>
+                <a>Daily demand met (%): </a><a id=metD> 0 </a><br>
             </form>
         </div>
-        <div>
+        <!--<div>
             <div class="third" id="day">
                 <h2>Day time</h2>
                 <a>Day time generation: </a><a id=dtGen>0 kWh</a></br>
@@ -575,7 +583,7 @@ crossorigin=""/>
                 <a>Daily demand (kWh): </a><a id="dailyDem">0</a></br>
                 <a>Daily demand met: </a><a id="dailyMet">0%</a>
             </div>
-        </div>
+        </div>-->
         <div class="fwr-bk">
             <button class="submit" id="next" onclick="next('gridSize')">Continue to viability</button>
             <button class="submit" id="back" onclick="back('gridSize')">Back</button>
@@ -627,6 +635,7 @@ crossorigin=""/>
     <script src= "js/readTablesAndDraw.js"></script>
     <script src= "js/incomeEmployment.js"></script>
     <script src= "js/tables.js"></script>
+    <script src= "js/viability.js"></script>
     <!-- <script src= "js/gridSize.js"></script> -->
     <script src= "js/hourlyGrid.js"></script>
 </body>

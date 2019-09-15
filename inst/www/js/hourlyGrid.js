@@ -7,14 +7,15 @@ var sunset = parseInt(document.getElementById("sunset").value);
 var sunlight = 0;
 var totalUsage = [];
 var hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+var yearlyGenA = 0, yearlyGenB = 0, yearlyGenC = 0, yearlyGenD = 0;
 
 function rememberTotal(total){
     totalUsage = total;
 }
 
 function initGrid(){
-    var night = parseFloat(document.getElementById("totalNight").text);
-    var day = parseFloat(document.getElementById("totalDay").text);
+    //var night = parseFloat(document.getElementById("totalNight").text);
+    //var day = parseFloat(document.getElementById("totalDay").text);
     var totalDem = parseFloat(document.getElementById("totalDemand").text);
     var month = document.getElementById("month").value;
     savedSolar = getSolar();
@@ -109,6 +110,29 @@ function initGrid(){
         optionD.push(tempValueD);
         tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
     }
+
+    /* Calculates daily generation for each combination */
+    var totalA = 0, totalB = 0, totalC = 0, totalD = 0;
+    for(var i = 0; i <= 23; i++){
+        totalA = totalA + optionA[i];
+        totalB = totalB + optionB[i];
+        totalC = totalC + optionC[i];
+        totalD = totalD + optionD[i];
+    }
+    /*Sets daily generation and demand met for each combination. */
+    var metA = totalA / totalDem * 100;
+    var metB = totalB / totalDem * 100;
+    var metC = totalC / totalDem * 100;
+    var metD = totalD / totalDem * 100;
+    document.getElementById("genA").innerHTML = totalA.toFixed(1);
+    document.getElementById("metA").innerHTML = metA.toFixed(1);
+    document.getElementById("genB").innerHTML = totalB.toFixed(1);
+    document.getElementById("metB").innerHTML = metB.toFixed(1);
+    document.getElementById("genC").innerHTML = totalC.toFixed(1);
+    document.getElementById("metC").innerHTML = metC.toFixed(1);
+    document.getElementById("genD").innerHTML = totalD.toFixed(1);
+    document.getElementById("metD").innerHTML = metD.toFixed(1);
+
     /* Calculates total hourly generation and total daily generation */
     var totalGeneration = [];
     var dailyGeneration = 0;
@@ -117,15 +141,16 @@ function initGrid(){
         totalGeneration.push(hourlyGeneration);
         dailyGeneration = dailyGeneration + hourlyGeneration;
     }
-    /* Calculates daily demand met % */
+    /*
+     Calculates daily demand met % 
     var demandMet = dailyGeneration / totalDem * 100;
-    /* Sets values to the information box */
+     Sets values to the information box
     document.getElementById("dailyDem").innerHTML = totalDem;
     document.getElementById("dailyGen").innerHTML = dailyGeneration;
     document.getElementById("dailyMet").innerHTML = demandMet;
     document.getElementById("dtDem").innerHTML = day;
     document.getElementById("ntDem").innerHTML = night;
-
+    */
     /* Creating traces based on the arrays created earlier */
     var demand = {
         type : "scatter",
@@ -222,7 +247,8 @@ function initGrid(){
         line: {color: 'brown'}
     }
 
-    var graphData = [demand, solar, wind, hydro, biomass, total, combinationA, combinationB,combinationC,combinationD];
+    //var graphData = [demand, solar, wind, hydro, biomass, total, combinationA, combinationB,combinationC,combinationD];
+    var graphData = [demand, combinationA, combinationB, combinationC, combinationD];
 
     var layout = {
         width: 480,
@@ -260,5 +286,10 @@ function initGrid(){
       Plotly.newPlot('grid', graphData, layout, {displayModeBar: false});
 
     
+}
+
+/* Calculates yearly Generation for each combination */
+function saveYearlyGeneration(){
+
 }
 

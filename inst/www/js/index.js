@@ -179,6 +179,7 @@ function next(page){
         document.getElementById("pbGrid").classList.add('active');
         document.getElementById("pbViability").classList.remove('undone');
         document.getElementById("pbViability").classList.add('inprogress');
+        initViability();
     }
     if(page == "viability"){
         viability.style.display = "none";
