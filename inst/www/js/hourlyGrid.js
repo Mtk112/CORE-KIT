@@ -14,8 +14,7 @@ function rememberTotal(total){
 }
 
 function initGrid(){
-    //var night = parseFloat(document.getElementById("totalNight").text);
-    //var day = parseFloat(document.getElementById("totalDay").text);
+
     var totalDem = parseFloat(document.getElementById("totalDemand").text);
     var month = document.getElementById("month").value;
     savedSolar = getSolar();
@@ -141,16 +140,7 @@ function initGrid(){
         totalGeneration.push(hourlyGeneration);
         dailyGeneration = dailyGeneration + hourlyGeneration;
     }
-    /*
-     Calculates daily demand met % 
-    var demandMet = dailyGeneration / totalDem * 100;
-     Sets values to the information box
-    document.getElementById("dailyDem").innerHTML = totalDem;
-    document.getElementById("dailyGen").innerHTML = dailyGeneration;
-    document.getElementById("dailyMet").innerHTML = demandMet;
-    document.getElementById("dtDem").innerHTML = day;
-    document.getElementById("ntDem").innerHTML = night;
-    */
+
     /* Creating traces based on the arrays created earlier */
     var demand = {
         type : "scatter",
@@ -262,18 +252,18 @@ function initGrid(){
         },
         paper_bgcolor: "transparent",
         plot_bgcolor: "transparent",
-        title: 'Electricity demand and generation by hour',
+        title: 'Daily energy yield',
         xaxis: {
           range: Math.max(hours),
           type: 'linear',
           autorange: true,
-          title: "hour"
+          title: "Hours of the day"
         },
         yaxis: {
           autorange: true,
           range: Math.max(wind[month] + solar[month] + biomass[month] + hydro[month] + 5),
           type: 'linear',
-          title: "kWh"
+          title: "load (kW)"
         },
         legend: {
             orientation: 'h',

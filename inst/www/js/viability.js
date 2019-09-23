@@ -28,7 +28,7 @@ function initViability(){
         y: [yA],
         mode: 'markers',
         //type: 'scatter',
-        name: 'Combination A',
+        name: 'Option A',
         marker: { size: 12 }
     }
 
@@ -37,7 +37,7 @@ function initViability(){
         y: [yB],
         mode: 'markers',
         //type: 'scatter',
-        name: 'Combination B',
+        name: 'Option B',
         marker: { size: 12 }
     }
 
@@ -46,7 +46,7 @@ function initViability(){
         y: [yC],
         mode: 'markers',
         //type: 'scatter',
-        name: 'Combination C',
+        name: 'Option C',
         marker: { size: 12 }
     }
 
@@ -55,7 +55,7 @@ function initViability(){
         y: [yD],
         mode: 'markers',
         //type: 'scatter',
-        name: 'Combination D',
+        name: 'Option D',
         marker: { size: 12 }
 
     }
@@ -78,15 +78,15 @@ function initViability(){
         range: largestX + 10,
         type: 'linear',
         autorange: true,
-        title: 'Generation (kWh)'
+        title: 'Annual energy generated (kWh / yr)'
         },
         yaxis: {
         range: largestY + 1,
         type: 'linear',
         autorange: true,
-        title: 'US $ / kWh'
+        title: 'Levelised Cost of Energy (LCOE) USD / kWh'
         },
-        title:'System viability chart'
+        title:'Cost of energy (kW)'
     };
 
     Plotly.newPlot('viabilityChart', data, layout,{displayModeBar: false});
