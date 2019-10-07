@@ -8,6 +8,7 @@ var sunlight = 0;
 var totalUsage = [];
 var hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 var yearlyGenA = 0, yearlyGenB = 0, yearlyGenC = 0, yearlyGenD = 0;
+var months = [1,2,3,5,6,7,8,9,10,11,12];
 
 function rememberTotal(total){
     totalUsage = total;
@@ -51,57 +52,106 @@ function initGrid(){
     for(var i = 1 ; i <= 24; i++){
         hourlyHydro.push(100 / 24);
     }
-    /* Draws generation line for system option A,B,C and D */
+    /* Draws generation line for system option A,B,C and D daily (based on the month selected) and yearly */
     var optionA = [], optionB = [], optionC = [], optionD = [];
+    var optionAmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionBmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionCmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionDmonthly = [0,0,0,0,0,0,0,0,0,0,0,0];
     var tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
     for(var i = 0; i<=23;i++){
         if(document.getElementById("solarCheckA").checked == true){
             tempValueA = tempValueA + hourlySolar[i];
+            for( var y = 0; y <= 11; y++){
+                optionAmonthly[y] = optionAmonthly[y] + savedSolar[y];
+            }
         }
         if(document.getElementById("solarCheckB").checked == true){
             tempValueB = tempValueB + hourlySolar[i];
+            for( var y = 0; y <= 11; y++){
+                optionBmonthly[y] = optionBmonthly[y] + savedSolar[y];
+            }
         }
         if(document.getElementById("solarCheckC").checked == true){
             tempValueC = tempValueC + hourlySolar[i];
+            for( var y = 0; y <= 11; y++){
+                optionCmonthly[y] = optionCmonthly[y] + savedSolar[y];
+            }
         }
         if(document.getElementById("solarCheckD").checked == true){
             tempValueD = tempValueD + hourlySolar[i];
+            for( var y = 0; y <= 11; y++){
+                optionDmonthly[y] = optionDmonthly[y] + savedSolar[y];
+            }
         }
         if(document.getElementById("windCheckA").checked == true){
             tempValueA = tempValueA + hourlyWind[i];
+            for( var y = 0; y <= 11; y++){
+                optionAmonthly[y] = optionAmonthly[y] + savedWind[y];
+            }
         }
         if(document.getElementById("windCheckB").checked == true){
             tempValueB = tempValueB + hourlyWind[i];
+            for( var y = 0; y <= 11; y++){
+                optionBmonthly[y] = optionBmonthly[y] + savedWind[y];
+            }
         }
         if(document.getElementById("windCheckC").checked == true){
             tempValueC = tempValueC + hourlyWind[i];
+            for( var y = 0; y <= 11; y++){
+                optionCmonthly[y] = optionCmonthly[y] + savedWind[y];
+            }
         }
         if(document.getElementById("windCheckD").checked == true){
             tempValueD = tempValueD + hourlyWind[i];
+            for( var y = 0; y <= 11; y++){
+                optionDmonthly[y] = optionDmonthly[y] + savedWind[y];
+            }
         }
         if(document.getElementById("hydroCheckA").checked == true){
             tempValueA = tempValueA + hourlyHydro[i];
+            for( var y = 0; y <= 11; y++){
+                optionAmonthly[y] = optionAmonthly[y] + hydro * 30;
+            }
         }
         if(document.getElementById("hydroCheckB").checked == true){
             tempValueB = tempValueB + hourlyHydro[i];
+            for( var y = 0; y <= 11; y++){
+                optionBmonthly[y] = optionBmonthly[y] + hydro * 30;
+            }
         }
         if(document.getElementById("hydroCheckC").checked == true){
             tempValueC = tempValueC + hourlyHydro[i];
+            for( var y = 0; y <= 11; y++){
+                optionCmonthly[y] = optionCmonthly[y] + hydro * 30;
+            }
         }
         if(document.getElementById("hydroCheckD").checked == true){
             tempValueD = tempValueD + hourlyHydro[i];
+            for( var y = 0; y <= 11; y++){
+                optionDmonthly[y] = optionDmonthly[y] + hydro * 30;
+            }
         }
         if(document.getElementById("bioCheckA").checked == true){
             tempValueA = tempValueA + hourlyBio[i];
+            for( var y = 0; y <= 11; y++){
+                optionAmonthly[y] = optionAmonthly[y] + bio[y];
+            }
         }
         if(document.getElementById("bioCheckB").checked == true){
             tempValueB = tempValueB + hourlyBio[i];
+            for( var y = 0; y <= 11; y++){
+                optionBmonthly[y] = optionBmonthly[y] + bio[y];
+            }
         }
         if(document.getElementById("bioCheckC").checked == true){
             tempValueC = tempValueC + hourlyBio[i];
+            for( var y = 0; y <= 11; y++){
+                optionCmonthly[y] = optionCmonthly[y] + bio[y];
+            }
         }
         if(document.getElementById("bioCheckD").checked == true){
             tempValueD = tempValueD + hourlyBio[i];
+            for( var y = 0; y <= 11; y++){
+                optionDmonthly[y] = optionDmonthly[y] + bio[y];
+            }
         }
         optionA.push(tempValueA);
         optionB.push(tempValueB);
@@ -135,13 +185,20 @@ function initGrid(){
     /* Calculates total hourly generation and total daily generation */
     var totalGeneration = [];
     var dailyGeneration = 0;
+    var totalDemand = 0;
     for(var i = 0; i <= 23; i++){
         var hourlyGeneration = hourlyBio[i] + hourlyHydro[i] + hourlySolar[i] + hourlyWind[i];
+        totalDemand = totalDemand + totalUsage[i];
         totalGeneration.push(hourlyGeneration);
         dailyGeneration = dailyGeneration + hourlyGeneration;
     }
 
-    /* Creating traces based on the arrays created earlier */
+    var yearlyDemand = [];
+    for(var i = 0; i <=29; i++){
+        yearlyDemand.push(totalDemand[i]);
+    }
+
+    /* Creating daily traces based on the arrays created earlier */
     var demand = {
         type : "scatter",
         mode : "lines",
@@ -275,6 +332,90 @@ function initGrid(){
 
       Plotly.newPlot('grid', graphData, layout, {displayModeBar: false});
 
+    /* Creating yearly traces based on the arrays created earlier */
+    var yearlyDemand = {
+        type : "scatter",
+        mode : "lines",
+        name : "Demand",
+        x: months,
+        y: yearlyDemand,
+        //stackgroup: 'one',
+        line: {color: '#2eb2ff'}
+    }
+
+    var combinationAmonthly = {
+        type : "scatter",
+        mode : "lines",
+        name : "Option A",
+        x: months,
+        y: optionAmonthly,
+        line: {color: 'black'}
+    }
+
+    var combinationBmonthly = {
+        type : "scatter",
+        mode : "lines",
+        name : "Option B",
+        x: months,
+        y: optionBmonthly,
+        line: {color: 'pink'}
+    }
+
+    var combinationCmonthly = {
+        type : "scatter",
+        mode : "lines",
+        name : "Option C",
+        x: months,
+        y: optionCmonthly,
+        line: {color: 'purple'}
+    }
+
+    var combinationDmonthly = {
+        type : "scatter",
+        mode : "lines",
+        name : "Option D",
+        x: months,
+        y: optionDmonthly,
+        line: {color: 'brown'}
+    }
+
+    //var graphData = [demand, solar, wind, hydro, biomass, total, combinationA, combinationB,combinationC,combinationD];
+    var graphData = [yearlyDemand, combinationAmonthly, combinationBmonthly, combinationCmonthly, combinationDmonthly];
+
+    var layout = {
+        width: 480,
+        height: 480,
+        margin: {
+            l: 25,
+            r: 5,
+            b: 75,
+            t: 25,
+            pad: 2
+        },
+        paper_bgcolor: "transparent",
+        plot_bgcolor: "transparent",
+        title: 'Yearly energy yield',
+        xaxis: {
+          range: Math.max(months),
+          type: 'linear',
+          autorange: true,
+          title: "Months"
+        },
+        yaxis: {
+          autorange: true,
+          range: Math.max(combinationAmonthly,combinationBmonthly,combinationDmonthly,combinationCmonthly, yearlyDemand + 5),
+          type: 'linear',
+          title: "load (kW)"
+        },
+        legend: {
+            orientation: 'h',
+                  traceorder: 'reversed',
+            x: -0.1,
+            y: -0.1
+          },
+      };
+
+      Plotly.newPlot('gridyearly', graphData, layout, {displayModeBar: false});
     
 }
 
