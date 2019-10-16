@@ -54,6 +54,7 @@ function initGrid(){
     }
     /* Draws generation line for system option A,B,C and D daily (based on the month selected) and yearly */
     var optionA = [], optionB = [], optionC = [], optionD = [];
+    var yearlyA = [], yearlyB = [], yearlyC = [], yearlyD = [];
     var optionAmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionBmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionCmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionDmonthly = [0,0,0,0,0,0,0,0,0,0,0,0];
     var tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
     for(var i = 0; i<=23;i++){
@@ -193,10 +194,11 @@ function initGrid(){
         dailyGeneration = dailyGeneration + hourlyGeneration;
     }
 
-    var yearlyDemand = [];
-    for(var i = 0; i <=29; i++){
-        yearlyDemand.push(totalDemand[i]);
+    var monthlyDemand = [];
+    for(var i = 0; i <=11; i++){
+       monthlyDemand.push(totalDemand * 30);
     }
+    console.log(monthlyDemand);
 
     /* Creating daily traces based on the arrays created earlier */
     var demand = {
@@ -338,7 +340,7 @@ function initGrid(){
         mode : "lines",
         name : "Demand",
         x: months,
-        y: yearlyDemand,
+        y: monthlyDemand,
         //stackgroup: 'one',
         line: {color: '#2eb2ff'}
     }
@@ -380,7 +382,7 @@ function initGrid(){
     }
 
     //var graphData = [demand, solar, wind, hydro, biomass, total, combinationA, combinationB,combinationC,combinationD];
-    var graphData = [yearlyDemand, combinationAmonthly, combinationBmonthly, combinationCmonthly, combinationDmonthly];
+    var yearlyGraphData = [yearlyDemand, combinationAmonthly, combinationBmonthly, combinationCmonthly, combinationDmonthly];
 
     var layout = {
         width: 480,
@@ -403,7 +405,7 @@ function initGrid(){
         },
         yaxis: {
           autorange: true,
-          range: Math.max(combinationAmonthly,combinationBmonthly,combinationDmonthly,combinationCmonthly, yearlyDemand + 5),
+          range: Math.max(combinationAmonthly,combinationBmonthly,combinationDmonthly,combinationCmonthly, yearlyDemand) + 10,
           type: 'linear',
           title: "load (kW)"
         },
@@ -415,7 +417,7 @@ function initGrid(){
           },
       };
 
-      Plotly.newPlot('gridyearly', graphData, layout, {displayModeBar: false});
+      Plotly.newPlot('gridyearly', yearlyGraphData, layout, {displayModeBar: false});
     
 }
 
