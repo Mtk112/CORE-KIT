@@ -297,6 +297,8 @@ function calculateItemUsage(currentElement){
 }
 
 /* Crop table */
+
+/* TODO!!! Combine all 5 of these functions to 1 using THIS. */
 function addCrop(){
     var table = document.getElementById("cropTable");
     var newRow = table.insertRow(table.rows.length);
@@ -339,6 +341,67 @@ function addCrop(){
     var cell16 = newRow.insertCell(16);
     cell16.innerHTML = "<button id='remove' class='excel' onclick='removeRow(this)'>Delete</button>"; 
 }
+
+function addCrops(abcd){
+    var abcd = abcd;
+    console.log(abcd);
+    var table;
+    if(abcd == "A"){
+        table = document.getElementById("cropTableA");
+    }
+    if(abcd == "B"){
+        table = document.getElementById("cropTableB");
+    }
+    if(abcd == "C"){
+        table = document.getElementById("cropTableC");
+    }
+    if(abcd == "C"){
+        table = document.getElementById("cropTableC");
+    }
+    if(abcd == ""){
+        table = document.getElementById("cropTable");
+    }
+    var newRow = table.insertRow(table.rows.length);
+    var cell0  = newRow.insertCell(0);
+    cell0.innerHTML =   "<select class='excel' id='crop'>" +
+                        "<option value='rice'>Rice</option> " +
+                        "<option value='maize'>Maize</option>" +
+                        "<option value='sugarcane'> Sugarcane</option>" +
+                        "</select>";
+    var cell1 = newRow.insertCell(1);
+    cell1.innerHTML = "<input class='excel' id='cropArea' type='number' oninput='updateYields(this)' placeholder = 'Area (ha)'>";
+    var cell2 = newRow.insertCell(2);
+    cell2.innerHTML = "<input class='excel' id='yield' type='number' oninput='updateYields(this)' placeholder = 'Yield per harvest (tons / ha)'>";
+    var cell3 = newRow.insertCell(3);
+    cell3.innerHTML = "<button id='0' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell4 = newRow.insertCell(4);
+    cell4.innerHTML = "<button id='01' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell5 = newRow.insertCell(5);
+    cell5.innerHTML = "<button id='02' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell6 = newRow.insertCell(6);
+    cell6.innerHTML = "<button id='03' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell7 = newRow.insertCell(7);
+    cell7.innerHTML = "<button id='04' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell8 = newRow.insertCell(8);
+    cell8.innerHTML = "<button id='05' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell9 = newRow.insertCell(9);
+    cell9.innerHTML = "<button id='06' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell10 = newRow.insertCell(10);
+    cell10.innerHTML = "<button id='07' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell11 = newRow.insertCell(11);
+    cell11.innerHTML = "<button id='08' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell12 = newRow.insertCell(12);
+    cell12.innerHTML = "<button id='09' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell13 = newRow.insertCell(13);
+    cell13.innerHTML = "<button id='10' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell14 = newRow.insertCell(14);
+    cell14.innerHTML = "<button id='11' class='excelb' onclick='tickHarv(this)'>x</button>";
+    var cell15 = newRow.insertCell(15);
+    cell15.innerHTML = "<a id='totalYield' class='excel'>0</a>";
+    var cell16 = newRow.insertCell(16);
+    cell16.innerHTML = "<button id='remove' class='excel' onclick='removeRow(this)'>Delete</button>"; 
+}
+
 
 function tickHarv(currentElement){
     if(currentElement.style.background != "forestgreen"){
@@ -501,5 +564,521 @@ function getYields(){
         }
     })
     drawBiomass(rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh);
+}
+
+// NEW STUFF //
+
+function getYield(abcd){
+    var option = abcd;
+    //Residue to energy factors.
+    var RPR, AEP, LHV;
+    // other variables
+    var residueAmount, yields;
+    //Residues
+    var rh, rs, stt, sb, mc, ms, mh;
+    // residue harvest months
+    var rHar =[], sHar = [], mHar = [];
+    var harvestMonths=[];
+    var area;
+    var conversionRate = parseFloat(document.getElementById("conversionRate").value) / 100;
+
+    if(option == "A"){
+        $("#cropTableA tr").each(function () {
+            var crop = $(this).find('#crop').val();
+            console.log("Crop type: "+crop);
+            yields = parseFloat($(this).find('#yield').val());
+            area = parseFloat($(this).find('#cropArea').val());
+            var months = $(this).find('.excelb');
+            for (var i = 0; i <= months.length - 1; i++){
+                var month = months[i];
+                if(month.style.background == "forestgreen"){
+                    harvestMonths.push(i + 1);
+                }
+            }
+            console.log(harvestMonths);
+            if(crop == "rice"){
+                $("#residueTableA tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Rice husk"){
+                        //console.log("I am here --- Rice husk");
+                        RPR = parseFloat($(this).find('#rhRPR').val());
+                        AEP = parseFloat($(this).find('#rhAEP').val());
+                        LHV = parseFloat($(this).find('#rhLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * Availability for energy production % / 100 * LHV
+                        rh = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round to 1 decimal
+                        rh = Math.round((rh * 0.277778 * area / 10) * 10);
+                        console.log("Rice husk: " + rh);
+                    }
+                    if(currentCrop == "Rice straw"){
+                        //console.log("I am here ---Rice straw");
+                        RPR = parseFloat($(this).find('#rsRPR').val());
+                        //console.log("RPR: " +RPR);
+                        AEP = parseFloat($(this).find('#rsAEP').val());
+                        //console.log("AEP: " + AEP);
+                        LHV = parseFloat($(this).find('#rsLHV').val());
+                        //console.log("LHV: " +LHV);
+                        residueAmount = yields * RPR;
+                        //console.log("Residue amount: " + residueAmount + " (tons)");
+                        rs = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                       //console.log("Rice straw potential: " + rs + " (MJ)");
+                        rs = Math.round((rs * 0.277778 * area / 10) * 10);
+                        console.log("Rice straw: " + rs + " kWh");
+                    }
+                    
+                })
+                rHar = harvestMonths;
+                harvestMonths = [];
+            }
+            if(crop == "sugarcane"){
+                $("#residueTableA tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Sugarcane tops & trashes"){
+                        RPR = parseFloat($(this).find('#sttRPR').val());
+                        AEP = parseFloat($(this).find('#sttAEP').val());
+                        LHV = parseFloat($(this).find('#sttLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * (Surplus Annual Factor + Energy Use Factor) * LHV
+                        stt = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round to 1 decimal
+                        stt = Math.round((stt * 0.277778 * area / 10) * 10);
+                        console.log("Sugarcane tops & trashes: " + stt);
+                    }
+                    if(currentCrop == "Sugarcane bagasse"){
+                        RPR = parseFloat($(this).find('#sbRPR').val());
+                        AEP = parseFloat($(this).find('#sbAEP').val());
+                        LHV = parseFloat($(this).find('#sbLHV').val());
+                        residueAmount = yields * RPR;
+                        sb = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        sb = Math.round((sb * 0.277778 * area / 10) * 10);
+                        console.log("Sugarcane bagasse: " + sb);
+                    }
+                })
+                sHar = harvestMonths;
+                harvestMonths = [];
+            }
+            if(crop == "maize"){
+                $("#residueTableA tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Maize / Corn cob"){
+                        console.log("I am here --- Maize Corn cob");
+                        RPR = parseFloat($(this).find('#mcRPR').val());
+                        AEP = parseFloat($(this).find('#mcAEP').val());
+                        LHV = parseFloat($(this).find('#mcLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * (Surplus Annual Factor + Energy Use Factor) * LHV
+                        mc = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round
+                        mc = Math.round((mc * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn cob: " + mc);
+                    }
+                    if(currentCrop == "Maize / Corn stalk"){
+                        console.log("I am here --- Maize Corn stalk");
+                        RPR = parseFloat($(this).find('#msRPR').val());
+                        AEP = parseFloat($(this).find('#msAEP').val());
+                        LHV = parseFloat($(this).find('#msLHV').val());
+                        residueAmount = yields * RPR;
+                        ms = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        ms = Math.round((ms * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn stalk: " + ms);
+                    }
+                    if(currentCrop == "Maize / Corn husk"){
+                        RPR = parseFloat($(this).find('#mhRPR').val());
+                        AEP = parseFloat($(this).find('#mhAEP').val());
+                        LHV = parseFloat($(this).find('#mhLHV').val());
+                        residueAmount = yields * RPR;
+                        mh = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        mh = Math.round((mh * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn husk: " + mh);
+                    }
+                })
+                mHar = harvestMonths;
+                harvestMonths = [];
+            }
+        })
+
+    }
+
+    if(option == "B"){
+        $("#cropTableB tr").each(function () {
+            var crop = $(this).find('#crop').val();
+            console.log("Crop type: "+crop);
+            yields = parseFloat($(this).find('#yield').val());
+            area = parseFloat($(this).find('#cropArea').val());
+            var months = $(this).find('.excelb');
+            for (var i = 0; i <= months.length - 1; i++){
+                var month = months[i];
+                if(month.style.background == "forestgreen"){
+                    harvestMonths.push(i + 1);
+                }
+            }
+            console.log(harvestMonths);
+            if(crop == "rice"){
+                $("#residueTableB tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Rice husk"){
+                        //console.log("I am here --- Rice husk");
+                        RPR = parseFloat($(this).find('#rhRPR').val());
+                        AEP = parseFloat($(this).find('#rhAEP').val());
+                        LHV = parseFloat($(this).find('#rhLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * Availability for energy production % / 100 * LHV
+                        rh = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round to 1 decimal
+                        rh = Math.round((rh * 0.277778 * area / 10) * 10);
+                        console.log("Rice husk: " + rh);
+                    }
+                    if(currentCrop == "Rice straw"){
+                        //console.log("I am here ---Rice straw");
+                        RPR = parseFloat($(this).find('#rsRPR').val());
+                        //console.log("RPR: " +RPR);
+                        AEP = parseFloat($(this).find('#rsAEP').val());
+                        //console.log("AEP: " + AEP);
+                        LHV = parseFloat($(this).find('#rsLHV').val());
+                        //console.log("LHV: " +LHV);
+                        residueAmount = yields * RPR;
+                        //console.log("Residue amount: " + residueAmount + " (tons)");
+                        rs = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                       //console.log("Rice straw potential: " + rs + " (MJ)");
+                        rs = Math.round((rs * 0.277778 * area / 10) * 10);
+                        console.log("Rice straw: " + rs + " kWh");
+                    }
+                    
+                })
+                rHar = harvestMonths;
+                harvestMonths = [];
+            }
+            if(crop == "sugarcane"){
+                $("#residueTableB tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Sugarcane tops & trashes"){
+                        RPR = parseFloat($(this).find('#sttRPR').val());
+                        AEP = parseFloat($(this).find('#sttAEP').val());
+                        LHV = parseFloat($(this).find('#sttLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * (Surplus Annual Factor + Energy Use Factor) * LHV
+                        stt = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round to 1 decimal
+                        stt = Math.round((stt * 0.277778 * area / 10) * 10);
+                        console.log("Sugarcane tops & trashes: " + stt);
+                    }
+                    if(currentCrop == "Sugarcane bagasse"){
+                        RPR = parseFloat($(this).find('#sbRPR').val());
+                        AEP = parseFloat($(this).find('#sbAEP').val());
+                        LHV = parseFloat($(this).find('#sbLHV').val());
+                        residueAmount = yields * RPR;
+                        sb = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        sb = Math.round((sb * 0.277778 * area / 10) * 10);
+                        console.log("Sugarcane bagasse: " + sb);
+                    }
+                })
+                sHar = harvestMonths;
+                harvestMonths = [];
+            }
+            if(crop == "maize"){
+                $("#residueTableB tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Maize / Corn cob"){
+                        console.log("I am here --- Maize Corn cob");
+                        RPR = parseFloat($(this).find('#mcRPR').val());
+                        AEP = parseFloat($(this).find('#mcAEP').val());
+                        LHV = parseFloat($(this).find('#mcLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * (Surplus Annual Factor + Energy Use Factor) * LHV
+                        mc = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round
+                        mc = Math.round((mc * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn cob: " + mc);
+                    }
+                    if(currentCrop == "Maize / Corn stalk"){
+                        console.log("I am here --- Maize Corn stalk");
+                        RPR = parseFloat($(this).find('#msRPR').val());
+                        AEP = parseFloat($(this).find('#msAEP').val());
+                        LHV = parseFloat($(this).find('#msLHV').val());
+                        residueAmount = yields * RPR;
+                        ms = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        ms = Math.round((ms * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn stalk: " + ms);
+                    }
+                    if(currentCrop == "Maize / Corn husk"){
+                        RPR = parseFloat($(this).find('#mhRPR').val());
+                        AEP = parseFloat($(this).find('#mhAEP').val());
+                        LHV = parseFloat($(this).find('#mhLHV').val());
+                        residueAmount = yields * RPR;
+                        mh = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        mh = Math.round((mh * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn husk: " + mh);
+                    }
+                })
+                mHar = harvestMonths;
+                harvestMonths = [];
+            }
+        })
+
+    }
+
+    if(option == "C"){
+        $("#cropTableC tr").each(function () {
+            var crop = $(this).find('#crop').val();
+            console.log("Crop type: "+crop);
+            yields = parseFloat($(this).find('#yield').val());
+            area = parseFloat($(this).find('#cropArea').val());
+            var months = $(this).find('.excelb');
+            for (var i = 0; i <= months.length - 1; i++){
+                var month = months[i];
+                if(month.style.background == "forestgreen"){
+                    harvestMonths.push(i + 1);
+                }
+            }
+            console.log(harvestMonths);
+            if(crop == "rice"){
+                $("#residueTableC tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Rice husk"){
+                        //console.log("I am here --- Rice husk");
+                        RPR = parseFloat($(this).find('#rhRPR').val());
+                        AEP = parseFloat($(this).find('#rhAEP').val());
+                        LHV = parseFloat($(this).find('#rhLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * Availability for energy production % / 100 * LHV
+                        rh = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round to 1 decimal
+                        rh = Math.round((rh * 0.277778 * area / 10) * 10);
+                        console.log("Rice husk: " + rh);
+                    }
+                    if(currentCrop == "Rice straw"){
+                        //console.log("I am here ---Rice straw");
+                        RPR = parseFloat($(this).find('#rsRPR').val());
+                        //console.log("RPR: " +RPR);
+                        AEP = parseFloat($(this).find('#rsAEP').val());
+                        //console.log("AEP: " + AEP);
+                        LHV = parseFloat($(this).find('#rsLHV').val());
+                        //console.log("LHV: " +LHV);
+                        residueAmount = yields * RPR;
+                        //console.log("Residue amount: " + residueAmount + " (tons)");
+                        rs = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                       //console.log("Rice straw potential: " + rs + " (MJ)");
+                        rs = Math.round((rs * 0.277778 * area / 10) * 10);
+                        console.log("Rice straw: " + rs + " kWh");
+                    }
+                    
+                })
+                rHar = harvestMonths;
+                harvestMonths = [];
+            }
+            if(crop == "sugarcane"){
+                $("#residueTableC tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Sugarcane tops & trashes"){
+                        RPR = parseFloat($(this).find('#sttRPR').val());
+                        AEP = parseFloat($(this).find('#sttAEP').val());
+                        LHV = parseFloat($(this).find('#sttLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * (Surplus Annual Factor + Energy Use Factor) * LHV
+                        stt = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round to 1 decimal
+                        stt = Math.round((stt * 0.277778 * area / 10) * 10);
+                        console.log("Sugarcane tops & trashes: " + stt);
+                    }
+                    if(currentCrop == "Sugarcane bagasse"){
+                        RPR = parseFloat($(this).find('#sbRPR').val());
+                        AEP = parseFloat($(this).find('#sbAEP').val());
+                        LHV = parseFloat($(this).find('#sbLHV').val());
+                        residueAmount = yields * RPR;
+                        sb = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        sb = Math.round((sb * 0.277778 * area / 10) * 10);
+                        console.log("Sugarcane bagasse: " + sb);
+                    }
+                })
+                sHar = harvestMonths;
+                harvestMonths = [];
+            }
+            if(crop == "maize"){
+                $("#residueTableC tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Maize / Corn cob"){
+                        console.log("I am here --- Maize Corn cob");
+                        RPR = parseFloat($(this).find('#mcRPR').val());
+                        AEP = parseFloat($(this).find('#mcAEP').val());
+                        LHV = parseFloat($(this).find('#mcLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * (Surplus Annual Factor + Energy Use Factor) * LHV
+                        mc = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round
+                        mc = Math.round((mc * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn cob: " + mc);
+                    }
+                    if(currentCrop == "Maize / Corn stalk"){
+                        console.log("I am here --- Maize Corn stalk");
+                        RPR = parseFloat($(this).find('#msRPR').val());
+                        AEP = parseFloat($(this).find('#msAEP').val());
+                        LHV = parseFloat($(this).find('#msLHV').val());
+                        residueAmount = yields * RPR;
+                        ms = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        ms = Math.round((ms * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn stalk: " + ms);
+                    }
+                    if(currentCrop == "Maize / Corn husk"){
+                        RPR = parseFloat($(this).find('#mhRPR').val());
+                        AEP = parseFloat($(this).find('#mhAEP').val());
+                        LHV = parseFloat($(this).find('#mhLHV').val());
+                        residueAmount = yields * RPR;
+                        mh = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        mh = Math.round((mh * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn husk: " + mh);
+                    }
+                })
+                mHar = harvestMonths;
+                harvestMonths = [];
+            }
+        })
+
+    }
+
+    if(option == "D"){
+        $("#cropTableD tr").each(function () {
+            var crop = $(this).find('#crop').val();
+            console.log("Crop type: "+crop);
+            yields = parseFloat($(this).find('#yield').val());
+            area = parseFloat($(this).find('#cropArea').val());
+            var months = $(this).find('.excelb');
+            for (var i = 0; i <= months.length - 1; i++){
+                var month = months[i];
+                if(month.style.background == "forestgreen"){
+                    harvestMonths.push(i + 1);
+                }
+            }
+            console.log(harvestMonths);
+            if(crop == "rice"){
+                $("#residueTableD tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Rice husk"){
+                        //console.log("I am here --- Rice husk");
+                        RPR = parseFloat($(this).find('#rhRPR').val());
+                        AEP = parseFloat($(this).find('#rhAEP').val());
+                        LHV = parseFloat($(this).find('#rhLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * Availability for energy production % / 100 * LHV
+                        rh = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round to 1 decimal
+                        rh = Math.round((rh * 0.277778 * area / 10) * 10);
+                        console.log("Rice husk: " + rh);
+                    }
+                    if(currentCrop == "Rice straw"){
+                        //console.log("I am here ---Rice straw");
+                        RPR = parseFloat($(this).find('#rsRPR').val());
+                        //console.log("RPR: " +RPR);
+                        AEP = parseFloat($(this).find('#rsAEP').val());
+                        //console.log("AEP: " + AEP);
+                        LHV = parseFloat($(this).find('#rsLHV').val());
+                        //console.log("LHV: " +LHV);
+                        residueAmount = yields * RPR;
+                        //console.log("Residue amount: " + residueAmount + " (tons)");
+                        rs = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                       //console.log("Rice straw potential: " + rs + " (MJ)");
+                        rs = Math.round((rs * 0.277778 * area / 10) * 10);
+                        console.log("Rice straw: " + rs + " kWh");
+                    }
+                    
+                })
+                rHar = harvestMonths;
+                harvestMonths = [];
+            }
+            if(crop == "sugarcane"){
+                $("#residueTableD tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Sugarcane tops & trashes"){
+                        RPR = parseFloat($(this).find('#sttRPR').val());
+                        AEP = parseFloat($(this).find('#sttAEP').val());
+                        LHV = parseFloat($(this).find('#sttLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * (Surplus Annual Factor + Energy Use Factor) * LHV
+                        stt = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round to 1 decimal
+                        stt = Math.round((stt * 0.277778 * area / 10) * 10);
+                        console.log("Sugarcane tops & trashes: " + stt);
+                    }
+                    if(currentCrop == "Sugarcane bagasse"){
+                        RPR = parseFloat($(this).find('#sbRPR').val());
+                        AEP = parseFloat($(this).find('#sbAEP').val());
+                        LHV = parseFloat($(this).find('#sbLHV').val());
+                        residueAmount = yields * RPR;
+                        sb = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        sb = Math.round((sb * 0.277778 * area / 10) * 10);
+                        console.log("Sugarcane bagasse: " + sb);
+                    }
+                })
+                sHar = harvestMonths;
+                harvestMonths = [];
+            }
+            if(crop == "maize"){
+                $("#residueTableD tr").each(function () {
+                    var currentCrop = $(this).find('#cropType').text();
+                    //console.log("currently processing: " + currentCrop);
+                    if(currentCrop == "Maize / Corn cob"){
+                        console.log("I am here --- Maize Corn cob");
+                        RPR = parseFloat($(this).find('#mcRPR').val());
+                        AEP = parseFloat($(this).find('#mcAEP').val());
+                        LHV = parseFloat($(this).find('#mcLHV').val());
+                        // Annual crop yield * Residue to Product Ratio (tons)
+                        residueAmount = yields * RPR;
+                        // Residue energy potential = residueAmount (kg) * (Surplus Annual Factor + Energy Use Factor) * LHV
+                        mc = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        // Convert Mj to kWh and round
+                        mc = Math.round((mc * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn cob: " + mc);
+                    }
+                    if(currentCrop == "Maize / Corn stalk"){
+                        console.log("I am here --- Maize Corn stalk");
+                        RPR = parseFloat($(this).find('#msRPR').val());
+                        AEP = parseFloat($(this).find('#msAEP').val());
+                        LHV = parseFloat($(this).find('#msLHV').val());
+                        residueAmount = yields * RPR;
+                        ms = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        ms = Math.round((ms * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn stalk: " + ms);
+                    }
+                    if(currentCrop == "Maize / Corn husk"){
+                        RPR = parseFloat($(this).find('#mhRPR').val());
+                        AEP = parseFloat($(this).find('#mhAEP').val());
+                        LHV = parseFloat($(this).find('#mhLHV').val());
+                        residueAmount = yields * RPR;
+                        mh = (residueAmount * 1000) * (AEP / 100) * LHV * conversionRate; //Mega joules
+                        mh = Math.round((mh * 0.277778 * area / 10) * 10);
+                        console.log("Maize / Corn husk: " + mh);
+                    }
+                })
+                mHar = harvestMonths;
+                harvestMonths = [];
+            }
+        })
+
+    }
+
+
+    redrawBiomass(option, rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh);
 }
 

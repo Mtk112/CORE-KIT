@@ -1,7 +1,9 @@
 'use strict'
 var solarSize;
 var months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-var tempSolar = [], tempWindPtp = [], solar = [], windPtp = [];
+var tempSolar = [], tempSolarABCD = [], tempWindPtp = [], tempWindPtp = [];
+var solar = [];
+var windPtp = [];
 var savedWind = [], savedSolar = [];
 
 
@@ -132,6 +134,7 @@ function drawWind(){
   /* Calculates rotor sweep area based on the radius of the windmill rotor blade */
   var rotorSweepArea = Math.PI * (parseFloat(document.getElementById("blade").value) * parseFloat(document.getElementById("blade").value));
   var cp = parseFloat(document.getElementById("cp").value) / 100;
+
   var cutoff = parseFloat(document.getElementById("cutoff").value);
   for(var i = 0; i < 12; i++){
     /* Checks if the wind speed is equal or greater than wind cutoff speed */
@@ -139,9 +142,10 @@ function drawWind(){
       tempWindPtp.push((0.5 * 1.225 * rotorSweepArea * (windPtp[i] * windPtp[i] * windPtp[i]) * cp) / 1000 * 24 * units);
     }else{
       tempWindPtp.push(0);
-    } 
+    }
   }
   savedWind = tempWindPtp;
+
 
   var windTrace = {
     type : "scatter",
@@ -249,4 +253,34 @@ function getWind(){
 
 function getSolar(){
   return savedSolar;
+}
+
+function getSolar(option){
+  var optionSize = "solarPlan" + option;
+  console.log(optionSize);
+  var tempSize = parseFloat(document.getElementById("" + optionSize ).value);
+  for(var i = 0; i < 12; i++){
+    tempSolarABCD.push(solar[i] * tempSize);
+  }
+  return tempSolarABCD;
+}
+var tempWindPtpABCD = [];
+function getWind(option){
+  //var optionABCD = option;
+  var units = parseInt(document.getElementById("wUnits" + option).value);
+  console.log(units);
+  /* Calculates rotor sweep area based on the radius of the windmill rotor blade */
+  var rotorSweepArea = Math.PI * (parseFloat(document.getElementById("blade" + option).value) * parseFloat(document.getElementById("blade" + option).value));
+  var cp = parseFloat(document.getElementById("cp" + option).value) / 100;
+
+  var cutoff = parseFloat(document.getElementById("cutoff" + option).value);
+  for(var i = 0; i < 12; i++){
+    /* Checks if the wind speed is equal or greater than wind cutoff speed */
+    if(windPtp[i] >= cutoff){
+      tempWindPtpABCD.push((0.5 * 1.225 * rotorSweepArea * (windPtp[i] * windPtp[i] * windPtp[i]) * cp) / 1000 * 24 * units);
+    }else{
+      tempWindPtpABCD.push(0);
+    }
+  }
+  return tempWindPtpABCD;
 }

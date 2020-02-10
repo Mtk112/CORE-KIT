@@ -21,6 +21,7 @@ var generation = document.getElementById("generation");
 var gridSize = document.getElementById("gridSize");
 var viability = document.getElementById("viability");
 var report = document.getElementById("report");
+var firstTime = true;
 
 /* If the radius of the area is changed redraws the circle */
 radius.oninput = function(e){
@@ -44,7 +45,7 @@ incomeDropdwn.onchange = function(e){
       document.getElementById("customIncome").style.display = "none";
     }
 }
-/* Demand tab control */
+/* Tab control */
 function openTab(evt, tabName) {
     //variables
     var i, tabcontent, tablinks;
@@ -66,6 +67,17 @@ function openTab(evt, tabName) {
     }
     if(tabName == "hydroGen"){
         initDesignMap();
+    }
+    if(tabName == "optionA" && firstTime == true){
+        firstTime = false;
+        document.getElementById("solarPlanA").value = document.getElementById("solarPlan").value;
+        document.getElementById("cpA").value = document.getElementById("cp").value;
+        document.getElementById("wUnitsA").value = document.getElementById("wUnits").value;
+        document.getElementById("bladeA").value = document.getElementById("blade").value;
+        document.getElementById("cutoffA").value = document.getElementById("cutoff").value;
+        document.getElementById("conversionRateA").value = document.getElementById("conversionRate").value;
+        document.getElementById("residueTableA") = document.getElementById("residueTable");
+        
     }
 }
 
@@ -287,15 +299,47 @@ solarSize.oninput = function(e){
 
 /* Residue Table oninput & heat to energy, update biomass potential graph */
 var residues = document.getElementById("residueTable");
+var residuesA = document.getElementById("residueTableA");
+var residuesB = document.getElementById("residueTableB");
+var residuesC = document.getElementById("residueTableC");
+var residuesD = document.getElementById("residueTableD");
 var hteRate = document.getElementById("conversionRate");
+var hteRateA = document.getElementById("conversionRateA");
+var hteRateB = document.getElementById("conversionRateB");
+var hteRateC = document.getElementById("conversionRateC");
+var hteRateD = document.getElementById("conversionRateD");
 
 residues.oninput = function(e){
     //console.log("Input registered. Calling getYields.");
     getYields();
 }
+residuesA.oninput = function(e){
+    getYields(A);
+}
+residuesB.oninput = function(e){
+    getYields(B);
+}
+residuesC.oninput = function(e){
+    getYields(C);
+}
+residuesD.oninput = function(e){
+    getYields(D);
+}
 
 hteRate.oninput = function(e){
     getYields();
+}
+hteRateA.oninput = function(e){
+    getYields(A);
+}
+hteRateB.oninput = function(e){
+    getYields(B);
+}
+hteRateC.oninput = function(e){
+    getYields(C);
+}
+hteRateD.oninput = function(e){
+    getYields(D);
 }
 
 /* Redraws sankey chart when month is changed */

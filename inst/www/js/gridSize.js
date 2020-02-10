@@ -4,7 +4,7 @@
 // Variables
 var hydro = 100
 var bio; 
-var savedSolar, savedWind;
+var savedSolarA, savedWindA, savedSolarB, savedWindB, savedSolarC, savedWindC, savedSolarD, savedWindD; 
 var value1 = [];
 
 
@@ -18,13 +18,18 @@ function initGrid(){
   document.getElementById("dtDem").innerHTML = day;
   document.getElementById("ntDem").innerHTML = night;
   var month = document.getElementById("month").value;
-  savedSolar = getSolar();
-  savedWind = getWind();
+  savedSolarA = getSolarABCD(A);
+  savedSolarB = getSolarABCD(B);
+  savedSolarC = getSolarABCD(C);
+  savedSolarD = getSolarABCD(D);
+  savedWindA = getWindABCD(A);
+  savedWindB = getWindABCD(B);
+  savedWindC = getWindABCD(C);
+  savedWindD = getWindABCD(D);
   bio = getBio();
 
-  console.log(savedSolar);
-  //console.log(savedWind);
-
+  
+  
   var wind2 = savedWind[month] / 2;
   /* Biomass used for 1 month */
   var bio2 = bio[month] / 30;

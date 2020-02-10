@@ -488,7 +488,7 @@ crossorigin=""/>
                         </tr> 
                     </tbody> 
                 </table>
-                <div id="bioGen" class="tabcontent"></div>
+                <!--<div id="bioGen" class="tabcontent"></div>-->
             </div>
             <div class="third">
                 <a>Heat to electricity conversion effiency (%):</a>
@@ -508,28 +508,492 @@ crossorigin=""/>
             <button class="submit" id="back" onclick="back('generation')">Back</button>
         </div>
     </div>
-    <div id="gridSize">
+    <div id="gridSize" class="tabcontent">
         <h1>Grid sizing</h1>
-        <select id="month" required>
-            <option value="0">January</option>
-            <option value="1">February</option>
-            <option value="2">March</option>
-            <option value="3">April</option>
-            <option value="4">May</option>
-            <option value="5">June</option>
-            <option value="6">July</option>
-            <option value="7">August</option>
-            <option value="8">September</option>
-            <option value="9">October</option>
-            <option value="10">November</option>
-            <option value="11">December</option>
-        </select>
-        <div class="fiftyfifty" id="grid">
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'gridSize')">Grid</button>
+            <button class="tablinks" onclick="openTab(event, 'optionA')">Option A</button>
+            <button class="tablinks" onclick="openTab(event, 'optionB')">Option B</button>
+            <button class="tablinks" onclick="openTab(event, 'optionC')">Option C</button>
+            <button class="tablinks" onclick="openTab(event, 'optionD')">Option D</button>
         </div>
-        <div class="fiftyfifty" id="gridyearly">
+
+            <select id="month" required>
+                <option value="0">January</option>
+                <option value="1">February</option>
+                <option value="2">March</option>
+                <option value="3">April</option>
+                <option value="4">May</option>
+                <option value="5">June</option>
+                <option value="6">July</option>
+                <option value="7">August</option>
+                <option value="8">September</option>
+                <option value="9">October</option>
+                <option value="10">November</option>
+                <option value="11">December</option>
+            </select>
+            <div class="fiftyfifty" id="grid">
+            </div>
+            <div class="fiftyfifty" id="gridyearly">
+            </div>
+            <div>
+                <a>Option A total daily generation (kW/h): </a><a id="genA"> 0</a>
+                <a>Option A demand met (%): </a><a id="metA"> 0</a>
+                <a>Option B total daily generation (kW/h): </a><a id="genB"> 0</a>
+                <a>Option B demand met (%): </a><a id="metB"> 0</a>
+                <a>Option C total daily generation (kW/h): </a><a id="genC"> 0</a>
+                <a>Option C demand met (%): </a><a id="metC"> 0</a>
+                <a>Option D total daily generation (kW/h): </a><a id="genD"> 0</a>
+                <a>Option D demand met (%): </a><a id="metD"> 0</a>
+            </div>
+
+            <div class="fwr-bk">
+                <button class="submit" id="next" onclick="next('gridSize')">Continue to viability</button>
+                <button class="submit" id="back" onclick="back('gridSize')">Back</button>
+            </div>
+
         </div>
-        <div>
-            <form class="checkForm" id="optionA">
+        <div id="optionA" class="tabcontent">
+            <div class="tab">
+                <button class="tablinks" onclick="openTab(event, 'gridSize')">Grid</button>
+                <button class="tablinks" onclick="openTab(event, 'optionA')">Option A</button>
+                <button class="tablinks" onclick="openTab(event, 'optionB')">Option B</button>
+                <button class="tablinks" onclick="openTab(event, 'optionC')">Option C</button>
+                <button class="tablinks" onclick="openTab(event, 'optionD')">Option D</button>
+            </div>
+            <h2>Option A</h2>
+            <h3>Solar</h3>
+            <a>Planned power (kWp): </a>
+            <input type="number" id="solarPlanA" placeholder="System kWp..." value="0">
+
+            <h3>Wind</h3>
+            <a>Number of units:</a>
+            <input type="number" id="wUnitsA" placeholder="Number of units..." value="0">
+            </br>
+            <a>Turbine coeffiency (%):</a>
+            <input type="number" id="cpA" placeholder="Coeffiency %..." value="0">
+            </br>
+            <a>Rotor blade length (m):</a>
+            <input type="number" id="bladeA" placeholder="Length of the blade..." value="0">
+            </br>
+            <a>Cutoff windspeed (m/s):</a>
+            <input type="number" id="cutoffA" placeholder="Cutoff windspeed..." value="0">
+
+
+            <h3>Hydro</h3>
+            <a> Daily hydro generation (kW/h): </a>
+            <input type="number" id="hydroTestA" value="100">
+
+            <h3>Biomass</h3>
+            <h3> Crops </h3>
+            <button type="submit" onclick="addCrops('A')">Add new crop</button>
+            <table id="cropTableA" cellpadding="0"; cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Crop type</th>
+                        <th>Designated area (ha)</th>
+                        <th>Crop yield, (tons / ha)</th>
+                        <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th>
+                        <th>June</th><th>July</th><th>Aug</th><th>Sept</th><th>Oct</th>
+                        <th>Nov</th><th>Dec</th>
+                        <th>Total yield / year (tons)</th>
+                    </tr>
+                </thead>
+                <tbody>  
+                </tbody> 
+            </table>
+            <h3>Values</h3>
+
+            <table id="residueTableA" cellpadding="0"; cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Residue Type</th>
+                        <th>Residue to Product Ratio (RPR)</th>
+                        <th>Residue availability (%)</th>
+                        <th>Lower Heating Value (LHV)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th><a id="cropType" class="excel">Rice husk</a></th>
+                        <th><input class="excel" type="number" id="rhRPR" value="0.2685"></th>
+                        <th><input class="excel" type="number" id="rhAEP" value="80"></th>
+                        <th><input class="excel" type="number" id="rhLHV" value="12.85"></th>
+                    </tr>
+                    <tr>
+                        <th><a id="cropType" class="excel">Rice straw</a></th>
+                        <th><input class="excel" type="number" id="rsRPR" value="1.37719"></th>
+                        <th><input class="excel" type="number" id="rsAEP" value="80"></th>
+                        <th><input class="excel" type="number" id="rsLHV" value="8.83"></th>
+                    </tr>
+                    <tr>
+                        <th><a id="cropType" class="excel">Sugarcane tops & trashes</a></th>
+                        <th><input class="excel" type="number" id="sttRPR" value="0.206725"></th>
+                        <th><input class="excel" type="number" id="sttAEP" value="80"></th>
+                        <th><input class="excel" type="number" id="sttLHV" value="6.82"></th>
+                    </tr>
+                    <tr>
+                        <th><a id="cropType" class="excel">Sugarcane bagasse</a></th>
+                        <th><input class="excel" type="number" id="sbRPR" value="0.31"></th>
+                        <th><input class="excel" type="number" id="sbAEP" value="80"></th>
+                        <th><input class="excel" type="number" id="sbLHV" value="6.43"></th>
+                    </tr>
+                    <tr>
+                        <th><a id="cropType" class="excel">Maize / Corn cob</a></th>
+                        <th><input class="excel" class="excel" type="number" id="mcRPR" value="0.2615"></th>
+                        <th><input class="excel" class="excel" type="number" id="mcAEP" value="80"></th>
+                        <th><input class="excel" class="excel" type="number" id="mcLHV" value="15.75"></th>
+                    </tr>
+                    <tr>
+                        <th><a id="cropType" class="excel">Maize / Corn stalk</a></th>
+                        <th><input class="excel" type="number" id="msRPR" value="2.28"></th>
+                        <th><input class="excel" type="number" id="msAEP" value="80"></th>
+                        <th><input class="excel" type="number" id="msLHV" value="15.105"></th>
+                    </tr>
+                    <tr>
+                        <th><a id="cropType" class="excel">Maize / Corn husk</a></th>
+                        <th><input class="excel" type="number" id="mhRPR" value="0.2"></th>
+                        <th><input class="excel" type="number" id="mhAEP" value="80"></th>
+                        <th><input class="excel" type="number" id="mhLHV" value="16.38"></th>
+                    </tr> 
+                </tbody> 
+            </table>
+            <a>Heat to electricity conversion effiency (%):</a>
+            <input type="number" id="conversionRateA" value="30">
+
+            </div>
+
+            <div id="optionB" class="tabcontent">
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'gridSize')">Grid</button>
+                    <button class="tablinks" onclick="openTab(event, 'optionA')">Option A</button>
+                    <button class="tablinks" onclick="openTab(event, 'optionB')">Option B</button>
+                    <button class="tablinks" onclick="openTab(event, 'optionC')">Option C</button>
+                    <button class="tablinks" onclick="openTab(event, 'optionD')">Option D</button>
+                </div>
+                <h2>Option B</h2>
+                <h3>Solar</h3>
+                <a>Planned power (kWp): </a>
+                <input type="number" id="solarPlanB" placeholder="System kWp..." value="0">
+    
+                <h3>Wind</h3>
+                <a>Number of units:</a>
+                <input type="number" id="wUnitsB" placeholder="Number of units..." value="0">
+                </br>
+                <a>Turbine coeffiency (%):</a>
+                <input type="number" id="cpB" placeholder="Coeffiency %..." value="0">
+                </br>
+                <a>Rotor blade length (m):</a>
+                <input type="number" id="bladeB" placeholder="Length of the blade..." value="0">
+                </br>
+                <a>Cutoff windspeed (m/s):</a>
+                <input type="number" id="cutoffB" placeholder="Cutoff windspeed..." value="0">
+    
+    
+                <h3>Hydro</h3>
+                <a> Daily hydro generation (kW/h): </a>
+                <input type="number" id="hydroTestB" value="0">
+    
+                <h3>Biomass</h3>
+                <h3> Crops </h3>
+                <button type="submit" onclick="addCrops('B')">Add new crop</button>
+                <table id="cropTableB" cellpadding="0"; cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Crop type</th>
+                            <th>Designated area (ha)</th>
+                            <th>Crop yield, (tons / ha)</th>
+                            <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th>
+                            <th>June</th><th>July</th><th>Aug</th><th>Sept</th><th>Oct</th>
+                            <th>Nov</th><th>Dec</th>
+                            <th>Total yield / year (tons)</th>
+                        </tr>
+                    </thead>
+                    <tbody>  
+                    </tbody> 
+                </table>
+                <h3>Values</h3>
+    
+                <table id="residueTableB" cellpadding="0"; cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Residue Type</th>
+                            <th>Residue to Product Ratio (RPR)</th>
+                            <th>Residue availability (%)</th>
+                            <th>Lower Heating Value (LHV)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th><a id="cropType" class="excel">Rice husk</a></th>
+                            <th><input class="excel" type="number" id="rhRPR" value="0.2685"></th>
+                            <th><input class="excel" type="number" id="rhAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="rhLHV" value="12.85"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Rice straw</a></th>
+                            <th><input class="excel" type="number" id="rsRPR" value="1.37719"></th>
+                            <th><input class="excel" type="number" id="rsAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="rsLHV" value="8.83"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Sugarcane tops & trashes</a></th>
+                            <th><input class="excel" type="number" id="sttRPR" value="0.206725"></th>
+                            <th><input class="excel" type="number" id="sttAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="sttLHV" value="6.82"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Sugarcane bagasse</a></th>
+                            <th><input class="excel" type="number" id="sbRPR" value="0.31"></th>
+                            <th><input class="excel" type="number" id="sbAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="sbLHV" value="6.43"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Maize / Corn cob</a></th>
+                            <th><input class="excel" class="excel" type="number" id="mcRPR" value="0.2615"></th>
+                            <th><input class="excel" class="excel" type="number" id="mcAEP" value="80"></th>
+                            <th><input class="excel" class="excel" type="number" id="mcLHV" value="15.75"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Maize / Corn stalk</a></th>
+                            <th><input class="excel" type="number" id="msRPR" value="2.28"></th>
+                            <th><input class="excel" type="number" id="msAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="msLHV" value="15.105"></th>
+                        </tr>
+                        <tr>
+                            <th><a id="cropType" class="excel">Maize / Corn husk</a></th>
+                            <th><input class="excel" type="number" id="mhRPR" value="0.2"></th>
+                            <th><input class="excel" type="number" id="mhAEP" value="80"></th>
+                            <th><input class="excel" type="number" id="mhLHV" value="16.38"></th>
+                        </tr> 
+                    </tbody> 
+                </table>
+                <a>Heat to electricity conversion effiency (%):</a>
+                <input type="number" id="conversionRateB" value="30">
+    
+                </div>
+
+                <div id="optionC" class="tabcontent">
+                    <div class="tab">
+                        <button class="tablinks" onclick="openTab(event, 'gridSize')">Grid</button>
+                        <button class="tablinks" onclick="openTab(event, 'optionA')">Option A</button>
+                        <button class="tablinks" onclick="openTab(event, 'optionB')">Option B</button>
+                        <button class="tablinks" onclick="openTab(event, 'optionC')">Option C</button>
+                        <button class="tablinks" onclick="openTab(event, 'optionD')">Option D</button>
+                    </div>
+                    <h2>Option C</h2>
+                    <h3>Solar</h3>
+                    <a>Planned power (kWp): </a>
+                    <input type="number" id="solarPlanC" placeholder="System kWp..." value="0">
+        
+                    <h3>Wind</h3>
+                    <a>Number of units:</a>
+                    <input type="number" id="wUnitsC" placeholder="Number of units..." value="0">
+                    </br>
+                    <a>Turbine coeffiency (%):</a>
+                    <input type="number" id="cpC" placeholder="Coeffiency %..." value="0">
+                    </br>
+                    <a>Rotor blade length (m):</a>
+                    <input type="number" id="bladeC" placeholder="Length of the blade..." value="0">
+                    </br>
+                    <a>Cutoff windspeed (m/s):</a>
+                    <input type="number" id="cutoffC" placeholder="Cutoff windspeed..." value="0">
+        
+        
+                    <h3>Hydro</h3>
+                    <a> Daily hydro generation (kW/h): </a>
+                    <input type="number" id="hydroTestC" value="0">
+        
+                    <h3>Biomass</h3>
+                    <h3> Crops </h3>
+                    <button type="submit" onclick="addCrops('C')">Add new crop</button>
+                    <table id="cropTableC" cellpadding="0"; cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Crop type</th>
+                                <th>Designated area (ha)</th>
+                                <th>Crop yield, (tons / ha)</th>
+                                <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th>
+                                <th>June</th><th>July</th><th>Aug</th><th>Sept</th><th>Oct</th>
+                                <th>Nov</th><th>Dec</th>
+                                <th>Total yield / year (tons)</th>
+                            </tr>
+                        </thead>
+                        <tbody>  
+                        </tbody> 
+                    </table>
+                    <h3>Values</h3>
+        
+                    <table id="residueTableC" cellpadding="0"; cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Residue Type</th>
+                                <th>Residue to Product Ratio (RPR)</th>
+                                <th>Residue availability (%)</th>
+                                <th>Lower Heating Value (LHV)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th><a id="cropType" class="excel">Rice husk</a></th>
+                                <th><input class="excel" type="number" id="rhRPR" value="0.2685"></th>
+                                <th><input class="excel" type="number" id="rhAEP" value="80"></th>
+                                <th><input class="excel" type="number" id="rhLHV" value="12.85"></th>
+                            </tr>
+                            <tr>
+                                <th><a id="cropType" class="excel">Rice straw</a></th>
+                                <th><input class="excel" type="number" id="rsRPR" value="1.37719"></th>
+                                <th><input class="excel" type="number" id="rsAEP" value="80"></th>
+                                <th><input class="excel" type="number" id="rsLHV" value="8.83"></th>
+                            </tr>
+                            <tr>
+                                <th><a id="cropType" class="excel">Sugarcane tops & trashes</a></th>
+                                <th><input class="excel" type="number" id="sttRPR" value="0.206725"></th>
+                                <th><input class="excel" type="number" id="sttAEP" value="80"></th>
+                                <th><input class="excel" type="number" id="sttLHV" value="6.82"></th>
+                            </tr>
+                            <tr>
+                                <th><a id="cropType" class="excel">Sugarcane bagasse</a></th>
+                                <th><input class="excel" type="number" id="sbRPR" value="0.31"></th>
+                                <th><input class="excel" type="number" id="sbAEP" value="80"></th>
+                                <th><input class="excel" type="number" id="sbLHV" value="6.43"></th>
+                            </tr>
+                            <tr>
+                                <th><a id="cropType" class="excel">Maize / Corn cob</a></th>
+                                <th><input class="excel" class="excel" type="number" id="mcRPR" value="0.2615"></th>
+                                <th><input class="excel" class="excel" type="number" id="mcAEP" value="80"></th>
+                                <th><input class="excel" class="excel" type="number" id="mcLHV" value="15.75"></th>
+                            </tr>
+                            <tr>
+                                <th><a id="cropType" class="excel">Maize / Corn stalk</a></th>
+                                <th><input class="excel" type="number" id="msRPR" value="2.28"></th>
+                                <th><input class="excel" type="number" id="msAEP" value="80"></th>
+                                <th><input class="excel" type="number" id="msLHV" value="15.105"></th>
+                            </tr>
+                            <tr>
+                                <th><a id="cropType" class="excel">Maize / Corn husk</a></th>
+                                <th><input class="excel" type="number" id="mhRPR" value="0.2"></th>
+                                <th><input class="excel" type="number" id="mhAEP" value="80"></th>
+                                <th><input class="excel" type="number" id="mhLHV" value="16.38"></th>
+                            </tr> 
+                        </tbody> 
+                    </table>
+                        <a>Heat to electricity conversion effiency (%):</a>
+                        <input type="number" id="conversionRateC" value="30">
+        
+                    </div>
+
+                    <div id="optionD" class="tabcontent">
+                        <div class="tab">
+                            <button class="tablinks" onclick="openTab(event, 'gridSize')">Grid</button>
+                            <button class="tablinks" onclick="openTab(event, 'optionA')">Option A</button>
+                            <button class="tablinks" onclick="openTab(event, 'optionB')">Option B</button>
+                            <button class="tablinks" onclick="openTab(event, 'optionC')">Option C</button>
+                            <button class="tablinks" onclick="openTab(event, 'optionD')">Option D</button>
+                        </div>
+                        <h2>Option D</h2>
+                        <h3>Solar</h3>
+                        <a>Planned power (kWp): </a>
+                        <input type="number" id="solarPlanD" placeholder="System kWp..." value="0">
+            
+                        <h3>Wind</h3>
+                        <a>Number of units:</a>
+                        <input type="number" id="wUnitsD" placeholder="Number of units..." value="0">
+                        </br>
+                        <a>Turbine coeffiency (%):</a>
+                        <input type="number" id="cpD" placeholder="Coeffiency %..." value="0">
+                        </br>
+                        <a>Rotor blade length (m):</a>
+                        <input type="number" id="bladeD" placeholder="Length of the blade..." value="0">
+                        </br>
+                        <a>Cutoff windspeed (m/s):</a>
+                        <input type="number" id="cutoffD" placeholder="Cutoff windspeed..." value="0">
+            
+            
+                        <h3>Hydro</h3>
+                        <a> Daily hydro generation (kW/h): </a>
+                        <input type="number" id="hydroTestD" value="0">
+            
+                        <h3>Biomass</h3>
+                        <h3> Crops </h3>
+                        <button type="submit" onclick="addCrops('D')">Add new crop</button>
+                        <table id="cropTableD" cellpadding="0"; cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Crop type</th>
+                                    <th>Designated area (ha)</th>
+                                    <th>Crop yield, (tons / ha)</th>
+                                    <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th>
+                                    <th>June</th><th>July</th><th>Aug</th><th>Sept</th><th>Oct</th>
+                                    <th>Nov</th><th>Dec</th>
+                                    <th>Total yield / year (tons)</th>
+                                </tr>
+                            </thead>
+                            <tbody>  
+                            </tbody> 
+                        </table>
+                        <h3>Values</h3>
+            
+                        <table id="residueTableD" cellpadding="0"; cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Residue Type</th>
+                                    <th>Residue to Product Ratio (RPR)</th>
+                                    <th>Residue availability (%)</th>
+                                    <th>Lower Heating Value (LHV)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th><a id="cropType" class="excel">Rice husk</a></th>
+                                    <th><input class="excel" type="number" id="rhRPR" value="0.2685"></th>
+                                    <th><input class="excel" type="number" id="rhAEP" value="80"></th>
+                                    <th><input class="excel" type="number" id="rhLHV" value="12.85"></th>
+                                </tr>
+                                <tr>
+                                    <th><a id="cropType" class="excel">Rice straw</a></th>
+                                    <th><input class="excel" type="number" id="rsRPR" value="1.37719"></th>
+                                    <th><input class="excel" type="number" id="rsAEP" value="80"></th>
+                                    <th><input class="excel" type="number" id="rsLHV" value="8.83"></th>
+                                </tr>
+                                <tr>
+                                    <th><a id="cropType" class="excel">Sugarcane tops & trashes</a></th>
+                                    <th><input class="excel" type="number" id="sttRPR" value="0.206725"></th>
+                                    <th><input class="excel" type="number" id="sttAEP" value="80"></th>
+                                    <th><input class="excel" type="number" id="sttLHV" value="6.82"></th>
+                                </tr>
+                                <tr>
+                                    <th><a id="cropType" class="excel">Sugarcane bagasse</a></th>
+                                    <th><input class="excel" type="number" id="sbRPR" value="0.31"></th>
+                                    <th><input class="excel" type="number" id="sbAEP" value="80"></th>
+                                    <th><input class="excel" type="number" id="sbLHV" value="6.43"></th>
+                                </tr>
+                                <tr>
+                                    <th><a id="cropType" class="excel">Maize / Corn cob</a></th>
+                                    <th><input class="excel" class="excel" type="number" id="mcRPR" value="0.2615"></th>
+                                    <th><input class="excel" class="excel" type="number" id="mcAEP" value="80"></th>
+                                    <th><input class="excel" class="excel" type="number" id="mcLHV" value="15.75"></th>
+                                </tr>
+                                <tr>
+                                    <th><a id="cropType" class="excel">Maize / Corn stalk</a></th>
+                                    <th><input class="excel" type="number" id="msRPR" value="2.28"></th>
+                                    <th><input class="excel" type="number" id="msAEP" value="80"></th>
+                                    <th><input class="excel" type="number" id="msLHV" value="15.105"></th>
+                                </tr>
+                                <tr>
+                                    <th><a id="cropType" class="excel">Maize / Corn husk</a></th>
+                                    <th><input class="excel" type="number" id="mhRPR" value="0.2"></th>
+                                    <th><input class="excel" type="number" id="mhAEP" value="80"></th>
+                                    <th><input class="excel" type="number" id="mhLHV" value="16.38"></th>
+                                </tr> 
+                            </tbody> 
+                        </table>
+                        <a>Heat to electricity conversion effiency (%):</a>
+                        <input type="number" id="conversionRateD" value="30">
+            
+                        </div>
+            
+            <!--<form class="checkForm" id="optionA">
                 <h2>Option A</h2>
                 <a>Solar: </a><input type="checkbox" id="solarCheckA" onclick="myFunction()"><br>
                 <a>Wind: </a><input type="checkbox" id="windCheckA" onclick="myFunction()"><br>
@@ -566,7 +1030,7 @@ crossorigin=""/>
                 <a>Daily demand met (%): </a><a id=metD> 0 </a><br>
             </form>
         </div>
-        <!--<div>
+        <div>
             <div class="third" id="day">
                 <h2>Day time</h2>
                 <a>Day time generation: </a><a id=dtGen>0 kWh</a></br>
@@ -584,13 +1048,10 @@ crossorigin=""/>
                 <a>Daily generation (kWh): </a><a id="dailyGen">0</a></br>
                 <a>Daily demand (kWh): </a><a id="dailyDem">0</a></br>
                 <a>Daily demand met: </a><a id="dailyMet">0%</a>
-            </div>
-        </div>-->
-        <div class="fwr-bk">
-            <button class="submit" id="next" onclick="next('gridSize')">Continue to viability</button>
-            <button class="submit" id="back" onclick="back('gridSize')">Back</button>
+            </div>-->
         </div>
-    </div>
+        
+
     <div id="viability">
         <h1>System viability chart</h1>
         <div id="viabilityChart">

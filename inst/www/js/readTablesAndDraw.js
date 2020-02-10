@@ -180,6 +180,11 @@ function drawFromTables(){
 }
 
 var riceResult = [0,0,0,0,0,0,0,0,0,0,0,0], sugarResult = [0,0,0,0,0,0,0,0,0,0,0,0], maizeResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+var riceResultA = [0,0,0,0,0,0,0,0,0,0,0,0], sugarResultA = [0,0,0,0,0,0,0,0,0,0,0,0], maizeResultA = [0,0,0,0,0,0,0,0,0,0,0,0];
+var riceResultB = [0,0,0,0,0,0,0,0,0,0,0,0], sugarResultB = [0,0,0,0,0,0,0,0,0,0,0,0], maizeResultB = [0,0,0,0,0,0,0,0,0,0,0,0];
+var riceResultC = [0,0,0,0,0,0,0,0,0,0,0,0], sugarResultC = [0,0,0,0,0,0,0,0,0,0,0,0], maizeResultC = [0,0,0,0,0,0,0,0,0,0,0,0];
+var riceResultD = [0,0,0,0,0,0,0,0,0,0,0,0], sugarResultD = [0,0,0,0,0,0,0,0,0,0,0,0], maizeResultD = [0,0,0,0,0,0,0,0,0,0,0,0];
+
 /* Produces monthly biomass estimate */
 function drawBiomass(rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){
     var months = [1,2,3,4,5,6,7,8,9,10,11,12];
@@ -312,3 +317,97 @@ function getBio(){
     return bio
     
 }
+
+// NEW stuff this doesnt work proper i am sure...
+
+function redrawBiomass(option, rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){
+    var option = option;
+    var months = [1,2,3,4,5,6,7,8,9,10,11,12];
+    var rhResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+    var rsResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+    var sttResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+    var sbResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+    var mcResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+    var msResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+    var mhResult = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+    for(var i = 0; i <= rHar.length; i++){
+        var harvest = rHar[i] - 1;
+        rhResult[harvest] = rh;
+        rsResult[harvest] = rs;
+        riceResult[harvest] = rs + rh;
+
+    }
+    for(var i = 0; i <= sHar.length; i++){
+        var harvest = sHar[i] - 1;
+        sttResult[harvest] = stt;
+        sbResult[harvest] = sb;
+        sugarResult[harvest] = stt + sb;
+    }
+    for(var i = 0; i <= mHar.length; i++){
+        var harvest = mHar[i] - 1;
+        mcResult[harvest] = mc;
+        msResult[harvest] = ms;
+        mhResult[harvest] = mh;
+        maizeResult[harvest] = mc + ms + mh;
+    }
+    if(option == "A"){
+        riceResultA = riceResult;
+        maizeResultA = maizeResult;
+        sugarResultA = sugarResult;
+
+    }
+    if(option == "B"){
+        riceResultB = riceResult;
+        maizeResultB = maizeResult;
+        sugarResultB = sugarResult;
+
+    }
+    if(option == "C"){
+        riceResultC = riceResult;
+        maizeResultC = maizeResult;
+        sugarResultC = sugarResult;
+    }
+    if(option == "D"){
+        riceResultD = riceResult;
+        maizeResultD = maizeResult;
+        sugarResultD = sugarResult;
+
+    }
+}
+
+function getBio(option){
+    var option = option;
+    if(option == "A"){
+        var bioA = [];
+    for(var i = 0; i <= riceResultA.length; i++){
+        bioA.push(riceResultA[i] + sugarResultA[i] + maizeResultA[i]);
+    }
+    return bioA
+    }
+    if(option == "B"){
+        var bioB = [];
+    for(var i = 0; i <= riceResultB.length; i++){
+        bioB.push(riceResultB[i] + sugarResultB[i] + maizeResultB[i]);
+    }
+    return bioB
+    }
+    if(option == "C"){
+        var bioC = [];
+    for(var i = 0; i <= riceResultC.length; i++){
+        bioC.push(riceResultC[i] + sugarResultC[i] + maizeResultC[i]);
+    }
+    return bioC
+    }
+    if(option == "D"){
+        var bioD = [];
+    for(var i = 0; i <= riceResultD.length; i++){
+        bioD.push(riceResultD[i] + sugarResultD[i] + maizeResultD[i]);
+    }
+    return bioD
+    }
+    
+    
+}
+
+

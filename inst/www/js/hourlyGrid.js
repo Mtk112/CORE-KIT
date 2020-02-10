@@ -1,7 +1,10 @@
 'use strict'
 /* Function for drawing the hourly comparison chart between demand and electricity generation */
 /* Variables */ 
-var savedSolar, savedWind, bio;
+var savedSolarA, savedWindA, bioA;
+var savedSolarB, savedWindB, bioB;
+var savedSolarC, savedWindC, bioC;
+var savedSolarD, savedWindD, bioD;
 var sunrise = parseInt(document.getElementById("sunrise").value);
 var sunset = parseInt(document.getElementById("sunset").value); 
 var sunlight = 0;
@@ -9,6 +12,7 @@ var totalUsage = [];
 var hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 var yearlyGenA = 0, yearlyGenB = 0, yearlyGenC = 0, yearlyGenD = 0;
 var months = [1,2,3,5,6,7,8,9,10,11,12];
+var hydroA, hydroB,hydroC,hydroD;
 
 function rememberTotal(total){
     totalUsage = total;
@@ -18,13 +22,30 @@ function initGrid(){
 
     var totalDem = parseFloat(document.getElementById("totalDemand").text);
     var month = document.getElementById("month").value;
-    savedSolar = getSolar();
-    savedWind = getWind();
-    bio = getBio();
+    savedSolarA = getSolar("A");
+    savedWindA = getWind("A");
+    bioA = getBio("A");
+    savedSolarB = getSolar("C");
+    savedWindB = getWind("B");
+    bioB = getBio("B");
+    savedSolarC = getSolar("C");
+    savedWindC = getWind("C");
+    bioC = getBio("C");
+    savedSolarD = getSolar("D");
+    savedWindD = getWind("D");
+    bioD = getBio("D");
+    hydroA = document.getElementById("hydroTestA").value;
+    hydroB = document.getElementById("hydroTestA").value;
+    hydroC = document.getElementById("hydroTestA").value;
+    hydroD = document.getElementById("hydroTestA").value;
+    
     /* Converts wind generation from monthly to hourly */
-    var hourlyWind = []; 
+    var hourlyWindA = [], hourlyWindB = [], hourlyWindC = [], hourlyWindD = [];
     for(var i = 1 ; i <= 24; i++){
-        hourlyWind.push(savedWind[month] / 24);
+        hourlyWindA.push(savedWindA[month] / 24);
+        hourlyWindB.push(savedWindB[month] / 24);
+        hourlyWindC.push(savedWindC[month] / 24);
+        hourlyWindD.push(savedWindD[month] / 24);
     }
     /* Checks how many hours of sunlight there is in a day */
     for(var i = 1; i <= 24; i++){
@@ -33,132 +54,64 @@ function initGrid(){
         }
     }
     /* Converts monthly solar to hourly solar generation */
-    var hourlySolar = [];
+    var hourlySolarA = [], hourlySolarB = [], hourlySolarC = [], hourlySolarD = [];
     for(var i = 1 ; i <= 24; i++){
         if(i >= sunrise && i < sunset){
-            hourlySolar.push(savedSolar[month] / sunlight);
+            hourlySolarA.push(savedSolarA[month] / sunlight);
+            hourlySolarB.push(savedSolarB[month] / sunlight);
+            hourlySolarC.push(savedSolarC[month] / sunlight);
+            hourlySolarD.push(savedSolarD[month] / sunlight);
         }
         else{
-            hourlySolar.push(0);
+            hourlySolarA.push(0);
+            hourlySolarB.push(0);
+            hourlySolarC.push(0);
+            hourlySolarD.push(0);
         }
     }
     /* Converts biomass generation to hourly generation for 1 month (Assumes steady conversion throughout the day) */
-    var hourlyBio = []; 
+    var hourlyBioA = [], hourlyBioB = [], hourlyBioC = [], hourlyBioD = [];
     for(var i = 1 ; i <= 24; i++){
-        hourlyBio.push(bio[month] / 30 / 24);
+        hourlyBioA.push(bioA[month] / 30 / 24);
+        hourlyBioB.push(bioB[month] / 30 / 24);
+        hourlyBioC.push(bioC[month] / 30 / 24);
+        hourlyBioD.push(bioD[month] / 30 / 24);
     }
     /* Converts monthly micro-hydro to hourly generation */
-    var hourlyHydro = []; 
-    for(var i = 1 ; i <= 24; i++){
-        hourlyHydro.push(100 / 24);
-    }
-    /* Draws generation line for system option A,B,C and D daily (based on the month selected) and yearly */
+    var hourlyHydroA = [], hourlyHydroB = [], hourlyHydroC = [], hourlyHydroD = [];
+        for(var i = 1 ; i <= 24; i++){
+            hourlyHydroA.push(hydroA / 24);
+            hourlyHydroB.push(hydroB / 24);
+            hourlyHydroC.push(hydroC / 24);
+            hourlyHydroD.push(hydroD / 24);
+        }
+    
+        
+    
+    /* Draws monthly (based on the month selected) and yearly generation line for system options A,B,C and D */
     var optionA = [], optionB = [], optionC = [], optionD = [];
     var yearlyA = [], yearlyB = [], yearlyC = [], yearlyD = [];
     var optionAmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionBmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionCmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionDmonthly = [0,0,0,0,0,0,0,0,0,0,0,0];
-    var tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
+    //var tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
+
     for(var i = 0; i<=23;i++){
-        if(document.getElementById("solarCheckA").checked == true){
-            tempValueA = tempValueA + hourlySolar[i];
-            for( var y = 0; y <= 11; y++){
-                optionAmonthly[y] = optionAmonthly[y] + savedSolar[y];
-            }
-        }
-        if(document.getElementById("solarCheckB").checked == true){
-            tempValueB = tempValueB + hourlySolar[i];
-            for( var y = 0; y <= 11; y++){
-                optionBmonthly[y] = optionBmonthly[y] + savedSolar[y];
-            }
-        }
-        if(document.getElementById("solarCheckC").checked == true){
-            tempValueC = tempValueC + hourlySolar[i];
-            for( var y = 0; y <= 11; y++){
-                optionCmonthly[y] = optionCmonthly[y] + savedSolar[y];
-            }
-        }
-        if(document.getElementById("solarCheckD").checked == true){
-            tempValueD = tempValueD + hourlySolar[i];
-            for( var y = 0; y <= 11; y++){
-                optionDmonthly[y] = optionDmonthly[y] + savedSolar[y];
-            }
-        }
-        if(document.getElementById("windCheckA").checked == true){
-            tempValueA = tempValueA + hourlyWind[i];
-            for( var y = 0; y <= 11; y++){
-                optionAmonthly[y] = optionAmonthly[y] + savedWind[y];
-            }
-        }
-        if(document.getElementById("windCheckB").checked == true){
-            tempValueB = tempValueB + hourlyWind[i];
-            for( var y = 0; y <= 11; y++){
-                optionBmonthly[y] = optionBmonthly[y] + savedWind[y];
-            }
-        }
-        if(document.getElementById("windCheckC").checked == true){
-            tempValueC = tempValueC + hourlyWind[i];
-            for( var y = 0; y <= 11; y++){
-                optionCmonthly[y] = optionCmonthly[y] + savedWind[y];
-            }
-        }
-        if(document.getElementById("windCheckD").checked == true){
-            tempValueD = tempValueD + hourlyWind[i];
-            for( var y = 0; y <= 11; y++){
-                optionDmonthly[y] = optionDmonthly[y] + savedWind[y];
-            }
-        }
-        if(document.getElementById("hydroCheckA").checked == true){
-            tempValueA = tempValueA + hourlyHydro[i];
-            for( var y = 0; y <= 11; y++){
-                optionAmonthly[y] = optionAmonthly[y] + hydro * 30;
-            }
-        }
-        if(document.getElementById("hydroCheckB").checked == true){
-            tempValueB = tempValueB + hourlyHydro[i];
-            for( var y = 0; y <= 11; y++){
-                optionBmonthly[y] = optionBmonthly[y] + hydro * 30;
-            }
-        }
-        if(document.getElementById("hydroCheckC").checked == true){
-            tempValueC = tempValueC + hourlyHydro[i];
-            for( var y = 0; y <= 11; y++){
-                optionCmonthly[y] = optionCmonthly[y] + hydro * 30;
-            }
-        }
-        if(document.getElementById("hydroCheckD").checked == true){
-            tempValueD = tempValueD + hourlyHydro[i];
-            for( var y = 0; y <= 11; y++){
-                optionDmonthly[y] = optionDmonthly[y] + hydro * 30;
-            }
-        }
-        if(document.getElementById("bioCheckA").checked == true){
-            tempValueA = tempValueA + hourlyBio[i];
-            for( var y = 0; y <= 11; y++){
-                optionAmonthly[y] = optionAmonthly[y] + bio[y];
-            }
-        }
-        if(document.getElementById("bioCheckB").checked == true){
-            tempValueB = tempValueB + hourlyBio[i];
-            for( var y = 0; y <= 11; y++){
-                optionBmonthly[y] = optionBmonthly[y] + bio[y];
-            }
-        }
-        if(document.getElementById("bioCheckC").checked == true){
-            tempValueC = tempValueC + hourlyBio[i];
-            for( var y = 0; y <= 11; y++){
-                optionCmonthly[y] = optionCmonthly[y] + bio[y];
-            }
-        }
-        if(document.getElementById("bioCheckD").checked == true){
-            tempValueD = tempValueD + hourlyBio[i];
-            for( var y = 0; y <= 11; y++){
-                optionDmonthly[y] = optionDmonthly[y] + bio[y];
-            }
-        }
+        optionA.push(hourlySolarA[i] + hourlyWindA[i] + hourlyHydroA[i] + hourlyBioA[i]);
+        optionB.push(hourlySolarB[i] + hourlyWindB[i] + hourlyHydroB[i] + hourlyBioB[i]);
+        optionC.push(hourlySolarC[i] + hourlyWindC[i] + hourlyHydroC[i] + hourlyBioC[i]);
+        optionD.push(hourlySolarD[i] + hourlyWindD[i] + hourlyHydroD[i] + hourlyBioD[i]);
+
+        /*tempValueD = hourlySolarD[i] + hourlyWindD[i] + hourlyHydro[i] + hourlyBioD[i];
         optionA.push(tempValueA);
         optionB.push(tempValueB);
         optionC.push(tempValueC);
         optionD.push(tempValueD);
-        tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
+        tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;*/
+    }
+    for( var i = 0; i <= 11; i++){
+        optionAmonthly[i] = savedSolarA[i] + savedWindA[i] + hydroA * 30 + bioA[i];
+        optionBmonthly[i] = savedSolarB[i] + savedWindB[i] + hydroB * 30 + bioB[i];
+        optionCmonthly[i] = savedSolarC[i] + savedWindC[i] + hydroC * 30 + bioC[i];
+        optionDmonthly[i] = savedSolarD[i] + savedWindD[i] + hydroD * 30 + bioD[i];
     }
 
     /* Calculates daily generation for each combination */
@@ -184,6 +137,7 @@ function initGrid(){
     document.getElementById("metD").innerHTML = metD.toFixed(1);
 
     /* Calculates total hourly generation and total daily generation */
+    /*
     var totalGeneration = [];
     var dailyGeneration = 0;
     var totalDemand = 0;
@@ -198,7 +152,7 @@ function initGrid(){
     for(var i = 0; i <=11; i++){
        monthlyDemand.push(totalDemand * 30);
     }
-    console.log(monthlyDemand);
+    console.log(monthlyDemand);*/
 
     /* Creating daily traces based on the arrays created earlier */
     var demand = {
@@ -207,11 +161,10 @@ function initGrid(){
         name : "Demand",
         x: hours,
         y: totalUsage,
-        //stackgroup: 'one',
         line: {color: '#2eb2ff'}
     }
-
-    var wind = {
+    // is this needed??
+    /*var wind = {
         type : "scatter",
         mode : "lines",
         name : "Wind",
@@ -250,6 +203,7 @@ function initGrid(){
         stackgroup: 'one',
         line: {color: '#ffd700'}
     }
+    
 
     var total = {
         type : "scatter",
@@ -259,6 +213,7 @@ function initGrid(){
         y: totalGeneration,
         line: {color: '#228b22'}
     }
+    */
 
     var combinationA = {
         type : "scatter",
