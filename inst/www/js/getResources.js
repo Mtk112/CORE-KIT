@@ -1,7 +1,7 @@
 'use strict'
 var solarSize;
 var months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-var tempSolar = [], tempSolarABCD = [], tempWindPtp = [], tempWindPtp = [];
+var tempSolar = [], tempSolarABCD = [], tempWindPtp = [], tempWindPtpABCD = [];
 var solar = [];
 var windPtp = [];
 var savedWind = [], savedSolar = [];
@@ -256,17 +256,16 @@ function getSolar(){
 }
 
 function getSolar(option){
-  var optionSize = "solarPlan" + option;
-  console.log(optionSize);
+  tempSolarABCD = [];
+  var optionSize = "solarPlan" + option
   var tempSize = parseFloat(document.getElementById(optionSize).value);
-  console.log(tempSize);
   for(var i = 0; i < 12; i++){
     tempSolarABCD.push(solar[i] * tempSize);
   }
   return tempSolarABCD;
 }
-var tempWindPtpABCD = [];
 function getWind(option){
+  tempWindPtpABCD = [];
   var unitsOption = "wUnits" + option;
   console.log(unitsOption);
   var units = parseInt(document.getElementById(unitsOption).value);

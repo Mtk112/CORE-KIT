@@ -99,6 +99,11 @@ function initGrid(){
     console.log("Hydro A: " + hourlyHydroA);
     console.log("Bio A: " + hourlyBioA);
 
+    console.log("Solar B: " + hourlySolarB);
+    console.log("Wind B: " + hourlyWindB);
+    console.log("Hydro B: " + hourlyHydroB);
+    console.log("Bio B: " + hourlyBioB);
+
     for(var i = 0; i<=23;i++){
         optionA.push(hourlySolarA[i] + hourlyWindA[i] + hourlyHydroA[i] + hourlyBioA[i]);
         optionB.push(hourlySolarB[i] + hourlyWindB[i] + hourlyHydroB[i] + hourlyBioB[i]);
@@ -163,57 +168,6 @@ function initGrid(){
         y: totalUsage,
         line: {color: '#2eb2ff'}
     }
-    // is this needed??
-    /*var wind = {
-        type : "scatter",
-        mode : "lines",
-        name : "Wind",
-        x: hours,
-        y: hourlyWind,
-        stackgroup: 'one',
-        line: {color: '#f8c972'}
-    }
-
-    var solar = {
-        type : "scatter",
-        mode : "lines",
-        name : "Solar",
-        x: hours,
-        y: hourlySolar,
-        stackgroup: 'one',
-        line: {color: '#e05a47'}
-    }
-
-    var biomass = {
-        type : "scatter",
-        mode : "lines",
-        name : "Biomass",
-        x: hours,
-        y: hourlyBio,
-        stackgroup: 'one',
-        line: {color: '#ff7f50'}
-    }
-
-    var hydro = {
-        type : "scatter",
-        mode : "lines",
-        name : "Micro-Hydro",
-        x: hours,
-        y: hourlyHydro,
-        stackgroup: 'one',
-        line: {color: '#ffd700'}
-    }
-    
-
-    var total = {
-        type : "scatter",
-        mode : "lines",
-        name : "Total generation",
-        x: hours,
-        y: totalGeneration,
-        line: {color: '#228b22'}
-    }
-    */
 
     var combinationA = {
         type : "scatter",
@@ -371,9 +325,8 @@ function initGrid(){
       };
 
       Plotly.newPlot('gridyearly', yearlyGraphData, layout, {displayModeBar: false});
-    
+
 }
 
-optionA = [], optionB = [], optionC = [], optionD = [];
 
 
