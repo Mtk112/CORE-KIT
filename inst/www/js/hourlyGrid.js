@@ -25,7 +25,7 @@ function initGrid(){
     savedSolarA = getSolar("A");
     savedWindA = getWind("A");
     bioA = getBio("A");
-    savedSolarB = getSolar("C");
+    savedSolarB = getSolar("B");
     savedWindB = getWind("B");
     bioB = getBio("B");
     savedSolarC = getSolar("C");
@@ -90,30 +90,29 @@ function initGrid(){
     
     /* Draws monthly (based on the month selected) and yearly generation line for system options A,B,C and D */
     var optionA = [], optionB = [], optionC = [], optionD = [];
-    var yearlyA = [], yearlyB = [], yearlyC = [], yearlyD = [];
+    //var yearlyA = [], yearlyB = [], yearlyC = [], yearlyD = [];
     var optionAmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionBmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionCmonthly = [0,0,0,0,0,0,0,0,0,0,0,0], optionDmonthly = [0,0,0,0,0,0,0,0,0,0,0,0];
     //var tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;
+
+    console.log("Solar A: " + hourlySolarA);
+    console.log("Wind A: " + hourlyWindA);
+    console.log("Hydro A: " + hourlyHydroA);
+    console.log("Bio A: " + hourlyBioA);
 
     for(var i = 0; i<=23;i++){
         optionA.push(hourlySolarA[i] + hourlyWindA[i] + hourlyHydroA[i] + hourlyBioA[i]);
         optionB.push(hourlySolarB[i] + hourlyWindB[i] + hourlyHydroB[i] + hourlyBioB[i]);
         optionC.push(hourlySolarC[i] + hourlyWindC[i] + hourlyHydroC[i] + hourlyBioC[i]);
         optionD.push(hourlySolarD[i] + hourlyWindD[i] + hourlyHydroD[i] + hourlyBioD[i]);
-
-        /*tempValueD = hourlySolarD[i] + hourlyWindD[i] + hourlyHydro[i] + hourlyBioD[i];
-        optionA.push(tempValueA);
-        optionB.push(tempValueB);
-        optionC.push(tempValueC);
-        optionD.push(tempValueD);
-        tempValueA = 0, tempValueB = 0, tempValueC = 0, tempValueD = 0;*/
     }
     for( var i = 0; i <= 11; i++){
-        optionAmonthly[i] = savedSolarA[i] + savedWindA[i] + hydroA * 30 + bioA[i];
-        optionBmonthly[i] = savedSolarB[i] + savedWindB[i] + hydroB * 30 + bioB[i];
-        optionCmonthly[i] = savedSolarC[i] + savedWindC[i] + hydroC * 30 + bioC[i];
-        optionDmonthly[i] = savedSolarD[i] + savedWindD[i] + hydroD * 30 + bioD[i];
+        optionAmonthly[i] = savedSolarA[i] + savedWindA[i] + (hydroA * 30) + bioA[i];
+        optionBmonthly[i] = savedSolarB[i] + savedWindB[i] + (hydroB * 30) + bioB[i];
+        optionCmonthly[i] = savedSolarC[i] + savedWindC[i] + (hydroC * 30) + bioC[i];
+        optionDmonthly[i] = savedSolarD[i] + savedWindD[i] + (hydroD * 30) + bioD[i];
     }
-
+    console.log(optionA);
+    console.log(optionB);
     /* Calculates daily generation for each combination */
     var totalA = 0, totalB = 0, totalC = 0, totalD = 0;
     for(var i = 0; i <= 23; i++){
@@ -138,21 +137,22 @@ function initGrid(){
 
     /* Calculates total hourly generation and total daily generation */
     /*
-    var totalGeneration = [];
-    var dailyGeneration = 0;
+    var totalGenerationA = [], totalGenerationB = [], totalGenerationC = [], totalGenerationD = [];
+    var dailyGenerationA, dailyGenerationB, dailyGenerationC, dailyGenerationD = 0;
     var totalDemand = 0;
     for(var i = 0; i <= 23; i++){
-        var hourlyGeneration = hourlyBio[i] + hourlyHydro[i] + hourlySolar[i] + hourlyWind[i];
+        var hourlyGenerationA = hourlyBioA[i] + hourlyHydroA[i] + hourlySolarA[i] + hourlyWindA[i];
+        var hourlyGenerationB = hourlyBioB[i] + hourlyHydroB[i] + hourlySolarB[i] + hourlyWindB[i];
+        var hourlyGenerationC = hourlyBioC[i] + hourlyHydroC[i] + hourlySolarC[i] + hourlyWindC[i];
         totalDemand = totalDemand + totalUsage[i];
         totalGeneration.push(hourlyGeneration);
         dailyGeneration = dailyGeneration + hourlyGeneration;
     }
-
+    */
     var monthlyDemand = [];
     for(var i = 0; i <=11; i++){
        monthlyDemand.push(totalDemand * 30);
     }
-    console.log(monthlyDemand);*/
 
     /* Creating daily traces based on the arrays created earlier */
     var demand = {
@@ -251,7 +251,6 @@ function initGrid(){
         line: {color: 'brown'}
     }
 
-    //var graphData = [demand, solar, wind, hydro, biomass, total, combinationA, combinationB,combinationC,combinationD];
     var graphData = [demand, combinationA, combinationB, combinationC, combinationD];
 
     var layout = {
@@ -275,7 +274,6 @@ function initGrid(){
         },
         yaxis: {
           autorange: true,
-          range: Math.max(wind[month] + solar[month] + biomass[month] + hydro[month] + 5),
           type: 'linear',
           title: "load (kW)"
         },
@@ -375,5 +373,7 @@ function initGrid(){
       Plotly.newPlot('gridyearly', yearlyGraphData, layout, {displayModeBar: false});
     
 }
+
+optionA = [], optionB = [], optionC = [], optionD = [];
 
 

@@ -68,16 +68,8 @@ function openTab(evt, tabName) {
     if(tabName == "hydroGen"){
         initDesignMap();
     }
-    if(tabName == "optionA" && firstTime == true){
-        firstTime = false;
-        document.getElementById("solarPlanA").value = document.getElementById("solarPlan").value;
-        document.getElementById("cpA").value = document.getElementById("cp").value;
-        document.getElementById("wUnitsA").value = document.getElementById("wUnits").value;
-        document.getElementById("bladeA").value = document.getElementById("blade").value;
-        document.getElementById("cutoffA").value = document.getElementById("cutoff").value;
-        document.getElementById("conversionRateA").value = document.getElementById("conversionRate").value;
-        document.getElementById("residueTableA") = document.getElementById("residueTable");
-        
+    if(tabName =="gridSize"){
+        initGrid();
     }
 }
 
@@ -178,6 +170,13 @@ function next(page){
     if(page == "generation"){
         generation.style.display = "none";
         gridSize.style.display = "block";
+        document.getElementById("solarPlanA").value = document.getElementById("solarPlan").value;
+        document.getElementById("cpA").value = document.getElementById("cp").value;
+        document.getElementById("wUnitsA").value = document.getElementById("wUnits").value;
+        document.getElementById("bladeA").value = document.getElementById("blade").value;
+        document.getElementById("cutoffA").value = document.getElementById("cutoff").value;
+        document.getElementById("conversionRateA").value = document.getElementById("conversionRate").value;
+        //document.getElementById("residueTableA") = document.getElementById("residueTable");
         initGrid();
         document.getElementById("pbGeneration").classList.remove('inprogress');
         document.getElementById("pbGeneration").classList.add('active');

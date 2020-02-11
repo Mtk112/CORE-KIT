@@ -258,7 +258,8 @@ function getSolar(){
 function getSolar(option){
   var optionSize = "solarPlan" + option;
   console.log(optionSize);
-  var tempSize = parseFloat(document.getElementById("" + optionSize ).value);
+  var tempSize = parseFloat(document.getElementById(optionSize).value);
+  console.log(tempSize);
   for(var i = 0; i < 12; i++){
     tempSolarABCD.push(solar[i] * tempSize);
   }
@@ -266,8 +267,9 @@ function getSolar(option){
 }
 var tempWindPtpABCD = [];
 function getWind(option){
-  //var optionABCD = option;
-  var units = parseInt(document.getElementById("wUnits" + option).value);
+  var unitsOption = "wUnits" + option;
+  console.log(unitsOption);
+  var units = parseInt(document.getElementById(unitsOption).value);
   console.log(units);
   /* Calculates rotor sweep area based on the radius of the windmill rotor blade */
   var rotorSweepArea = Math.PI * (parseFloat(document.getElementById("blade" + option).value) * parseFloat(document.getElementById("blade" + option).value));
