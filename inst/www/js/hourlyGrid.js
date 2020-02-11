@@ -48,14 +48,15 @@ function initGrid(){
         hourlyWindD.push(savedWindD[month] / 24);
     }
     /* Checks how many hours of sunlight there is in a day */
-    for(var i = 1; i <= 24; i++){
+    sunlight = sunset - sunrise;
+    /*for(var i = 1; i <= 24; i++){
         if(i >= sunrise && i < sunset){
             sunlight++;
         }
-    }
+    }*/
     /* Converts monthly solar to hourly solar generation */
     var hourlySolarA = [], hourlySolarB = [], hourlySolarC = [], hourlySolarD = [];
-    for(var i = 1 ; i <= 24; i++){
+    for(var i = 0 ; i <= 23; i++){
         if(i >= sunrise && i < sunset){
             hourlySolarA.push(savedSolarA[month] / sunlight);
             hourlySolarB.push(savedSolarB[month] / sunlight);
@@ -71,7 +72,7 @@ function initGrid(){
     }
     /* Converts biomass generation to hourly generation for 1 month (Assumes steady conversion throughout the day) */
     var hourlyBioA = [], hourlyBioB = [], hourlyBioC = [], hourlyBioD = [];
-    for(var i = 1 ; i <= 24; i++){
+    for(var i = 0 ; i <= 23; i++){
         hourlyBioA.push(bioA[month] / 30 / 24);
         hourlyBioB.push(bioB[month] / 30 / 24);
         hourlyBioC.push(bioC[month] / 30 / 24);
