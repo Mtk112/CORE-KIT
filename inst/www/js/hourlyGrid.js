@@ -48,11 +48,12 @@ function initGrid(){
         hourlyWindD.push(savedWindD[month] / 24);
     }
     /* Checks how many hours of sunlight there is in a day */
-    for(var i = 1; i <= 24; i++){
+    sunlight = sunset - sunrise;
+    /*for(var i = 1; i <= 24; i++){
         if(i >= sunrise && i < sunset){
             sunlight++;
         }
-    }
+    }*/
     /* Converts monthly solar to hourly solar generation */
     var hourlySolarA = [], hourlySolarB = [], hourlySolarC = [], hourlySolarD = [];
     for(var i = 1 ; i <= 24; i++){
