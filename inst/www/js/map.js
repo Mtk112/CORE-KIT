@@ -85,6 +85,21 @@ var villagePoints = new L.GeoJSON (village_points, {
         })}
 });
 
+var powerGrid = new L.GeoJSON (myanmar_medium_voltage_grid, {
+    style: {
+        stroke: 1,
+        fillOpacity: 0,
+        color: "orange"
+    },
+    onEachFeature: function(feature, layer){
+        layer.on('click', function (e){
+            console.log("Clicked on power grid!");
+        })
+    }
+
+    
+});
+
 // Basemaps: satellite or street view.
 var baseMaps = {
     "Satellite": satellite,
@@ -116,7 +131,8 @@ var overlayMaps = {
     "Townships": townshipLayer,     
     "Towns": townLayer,
     "Rivers": riversLayer,
-    "Villages": villagePoints
+    "Villages": villagePoints,
+    "Power Grid": powerGrid
 };
 /* Search control for villages */
 var searchControl = new L.Control.Search({

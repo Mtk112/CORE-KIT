@@ -49,11 +49,6 @@ function initGrid(){
     }
     /* Checks how many hours of sunlight there is in a day */
     sunlight = sunset - sunrise;
-    /*for(var i = 1; i <= 24; i++){
-        if(i >= sunrise && i < sunset){
-            sunlight++;
-        }
-    }*/
     /* Converts monthly solar to hourly solar generation */
     var hourlySolarA = [], hourlySolarB = [], hourlySolarC = [], hourlySolarD = [];
     for(var i = 1 ; i <= 24; i++){
