@@ -69,6 +69,7 @@ function openTab(evt, tabName) {
         initDesignMap();
     }
     if(tabName =="gridSize"){
+        getAllYields();
         initGrid();
     }
 }
