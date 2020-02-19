@@ -22,6 +22,7 @@ function rememberTotal(total){
 function initGrid(){
 
     var totalDem = parseFloat(document.getElementById("totalDemand").text);
+    console.log(totalDem);
     var month = document.getElementById("month").value;
     savedSolarA = getSolar("A");
     savedWindA = getWind("A");
@@ -111,8 +112,6 @@ function initGrid(){
         optionCmonthly[i] = savedSolarC[i] * 30 + savedWindC[i] * 30 + hydroC * 30 + bioC[i];
         optionDmonthly[i] = savedSolarD[i] * 30 + savedWindD[i] * 30 + hydroD * 30 + bioD[i];
     }
-    console.log(optionA);
-    console.log(optionB);
     /* Calculates daily generation for each combination */
     var totalA = 0, totalB = 0, totalC = 0, totalD = 0;
     for(var i = 0; i <= 23; i++){
@@ -137,8 +136,9 @@ function initGrid(){
 
     var monthlyDemand = [];
     for(var i = 0; i <=11; i++){
-       monthlyDemand.push(totalDemand * 30);
+       monthlyDemand.push(totalDem * 30);
     }
+    console.log("!!!!!!!" +monthlyDemand);
 
     /* Creating daily traces based on the arrays created earlier */
     var demand = {
