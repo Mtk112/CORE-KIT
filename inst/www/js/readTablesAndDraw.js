@@ -166,9 +166,10 @@ function drawFromTables(){
             y: -0.1
           },
       };
-    Plotly.newPlot('hhLC', graphData, layout, {displayModeBar: false});
+      Plotly.newPlot('loadCurve', graphData, layout, {displayModeBar: false});
+    /*Plotly.newPlot('hhLC', graphData, layout, {displayModeBar: false});
     Plotly.newPlot('proLC', graphData, layout, {displayModeBar: false});
-    Plotly.newPlot('pubLC', graphData, layout, {displayModeBar: false});
+    Plotly.newPlot('pubLC', graphData, layout, {displayModeBar: false});*/
     /* Sets Values to the infograph */
     document.getElementById("totalDemand").innerHTML = totalDem;
     document.getElementById("totalDay").innerHTML = day;

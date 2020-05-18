@@ -175,7 +175,7 @@ function next(page){
         document.getElementById("cpA").value = document.getElementById("cp").value;
         document.getElementById("wUnitsA").value = document.getElementById("wUnits").value;
         document.getElementById("bladeA").value = document.getElementById("blade").value;
-        document.getElementById("cutoffA").value = document.getElementById("cutoff").value;
+        document.getElementById("cutinA").value = document.getElementById("cutin").value;
         document.getElementById("conversionRateA").value = document.getElementById("conversionRate").value;
         //document.getElementById("residueTableA") = document.getElementById("residueTable");
         initGrid();
@@ -274,7 +274,7 @@ function back(page){
 var windCp = document.getElementById("cp");
 var windUnits = document.getElementById("wUnits");
 var windBlade = document.getElementById("blade");
-var windCutoff = document.getElementById("cutoff");
+var windCutin = document.getElementById("cutin");
 
 windCp.oninput = function(e){
     drawWind();
@@ -285,7 +285,7 @@ windUnits.oninput = function(e){
 windBlade.oninput = function(e){
     drawWind();
 }
-windCutoff.oninput = function(e){
+windCutin.oninput = function(e){
     drawWind();
 }
 

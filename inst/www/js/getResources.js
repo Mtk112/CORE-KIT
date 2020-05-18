@@ -135,10 +135,10 @@ function drawWind(){
   var rotorSweepArea = Math.PI * (parseFloat(document.getElementById("blade").value) * parseFloat(document.getElementById("blade").value));
   var cp = parseFloat(document.getElementById("cp").value) / 100;
 
-  var cutoff = parseFloat(document.getElementById("cutoff").value);
+  var cutin = parseFloat(document.getElementById("cutin").value);
   for(var i = 0; i < 12; i++){
-    /* Checks if the wind speed is equal or greater than wind cutoff speed */
-    if(windPtp[i] >= cutoff){
+    /* Checks if the wind speed is equal or greater than wind cut-in speed */
+    if(windPtp[i] >= cutin){
       tempWindPtp.push((0.5 * 1.225 * rotorSweepArea * (windPtp[i] * windPtp[i] * windPtp[i]) * cp) / 1000 * 24 * units);
     }else{
       tempWindPtp.push(0);
@@ -274,10 +274,10 @@ function getWind(option){
   var rotorSweepArea = Math.PI * (parseFloat(document.getElementById("blade" + option).value) * parseFloat(document.getElementById("blade" + option).value));
   var cp = parseFloat(document.getElementById("cp" + option).value) / 100;
 
-  var cutoff = parseFloat(document.getElementById("cutoff" + option).value);
+  var cutin = parseFloat(document.getElementById("cutin" + option).value);
   for(var i = 0; i < 12; i++){
-    /* Checks if the wind speed is equal or greater than wind cutoff speed */
-    if(windPtp[i] >= cutoff){
+    /* Checks if the wind speed is equal or greater than wind cut-in speed */
+    if(windPtp[i] >= cutin){
       tempWindPtpABCD.push((0.5 * 1.225 * rotorSweepArea * (windPtp[i] * windPtp[i] * windPtp[i]) * cp) / 1000 * 24 * units);
     }else{
       tempWindPtpABCD.push(0);
