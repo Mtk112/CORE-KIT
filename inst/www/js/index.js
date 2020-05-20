@@ -22,6 +22,34 @@ var gridSize = document.getElementById("gridSize");
 var viability = document.getElementById("viability");
 var report = document.getElementById("report");
 var firstTime = true;
+/* Modal */
+var modal = document.getElementById("atlas");
+var atlasSpan = document.getElementsByClassName("close")[0];
+var modalOpened = false;
+
+
+// Closes atlas modal when span is clicked
+atlasSpan.onclick = function() {
+  modal.style.display = "none";
+}
+
+// Closes atlas modal whenever user clicks outside of the area.
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+/* Open atlas pop-up window */
+function openAtlas(){
+    if(modalOpened == false){
+        console.log("Initializing Atlas.");
+        initAtlas();
+    }
+    modalOpened = true;
+    modal.style.display = "block";
+    
+}
 
 /* If the radius of the area is changed redraws the circle */
 radius.oninput = function(e){

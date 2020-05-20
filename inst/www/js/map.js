@@ -287,4 +287,21 @@ function designClicks(lat ,lng){
     }
 }
 
+var atlasMap;
+function initAtlas(){
+    atlasMap = L.map('atlasMap', {
+        center: [20.7888, 97.0337],
+        zoom: 7,
+        maxZoom: 17,
+        minZoom: 6,
+        layers: [streets, villagePoints]
+    });
+
+    atlasMap.on('click', function (e){
+        console.log(" You clicked on the atlas map.");
+    });
+
+    L.control.layers(baseMaps, overlayMaps).addTo(atlasMap);
+    atlasMap.addControl(searchControl);
+}
 

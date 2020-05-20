@@ -15,6 +15,21 @@ crossorigin=""/>
 </head>
 <body>
 <div class="se-pre-con"></div>
+
+<!-- Atlas Modal -->
+<div id="atlas" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="atlasMap"></div>
+      <div id="atlasDesc">
+          <p>This is just a test description area at the moment.</p>
+      </div>
+    </div>
+  
+</div>
+
 <div class="container">
     <ul class="progress">
         <li class="inprogress" id="pbWelcome">Welcome</li>
@@ -47,6 +62,7 @@ crossorigin=""/>
             It is important to gather information about the specific village and resources in the area. Visual-CORE is based on
             freely available data and is working around ESTIMATIONS.
         </p>
+        <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
         <button class="submit" id="next" onclick="next('welcome')">Lets get started</button>
     </div>
     <!-- Step 2. Map Section -->
@@ -76,8 +92,11 @@ crossorigin=""/>
                     <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of households in the village.</span></div>
                 </a>
             </div>
-            <button class="submit" id="next" onclick="next('mapSection')">Confirm location</button>
-            <button class="submit" id="back" onclick="back('mapSection')">Back</button>
+            <div class="fwr-bk">
+                <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
+                <button class="submit" id="next" onclick="next('mapSection')">Continue to Demand</button>
+                <button class="submit" id="back" onclick="back('mapSection')">Back</button>
+            </div>
     </div>
     <!-- Step 3. Community Characteristics -->
     <div id="community">
@@ -218,6 +237,7 @@ crossorigin=""/>
             </div>
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('community')">Continue to Demand</button>
             <button class="submit" id="back" onclick="back('community')">Back</button>
         </div>
@@ -318,6 +338,7 @@ crossorigin=""/>
             <a>Peak demand (kW) : </a><a id="peakDemand">0</a>
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('demand')">Continue to Resources</button>
             <button class="submit" id="back" onclick="back('demand')">Back</button>
         </div>
@@ -417,6 +438,7 @@ crossorigin=""/>
             
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('resources')">Continue to Generation</button>
             <button class="submit" id="back" onclick="back('resources')">Back</button>
         </div>
@@ -551,10 +573,12 @@ crossorigin=""/>
             </div>
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('generation')">Continue to grid-sizing</button>
             <button class="submit" id="back" onclick="back('generation')">Back</button>
         </div>
     </div>
+    <!-- Step 5. Grid Sizing-->
     <div id="gridSize" class="tabcontent">
         <h1>Grid sizing</h1>
         <div class="tab">
@@ -595,6 +619,7 @@ crossorigin=""/>
             </div>
 
             <div class="fwr-bk">
+                <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
                 <button class="submit" id="next" onclick="next('gridSize')">Continue to viability</button>
                 <button class="submit" id="back" onclick="back('gridSize')">Back</button>
             </div>
@@ -1075,12 +1100,14 @@ crossorigin=""/>
         <div id="viabilityChart">
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('viability')">Continue to report</button>
             <button class="submit" id="back" onclick="back('viability')">Back</button>
         </div>
     </div>
     <div id="report">
         <h1>End report</h1>
+        <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
         <button class="submit" id="back" onclick="back('report')">Back</button>
     </div>
 </div>
