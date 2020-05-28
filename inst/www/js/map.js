@@ -6,29 +6,22 @@ var lat;
 var lng;
 
 // Basemap options
-//var satellite = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-        //attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
-    var satellite = L.tileLayer.provider('MapBox',{
-        //tileSize: 512,
-        maxZoom: 18,
-        //zoomOffset: -1,
-        id: 'mapbox/satellite-v9',
-        accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
-    }),
-    //streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-        //attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
-    streets = L.tileLayer.provider('MapBox',{
-        //tileSize: 512,
-        maxZoom: 18,
-        //zoomOffset: -1,
-        id: 'mapbox/streets-v11',
-        accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
-    }),
-    mapnik = L.tileLayer.provider('OpenStreetMap',{
-      maxZoom: 18,
-    }),
-    topomap = L.tileLayer.provider('OpenTopoMap',{
-      maxZoom: 18
+
+var satellite = L.tileLayer.provider('MapBox',{
+    maxZoom: 18,
+    id: 'mapbox/satellite-v9',
+    accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
+}),
+streets = L.tileLayer.provider('MapBox',{
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
+}),
+mapnik = L.tileLayer.provider('OpenStreetMap',{
+    maxZoom: 18,
+}),
+topomap = L.tileLayer.provider('OpenTopoMap',{
+    maxZoom: 18
 });
 
 /* Map interactivity for each layer. */
@@ -297,18 +290,44 @@ function designClicks(lat ,lng){
 
 var atlasMap;
 function initAtlas(){
+
+    //Have to duplicate these Layers for the map in modal, else the tilesets will be bugging out on the Location selection map.
+    var satellite2 = L.tileLayer.provider('MapBox',{
+        maxZoom: 18,
+        id: 'mapbox/satellite-v9',
+        accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
+    }),
+    streets2 = L.tileLayer.provider('MapBox',{
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
+    }),
+    mapnik2 = L.tileLayer.provider('OpenStreetMap',{
+        maxZoom: 18,
+    }),
+    topomap2 = L.tileLayer.provider('OpenTopoMap',{
+        maxZoom: 18
+    });
+
+    var baseMaps2 = {
+        "Satellite": satellite2,
+        "Streets": streets2,
+        "Mapnik" : mapnik2,
+        "TopoMap" : topomap2
+    };
+
     atlasMap = L.map('atlasMap', {
         center: [20.7888, 97.0337],
         zoom: 7,
         maxZoom: 18,
         minZoom: 6,
-        layers: [streets, villagePoints]
+        layers: [streets2, villagePoints]
     });
 
     atlasMap.on('click', function (e){
         console.log(" You clicked on the atlas map.");
     });
 
-    L.control.layers(baseMaps, overlayMaps).addTo(atlasMap);
+    L.control.layers(baseMaps2, overlayMaps).addTo(atlasMap);
 }
 

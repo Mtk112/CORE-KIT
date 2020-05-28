@@ -48,6 +48,7 @@ function openAtlas(){
     }
     modalOpened = true;
     modal.style.display = "block";
+    atlasMap.invalidateSize();
     
 }
 
