@@ -14,10 +14,11 @@ function initViability(){
 
     var abcd = yearlyGeneration();
 
-    var xA = abcd[0].toFixed(1);
-    var xB = abcd[1].toFixed(1);
-    var xC = abcd[2].toFixed(1);
-    var xD = abcd[3].toFixed(1);
+    var xA = abcd[0];
+    var xB = abcd[1];
+    var xC = abcd[2];
+    var xD = abcd[3];
+    console.log("A: " + xA + ", B: " + xB + ", C: " + xC + ", D: " + xD);
 
     var largestX = Math.max(xA,xB,xC,xD,totalDem);
     var largestY = Math.max(yA,yB,yC,yD,wtp,diesel);

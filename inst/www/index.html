@@ -6,15 +6,30 @@
 <title>CORE-KIT renewable energy esitmation tool for Shan State, Myanmar</title>
 <link rel="stylesheet" href="./css/style.css">
 <link rel="stylesheet" href="./css/search.css">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
-integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 
 </head>
 <body>
 <div class="se-pre-con"></div>
+
+<!-- Atlas Modal -->
+<div id="atlas" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="atlasMap"></div>
+      <div id="atlasDesc">
+          <p>This is just a test description area at the moment.</p>
+      </div>
+    </div>
+  
+</div>
+
 <div class="container">
     <ul class="progress">
         <li class="inprogress" id="pbWelcome">Welcome</li>
@@ -47,6 +62,7 @@ crossorigin=""/>
             It is important to gather information about the specific village and resources in the area. Visual-CORE is based on
             freely available data and is working around ESTIMATIONS.
         </p>
+        <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
         <button class="submit" id="next" onclick="next('welcome')">Lets get started</button>
     </div>
     <!-- Step 2. Map Section -->
@@ -59,47 +75,88 @@ crossorigin=""/>
                     decrease the area from which the available resources will be gathered. If you click a village point, the available
                     data from that village is displayed in "General village information".</p>
             </div>
-            <div id="console">
-                <p id="content">Radius of the area (km): <input type="number" id="radiusArea" placeholder="Radius:" value = "2.5"></p>
+            <div class="tooltip" id="console">
+                <p id="content">Radius of the area (km): <input type="number" id="radiusArea" placeholder="Radius:" value = "2.5"><i class="far fa-question-circle"></i><span class="tooltiptext">Radius of the area that available resources will be estimated.</span></p>
             </div>
             <div clss="third">
                 <h3>General Village Information: </h3>
-                <a> Village name: <input type="text" id="villageName" value=""></a>
+                <a> Village name: <input type="text" id="villageName" value="">
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Name of the village.</span></div>
+                </a>
                 </br>
                 <a> Village population: <input type="number" id="villagePopulation" value="0"></a>
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Population of the village.</span></div>
+                </a>
                 </br>
                 <a> Households in the village: <input type="number" id="villageHouseholds" value="0"></a>
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of households in the village.</span></div>
+                </a>
             </div>
-            <button class="submit" id="next" onclick="next('mapSection')">Confirm location</button>
-            <button class="submit" id="back" onclick="back('mapSection')">Back</button>
+            <div class="fwr-bk">
+                <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
+                <button class="submit" id="next" onclick="next('mapSection')">Continue to Demand</button>
+                <button class="submit" id="back" onclick="back('mapSection')">Back</button>
+            </div>
     </div>
     <!-- Step 3. Community Characteristics -->
     <div id="community">
         <form>
             <h1>Community</h1>
             <h2>Required information</h2>
-            <a>Village name: <input id="name" type="text" placeholder="Name of the village..."></a>
-            <a>Population: <input id="population" type="number" placeholder="Village population..." required></a>
-            <a>Households: <input id="households" type="number" placeholder="Number of households..." required></a>
+            <a>Village name: <input id="name" type="text" placeholder="Name of the village...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Name of the village.</span></div>
+            </a>
+            <a>Population: <input id="population" type="number" placeholder="Village population..." required>
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Population of the village.</span></div>
+            </a>
+            <a>Households: <input id="households" type="number" placeholder="Number of households..." required>
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of households in the village.</span></div>
+            </a>
             </br>
-            <a>Willingness to Pay for electricity (US $ / kWh): <input id="wtp" type="number" placeholder="US$" required></a>
-            <a>Price of diesel based electricity (US $ / kWh): <input id="diesel" type="number" placeholder="US $" value="0.4" required></a>
-            <a>Sunrise: <input id="sunrise" type="number" value="5" required></a>
-            <a>Sunset: <input id="sunset" type="number" value="18" required></a>
+            <a>Willingness to Pay for electricity (US $ / kWh): <input id="wtp" type="number" placeholder="US$" required>
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Maximum of what the villagers are willing to pay for electricity.</span></div>
+            </a>
+            <a>Price of diesel based electricity (US $ / kWh): <input id="diesel" type="number" placeholder="US $" value="0.4" required>
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Current cost of diesel based electricity generation (generators etc.).</span></div>
+            </a>
+            <a>Sunrise: <input id="sunrise" type="number" value="5" required>
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Average sunrise time in the region.</span></div>
+            </a>
+            <a>Sunset: <input id="sunset" type="number" value="18" required>
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Average sunset time in the region.</span></div>
+            </a>
             </br>
             <h3>Additional Information</h3>
-            <a>Poverty rate (%): <input id="poverty" type="number" placeholder="Poverty rate (%)"></a>
-            <a>Majority Ethnicity: <input id="ethnicity" type="text" placeholder="Majority ethnicity..."></a>
-            <a>Average monthly household income (US$): <input id="mhi" type="number" placeholder="Monthly hh income..."></a>
+            <a>Poverty rate (%): <input id="poverty" type="number" placeholder="Poverty rate (%)">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Percentage of people living under poverty line in the village.</span></div>  
+            </a>
+            <a>Majority Ethnicity: <input id="ethnicity" type="text" placeholder="Majority ethnicity...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Majority ethnicity in the village.</span></div>
+            </a>
+            <a>Average monthly household income (US$): <input id="mhi" type="number" placeholder="Monthly hh income...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Average monthly household income in the village.</span></div>
+            </a>
             </br>
-            <a>Population density (population / km<sup>2</sup>): <input id="density" type="number" placeholder="Population density..."></a>
-            <a>Population growth over last decade( % ): <input id="growth" type="number" placeholder="Population growth..."></a>
+            <a>Population density (population / km<sup>2</sup>): <input id="density" type="number" placeholder="Population density...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Population density in the village.</span></div>
+            </a>
+            <a>Population growth over last decade( % ): <input id="growth" type="number" placeholder="Population growth...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Village population growth over the last decade.</span></div>
+            </a>
             </br>
-            <a>Number of housholds with access to potable water: <input id="potable" type="number" placeholder="Number of households..."></a>
-            <a>Number of households with improved sanitation facilities (sanitary toilet): <input id="sanitation" type="number" placeholder="Number of households"></a>
+            <a>Number of housholds with access to potable water: <input id="potable" type="number" placeholder="Number of households...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of households in the village with access to potable water.</span></div>
+            </a>
+            <a>Number of households with improved sanitation facilities (sanitary toilet): <input id="sanitation" type="number" placeholder="Number of households">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of households in the village with improved sanitation facilities.</span></div>
+            </a>
             </br>
-            <a>Number of households with access to electricity: <input id="electricity" type="number" placeholder="Number of households..."></a>
-            <a>Number of households with access to sealed road: <input id="road" type="number" placeholder="Number of households..."></a>
+            <a>Number of households with access to electricity: <input id="electricity" type="number" placeholder="Number of households...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of households with access to electricity currently.</span></div>
+            </a>
+            <a>Number of households with access to sealed road: <input id="road" type="number" placeholder="Number of households...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of households with access to sealed road.</span></div>
+            </a>
         </form>
         <div id="incomeSources" class="fiftyfifty">
             <h1>Sources of income</h1>
@@ -119,15 +176,18 @@ crossorigin=""/>
                 </select>
                 </br>
                 <div id="customIncome">
-                    Name income income:
+                    Name income:
                     <input type="text" id="incomeName" placeholder="Define other income..." required>
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Name income type.</span></div>
                 </div>
                 </br>
                 Number of workers:
                 <input type="number" id="iWorkers" placeholder="Number of workers...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of people earning income from this source.</span></div>
                 </br>
                 Portion of population:
                 <input type="number" id="iPortion" placeholder="Portion of population..." required>
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Percentage of population earning income from this source.</span></div>
                 </br>
                 <button class="submit" onclick="populateIncome(document.getElementById('incomeItem').value, document.getElementById('iWorkers').value, document.getElementById('iPortion').value)">Add income!</button>
             </div>
@@ -156,15 +216,18 @@ crossorigin=""/>
                 </select>
                 </br>
                 <div id="customEmployment">
-                    Name other employment:
+                    Name employment:
                     <input type="text" id="employmentName" placeholder="Define other employment..." required>
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Name employement type.</span></div>
                 </div>  
                 </br>
                 Number of workers:
                 <input type="number" id="eWorkers" placeholder="Number of workers...">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of workers employed.</span></div>
                 </br>
                 Portion of population:
                 <input type="number" id="ePortion" placeholder="Portion of population..." required>
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Percentage of population employed.</span></div>
                 </br>
                 <button class="submit" onclick="populateEmployment(document.getElementById('employmentItem').value, document.getElementById('eWorkers').value, document.getElementById('ePortion').value)">Add employment!</button>
             </div>
@@ -174,6 +237,7 @@ crossorigin=""/>
             </div>
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('community')">Continue to Demand</button>
             <button class="submit" id="back" onclick="back('community')">Back</button>
         </div>
@@ -209,9 +273,6 @@ crossorigin=""/>
                 <tbody>  
                 </tbody> 
             </table>
-            <h3>Load Curves</h3>
-            <button type="submit" onclick="drawFromTables()">Update Graph</button>
-            <div id="hhLC" class="third"></div>
             <!-- 
             <div id="hhInfo" class="third">Here will be shown the following info: Night Load, Day Load, Peak Load \
                 Monthly Load, Daily Load, Yearly Load.
@@ -240,9 +301,6 @@ crossorigin=""/>
                 <tbody>  
                 </tbody> 
             </table>
-            <h3>Load Curves</h3>
-            <button type="submit" onclick="drawFromTables()">Update Graph</button>
-            <div id="proLC"></div> 
         </div>
         
         <div id="publicUtilities" class="tabcontent">
@@ -266,14 +324,10 @@ crossorigin=""/>
                 <tbody>  
                 </tbody> 
             </table>
-            <h3>Load Curves</h3>
+        </div>
+        <h3>Load Curves</h3>
             <button type="submit" onclick="drawFromTables()">Update Graph</button>
-            <div id="pubLC"></div>
-        </div>
-        <div class="fwr-bk">
-            <button class="submit" id="next" onclick="next('demand')">Continue to Resources</button>
-            <button class="submit" id="back" onclick="back('demand')">Back</button>
-        </div>
+            <div id="loadCurve" class="third"></div>
         <div id="demandInfo">
             <a>Total demand (kWh) : </a><a id="totalDemand">0</a>
             </br>
@@ -283,8 +337,13 @@ crossorigin=""/>
             </br>
             <a>Peak demand (kW) : </a><a id="peakDemand">0</a>
         </div>
+        <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
+            <button class="submit" id="next" onclick="next('demand')">Continue to Resources</button>
+            <button class="submit" id="back" onclick="back('demand')">Back</button>
+        </div>
     </div>
-    <!-- Resources -->
+    <!-- 5. Resources -->
     <div id="resources">
         <h1>Resources</h1>
         <div class="tab">
@@ -379,10 +438,12 @@ crossorigin=""/>
             
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('resources')">Continue to Generation</button>
             <button class="submit" id="back" onclick="back('resources')">Back</button>
         </div>
     </div>
+    <!-- Step 6. Generation -->
     <div id="generation">
         <h1>Generation</h1>
         <div class="tab">
@@ -399,9 +460,11 @@ crossorigin=""/>
                 <input type="number" id="solarArea" placeholder="Area...">-->
                 <a>Planned power (kWp): </a>
                 <input type="number" id="solarPlan" placeholder="System kWp..." value="5">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Planned kilowatt peak of the solar system.</span></div>
                 </br>
                 <a>Battery size (kWh):</a>
                 <input type="number" id="batterySize" placeholder="Battery size..." value="0">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Defines maximum of how much energy can be stored in the battery.</span></div>
             </div>
             <div id="sGen" class="fiftyfifty"></div>
         </div>
@@ -410,15 +473,19 @@ crossorigin=""/>
             <div class="fiftyfifty">
                 <a>Number of units:</a>
                 <input type="number" id="wUnits" placeholder="Number of units..." value="1">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of windmills.</span></div>
                 </br>
                 <a>Turbine coeffiency (%):</a>
                 <input type="number" id="cp" placeholder="Coeffiency %..." value="30">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Power coeffient defines how much of wind power is converted to electricity by the turbine.</span></div>
                 </br>
                 <a>Rotor blade length (m):</a>
                 <input type="number" id="blade" placeholder="Length of the blade..." value="2.5">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Lenght of the rotor blades affects how much wind power flows through the turbine.</span></div>
                 </br>
-                <a>Cutoff windspeed (m/s):</a>
-                <input type="number" id="cutoff" placeholder="Cutoff windspeed..." value="1.5">
+                <a>Cut-in windspeed (m/s):</a>
+                <input type="number" id="cutin" placeholder="Cut-in windspeed..." value="3">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">The minimum windspeed required to turn the rotor blades.</span></div>
             </div>
             <div id="wGen" class="fiftyfifty"></div>
         </div>
@@ -493,9 +560,11 @@ crossorigin=""/>
             <div class="third">
                 <a>Heat to electricity conversion effiency (%):</a>
                 <input type="number" id="conversionRate" value="30">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Defines the percentage of heat to electricity conversion.</span></div>
                 </br>
                 <a>Battery size (kWh):</a>
                 <input type="number" id="bBattery" value="0">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Defines the maximum of how much power can be stored in the battery.</span></div>
                 </br>
                 <h3>Explanations</h3>
                 <p>Residue to Product Ratio, determines the biomass produced as a by-product of crop production and processing. In general, it determines the amount of unused biomass material after harvesting and processing.</p>
@@ -504,10 +573,12 @@ crossorigin=""/>
             </div>
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('generation')">Continue to grid-sizing</button>
             <button class="submit" id="back" onclick="back('generation')">Back</button>
         </div>
     </div>
+    <!-- Step 5. Grid Sizing-->
     <div id="gridSize" class="tabcontent">
         <h1>Grid sizing</h1>
         <div class="tab">
@@ -548,6 +619,7 @@ crossorigin=""/>
             </div>
 
             <div class="fwr-bk">
+                <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
                 <button class="submit" id="next" onclick="next('gridSize')">Continue to viability</button>
                 <button class="submit" id="back" onclick="back('gridSize')">Back</button>
             </div>
@@ -565,24 +637,30 @@ crossorigin=""/>
             <h3>Solar</h3>
             <a>Planned power (kWp): </a>
             <input type="number" id="solarPlanA" placeholder="System kWp..." value="0">
+            <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Planned kilowatt peak of the solar system.</span></div>
 
             <h3>Wind</h3>
             <a>Number of units:</a>
             <input type="number" id="wUnitsA" placeholder="Number of units..." value="0">
+            <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of windmills.</span></div>
             </br>
             <a>Turbine coeffiency (%):</a>
             <input type="number" id="cpA" placeholder="Coeffiency %..." value="0">
+            <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Power coeffient defines how much of wind power is converted to electricity by the turbine.</span></div>
             </br>
             <a>Rotor blade length (m):</a>
             <input type="number" id="bladeA" placeholder="Length of the blade..." value="0">
+            <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Lenght of the rotor blades affects how much wind power flows through the turbine.</span></div>
             </br>
-            <a>Cutoff windspeed (m/s):</a>
-            <input type="number" id="cutoffA" placeholder="Cutoff windspeed..." value="0">
+            <a>Cut-in windspeed (m/s):</a>
+            <input type="number" id="cutinA" placeholder="Cut-in windspeed..." value="0">
+            <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">The minimum windspeed required to turn the rotor blades.</span></div>
 
 
             <h3>Hydro</h3>
-            <a> Daily hydro generation (kW/h): </a>
+            <a> Daily hydro generation (kWh): </a>
             <input type="number" id="hydroTestA" value="100">
+            <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Amount of electricity generated each day by micro-hydro.</span></div>
 
             <h3>Biomass</h3>
             <h3> Crops </h3>
@@ -660,6 +738,7 @@ crossorigin=""/>
             </table>
             <a>Heat to electricity conversion effiency (%):</a>
             <input type="number" id="conversionRateA" value="30">
+            <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Defines the percentage of heat to electricity conversion.</span></div>
 
             </div>
 
@@ -675,24 +754,30 @@ crossorigin=""/>
                 <h3>Solar</h3>
                 <a>Planned power (kWp): </a>
                 <input type="number" id="solarPlanB" placeholder="System kWp..." value="0">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Planned kilowatt peak of the solar system.</span></div>
     
                 <h3>Wind</h3>
                 <a>Number of units:</a>
                 <input type="number" id="wUnitsB" placeholder="Number of units..." value="0">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of windmills.</span></div>
                 </br>
                 <a>Turbine coeffiency (%):</a>
                 <input type="number" id="cpB" placeholder="Coeffiency %..." value="0">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Power coeffient defines how much of wind power is converted to electricity by the turbine.</span></div>
                 </br>
                 <a>Rotor blade length (m):</a>
                 <input type="number" id="bladeB" placeholder="Length of the blade..." value="0">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Lenght of the rotor blades affects how much wind power flows through the turbine.</span></div>
                 </br>
-                <a>Cutoff windspeed (m/s):</a>
-                <input type="number" id="cutoffB" placeholder="Cutoff windspeed..." value="0">
+                <a>Cut-in windspeed (m/s):</a>
+                <input type="number" id="cutinB" placeholder="Cut-in windspeed..." value="0">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">The minimum windspeed required to turn the rotor blades.</span></div>
     
     
                 <h3>Hydro</h3>
-                <a> Daily hydro generation (kW/h): </a>
+                <a> Daily hydro generation (kWh): </a>
                 <input type="number" id="hydroTestB" value="0">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Amount of electricity generated each day by micro-hydro.</span></div>
     
                 <h3>Biomass</h3>
                 <h3> Crops </h3>
@@ -770,6 +855,7 @@ crossorigin=""/>
                 </table>
                 <a>Heat to electricity conversion effiency (%):</a>
                 <input type="number" id="conversionRateB" value="30">
+                <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Defines the percentage of heat to electricity conversion.</span></div>
     
                 </div>
 
@@ -785,24 +871,30 @@ crossorigin=""/>
                     <h3>Solar</h3>
                     <a>Planned power (kWp): </a>
                     <input type="number" id="solarPlanC" placeholder="System kWp..." value="0">
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Planned kilowatt peak of the solar system.</span></div>
         
                     <h3>Wind</h3>
                     <a>Number of units:</a>
                     <input type="number" id="wUnitsC" placeholder="Number of units..." value="0">
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of windmills.</span></div>
                     </br>
                     <a>Turbine coeffiency (%):</a>
                     <input type="number" id="cpC" placeholder="Coeffiency %..." value="0">
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Power coeffient defines how much of wind power is converted to electricity by the turbine.</span></div>
                     </br>
                     <a>Rotor blade length (m):</a>
                     <input type="number" id="bladeC" placeholder="Length of the blade..." value="0">
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Lenght of the rotor blades affects how much wind power flows through the turbine.</span></div>
                     </br>
-                    <a>Cutoff windspeed (m/s):</a>
-                    <input type="number" id="cutoffC" placeholder="Cutoff windspeed..." value="0">
+                    <a>Cut-in windspeed (m/s):</a>
+                    <input type="number" id="cutinC" placeholder="Cut-in windspeed..." value="0">
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">The minimum windspeed required to turn the rotor blades.</span></div>
         
         
                     <h3>Hydro</h3>
-                    <a> Daily hydro generation (kW/h): </a>
+                    <a> Daily hydro generation (kWh): </a>
                     <input type="number" id="hydroTestC" value="0">
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Amount of electricity generated each day by micro-hydro.</span></div>
         
                     <h3>Biomass</h3>
                     <h3> Crops </h3>
@@ -880,6 +972,7 @@ crossorigin=""/>
                     </table>
                         <a>Heat to electricity conversion effiency (%):</a>
                         <input type="number" id="conversionRateC" value="30">
+                        <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Defines the percentage of heat to electricity conversion.</span></div>
         
                     </div>
 
@@ -895,24 +988,30 @@ crossorigin=""/>
                         <h3>Solar</h3>
                         <a>Planned power (kWp): </a>
                         <input type="number" id="solarPlanD" placeholder="System kWp..." value="0">
+                        <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Planned kilowatt peak of the solar system.</span></div>
             
                         <h3>Wind</h3>
                         <a>Number of units:</a>
                         <input type="number" id="wUnitsD" placeholder="Number of units..." value="0">
+                        <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of windmills.</span></div>
                         </br>
                         <a>Turbine coeffiency (%):</a>
                         <input type="number" id="cpD" placeholder="Coeffiency %..." value="0">
+                        <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Power coeffient defines how much of wind power is converted to electricity by the turbine.</span></div>
                         </br>
                         <a>Rotor blade length (m):</a>
                         <input type="number" id="bladeD" placeholder="Length of the blade..." value="0">
+                        <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Lenght of the rotor blades affects how much wind power flows through the turbine.</span></div>
                         </br>
-                        <a>Cutoff windspeed (m/s):</a>
-                        <input type="number" id="cutoffD" placeholder="Cutoff windspeed..." value="0">
+                        <a>Cut-in windspeed (m/s):</a>
+                        <input type="number" id="cutinD" placeholder="Cut-in windspeed..." value="0">
+                        <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">The minimum windspeed required to turn the rotor blades.</span></div>
             
             
                         <h3>Hydro</h3>
-                        <a> Daily hydro generation (kW/h): </a>
+                        <a> Daily hydro generation (kWh): </a>
                         <input type="number" id="hydroTestD" value="0">
+                        <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Amount of electricity generated each day by micro-hydro.</span></div>
             
                         <h3>Biomass</h3>
                         <h3> Crops </h3>
@@ -990,65 +1089,9 @@ crossorigin=""/>
                         </table>
                         <a>Heat to electricity conversion effiency (%):</a>
                         <input type="number" id="conversionRateD" value="30">
+                        <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Defines the percentage of heat to electricity conversion.</span></div>
             
                         </div>
-            
-            <!--<form class="checkForm" id="optionA">
-                <h2>Option A</h2>
-                <a>Solar: </a><input type="checkbox" id="solarCheckA" onclick="myFunction()"><br>
-                <a>Wind: </a><input type="checkbox" id="windCheckA" onclick="myFunction()"><br>
-                <a>Micro-hydro:</a> <input type="checkbox" id="hydroCheckA" onclick="myFunction()"><br>
-                <a>Biomass: </a><input type="checkbox" id="bioCheckA" onclick="myFunction()"><br>
-                <a>Daily generation (kWh): </a><a id=genA> 0 </a><br>
-                <a>Daily demand met (%): </a><a id=metA> 0 </a><br>
-            </form>
-            <form class="checkForm" id="optionB">
-                <h2>Option B</h2>
-                <a>Solar: </a><input type="checkbox" id="solarCheckB" onclick="myFunction()"><br>
-                <a>Wind: </a><input type="checkbox" id="windCheckB" onclick="myFunction()"><br>
-                <a>Micro-hydro: </a><input type="checkbox" id="hydroCheckB" onclick="myFunction()"><br>
-                <a>Biomass: </a><input type="checkbox" id="bioCheckB" onclick="myFunction()"><br>
-                <a>Daily generation (kWh): </a><a id=genB> 0 </a><br>
-                <a>Daily demand met (%): </a><a id=metB> 0 </a><br>
-            </form>
-            <form class="checkForm" id="optionC">
-                <h2>Option C</h2>
-                <a>Solar: </a><input type="checkbox" id="solarCheckC" onclick="myFunction()"><br>
-                <a>Wind: </a><input type="checkbox" id="windCheckC" onclick="myFunction()"><br>
-                <a>Micro-hydro: </a><input type="checkbox" id="hydroCheckC" onclick="myFunction()"><br>
-                <a>Biomass: </a><input type="checkbox" id="bioCheckC" onclick="myFunction()"><br>
-                <a>Daily generation (kWh): </a><a id=genC> 0 </a><br>
-                <a>Daily demand met (%): </a><a id=metC> 0 </a><br>
-            </form>
-            <form class="checkForm" id="optionA">
-                <h2>Option D</h2>
-                <a>Solar: </a><input type="checkbox" id="solarCheckD" onclick="myFunction()"><br>
-                <a>Wind: </a><input type="checkbox" id="windCheckD" onclick="myFunction()"><br>
-                <a>Micro-hydro: </a><input type="checkbox" id="hydroCheckD" onclick="myFunction()"><br>
-                <a>Biomass: </a><input type="checkbox" id="bioCheckD" onclick="myFunction()"><br>
-                <a>Daily generation (kWh): </a><a id=genD> 0 </a><br>
-                <a>Daily demand met (%): </a><a id=metD> 0 </a><br>
-            </form>
-        </div>
-        <div>
-            <div class="third" id="day">
-                <h2>Day time</h2>
-                <a>Day time generation: </a><a id=dtGen>0 kWh</a></br>
-                <a>Day time demand: </a><a id=dtDem>0 kWh</a></br>
-                <a>Day time demand met: </a><a id=dtMet>0%</a>
-            </div>
-            <div class="third" id="night">
-                <h2>Night time</h2>
-                <a>Night time generation (kWh): </a><a id="ntGen">0</a></br>
-                <a>Night time demand (kWh): </a><a id="ntDem">0</a></br>
-                <a>Night time met: </a><a id="ntMet">0%</a>
-            </div>
-            <div class="third" id="daily">
-                <h2>Daily</h2>
-                <a>Daily generation (kWh): </a><a id="dailyGen">0</a></br>
-                <a>Daily demand (kWh): </a><a id="dailyDem">0</a></br>
-                <a>Daily demand met: </a><a id="dailyMet">0%</a>
-            </div>-->
         </div>
         
 
@@ -1057,18 +1100,20 @@ crossorigin=""/>
         <div id="viabilityChart">
         </div>
         <div class="fwr-bk">
+            <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
             <button class="submit" id="next" onclick="next('viability')">Continue to report</button>
             <button class="submit" id="back" onclick="back('viability')">Back</button>
         </div>
     </div>
     <div id="report">
         <h1>End report</h1>
+        <button id="atlasBtn" onclick="openAtlas()">Open Atlas</button>
         <button class="submit" id="back" onclick="back('report')">Back</button>
     </div>
 </div>
     <!-- Dependencies -->
-    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
-    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
     <script src="js/libraries/jquery-3.3.1.min.js"></script> 
     <script src="js/libraries/opencpu-0.4.js"></script>
@@ -1088,9 +1133,9 @@ crossorigin=""/>
     <script src="data/village_points.GeoJSON" type="text/javascript"></script>
     <script src="data/load_profiles.js" type="text/javascript"></script>
     <script src="data/power_usage_by_item.js" type="text/javascript"></script>
+    <script src="data/myanmar_medium_voltage_grid.geojson" type="text/javascript"></script>
     <!-- Javascript files -->
     <script src= "js/index.js"></script>
-    <script src= "js/drawTotalDemand.js"></script>
     <script src= "js/map.js"></script>
     <script src= "js/drawRiverInfo.js"></script>
     <script src= "js/drawArea.js"></script>
@@ -1100,7 +1145,6 @@ crossorigin=""/>
     <script src= "js/tables.js"></script>
     <script src= "js/viability.js"></script>
     <script src= "js/yearlyGeneration.js"></script>
-    <!-- <script src= "js/gridSize.js"></script> -->
     <script src= "js/hourlyGrid.js"></script>
 </body>
 </html>

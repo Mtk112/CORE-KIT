@@ -22,6 +22,35 @@ var gridSize = document.getElementById("gridSize");
 var viability = document.getElementById("viability");
 var report = document.getElementById("report");
 var firstTime = true;
+/* Modal */
+var modal = document.getElementById("atlas");
+var atlasSpan = document.getElementsByClassName("close")[0];
+var modalOpened = false;
+
+
+// Closes atlas modal when span is clicked
+atlasSpan.onclick = function() {
+  modal.style.display = "none";
+}
+
+// Closes atlas modal whenever user clicks outside of the area.
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+/* Open atlas pop-up window */
+function openAtlas(){
+    if(modalOpened == false){
+        console.log("Initializing Atlas.");
+        initAtlas();
+    }
+    modalOpened = true;
+    modal.style.display = "block";
+    atlasMap.invalidateSize();
+    
+}
 
 /* If the radius of the area is changed redraws the circle */
 radius.oninput = function(e){
@@ -69,6 +98,7 @@ function openTab(evt, tabName) {
         initDesignMap();
     }
     if(tabName =="gridSize"){
+        getAllYields();
         initGrid();
     }
 }
@@ -174,7 +204,7 @@ function next(page){
         document.getElementById("cpA").value = document.getElementById("cp").value;
         document.getElementById("wUnitsA").value = document.getElementById("wUnits").value;
         document.getElementById("bladeA").value = document.getElementById("blade").value;
-        document.getElementById("cutoffA").value = document.getElementById("cutoff").value;
+        document.getElementById("cutinA").value = document.getElementById("cutin").value;
         document.getElementById("conversionRateA").value = document.getElementById("conversionRate").value;
         //document.getElementById("residueTableA") = document.getElementById("residueTable");
         initGrid();
@@ -273,7 +303,7 @@ function back(page){
 var windCp = document.getElementById("cp");
 var windUnits = document.getElementById("wUnits");
 var windBlade = document.getElementById("blade");
-var windCutoff = document.getElementById("cutoff");
+var windCutin = document.getElementById("cutin");
 
 windCp.oninput = function(e){
     drawWind();
@@ -284,7 +314,7 @@ windUnits.oninput = function(e){
 windBlade.oninput = function(e){
     drawWind();
 }
-windCutoff.oninput = function(e){
+windCutin.oninput = function(e){
     drawWind();
 }
 

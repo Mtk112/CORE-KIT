@@ -6,21 +6,22 @@ var lat;
 var lng;
 
 // Basemap options
-var satellite = L.tileLayer.provider('MapBox', {
+
+var satellite = L.tileLayer.provider('MapBox',{
     maxZoom: 18,
-    id: 'mapbox.satellite',
+    id: 'mapbox/satellite-v9',
     accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
-    }),
-    streets = L.tileLayer.provider('MapBox', {
+}),
+streets = L.tileLayer.provider('MapBox',{
     maxZoom: 18,
-    id: 'mapbox.streets',
+    id: 'mapbox/streets-v11',
     accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
-    }),
-    mapnik = L.tileLayer.provider('OpenStreetMap',{
-      maxZoom: 18,
-    }),
-    topomap = L.tileLayer.provider('OpenTopoMap',{
-      maxZoom: 18
+}),
+mapnik = L.tileLayer.provider('OpenStreetMap',{
+    maxZoom: 18,
+}),
+topomap = L.tileLayer.provider('OpenTopoMap',{
+    maxZoom: 18
 });
 
 /* Map interactivity for each layer. */
@@ -85,6 +86,21 @@ var villagePoints = new L.GeoJSON (village_points, {
         })}
 });
 
+var powerGrid = new L.GeoJSON (myanmar_medium_voltage_grid, {
+    style: {
+        stroke: 1,
+        fillOpacity: 0,
+        color: "orange"
+    },
+    onEachFeature: function(feature, layer){
+        layer.on('click', function (e){
+            console.log("Clicked on power grid!");
+        })
+    }
+
+    
+});
+
 // Basemaps: satellite or street view.
 var baseMaps = {
     "Satellite": satellite,
@@ -116,7 +132,8 @@ var overlayMaps = {
     "Townships": townshipLayer,     
     "Towns": townLayer,
     "Rivers": riversLayer,
-    "Villages": villagePoints
+    "Villages": villagePoints,
+    "Power Grid": powerGrid
 };
 /* Search control for villages */
 var searchControl = new L.Control.Search({
@@ -271,4 +288,46 @@ function designClicks(lat ,lng){
     }
 }
 
+var atlasMap;
+function initAtlas(){
+
+    //Have to duplicate these Layers for the map in modal, else the tilesets will be bugging out on the Location selection map.
+    var satellite2 = L.tileLayer.provider('MapBox',{
+        maxZoom: 18,
+        id: 'mapbox/satellite-v9',
+        accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
+    }),
+    streets2 = L.tileLayer.provider('MapBox',{
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
+    }),
+    mapnik2 = L.tileLayer.provider('OpenStreetMap',{
+        maxZoom: 18,
+    }),
+    topomap2 = L.tileLayer.provider('OpenTopoMap',{
+        maxZoom: 18
+    });
+
+    var baseMaps2 = {
+        "Satellite": satellite2,
+        "Streets": streets2,
+        "Mapnik" : mapnik2,
+        "TopoMap" : topomap2
+    };
+
+    atlasMap = L.map('atlasMap', {
+        center: [20.7888, 97.0337],
+        zoom: 7,
+        maxZoom: 18,
+        minZoom: 6,
+        layers: [streets2, villagePoints]
+    });
+
+    atlasMap.on('click', function (e){
+        console.log(" You clicked on the atlas map.");
+    });
+
+    L.control.layers(baseMaps2, overlayMaps).addTo(atlasMap);
+}
 

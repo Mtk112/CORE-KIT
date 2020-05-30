@@ -1,6 +1,6 @@
 'use strict'
 
-function yearlyGeneration(){
+/*function yearlyGeneration(){
     var solar = getSolar();
     var wind = getWind();
     var bio = getBio();
@@ -64,4 +64,4 @@ function yearlyGeneration(){
     }
     var abcd = [tempValueA,tempValueB, tempValueC, tempValueD];
     return abcd;
-}
+}*/

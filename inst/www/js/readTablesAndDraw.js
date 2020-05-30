@@ -166,9 +166,10 @@ function drawFromTables(){
             y: -0.1
           },
       };
-    Plotly.newPlot('hhLC', graphData, layout, {displayModeBar: false});
+      Plotly.newPlot('loadCurve', graphData, layout, {displayModeBar: false});
+    /*Plotly.newPlot('hhLC', graphData, layout, {displayModeBar: false});
     Plotly.newPlot('proLC', graphData, layout, {displayModeBar: false});
-    Plotly.newPlot('pubLC', graphData, layout, {displayModeBar: false});
+    Plotly.newPlot('pubLC', graphData, layout, {displayModeBar: false});*/
     /* Sets Values to the infograph */
     document.getElementById("totalDemand").innerHTML = totalDem;
     document.getElementById("totalDay").innerHTML = day;
@@ -320,59 +321,58 @@ function getBio(){
 
 // NEW stuff this doesnt work proper i am sure...
 
-function redrawBiomass(option, rHar, sHar, mHar, rh, rs, stt, sb, mc, ms, mh){
-    var option = option;
-    var months = [1,2,3,4,5,6,7,8,9,10,11,12];
-    var rhResult = [0,0,0,0,0,0,0,0,0,0,0,0];
-    var rsResult = [0,0,0,0,0,0,0,0,0,0,0,0];
-    var sttResult = [0,0,0,0,0,0,0,0,0,0,0,0];
-    var sbResult = [0,0,0,0,0,0,0,0,0,0,0,0];
-    var mcResult = [0,0,0,0,0,0,0,0,0,0,0,0];
-    var msResult = [0,0,0,0,0,0,0,0,0,0,0,0];
-    var mhResult = [0,0,0,0,0,0,0,0,0,0,0,0];
-
-    for(var i = 0; i <= rHar.length; i++){
-        var harvest = rHar[i] - 1;
-        rhResult[harvest] = rh;
-        rsResult[harvest] = rs;
-        riceResult[harvest] = rs + rh;
-
+function recalculateBiomass(rHarA, mHarA,sHarA, rhA, rsA, sttA, sbA, mcA, msA, mhA, rHarB, mHarB, sHarB, rhB, rsB, sttB, sbB, mcB, msB, mhB, rHarC, mHarC,sHarC, rhC, rsC, sttC, sbC, mcC, msC, mhC, rHarD, mHarD,sHarD, rhD, rsD, sttD, sbD, mcD, msD, mhD){
+    // Option A
+    for(var i = 0; i <= rHarA.length; i++){
+        var harvest = rHarA[i] - 1;
+        riceResultA[harvest] = rsA + rhA;
     }
-    for(var i = 0; i <= sHar.length; i++){
-        var harvest = sHar[i] - 1;
-        sttResult[harvest] = stt;
-        sbResult[harvest] = sb;
-        sugarResult[harvest] = stt + sb;
+    for(var i = 0; i <= sHarA.length; i++){
+        var harvest = sHarA[i] - 1;
+        sugarResult[harvest] = sttA + sbA;
     }
-    for(var i = 0; i <= mHar.length; i++){
-        var harvest = mHar[i] - 1;
-        mcResult[harvest] = mc;
-        msResult[harvest] = ms;
-        mhResult[harvest] = mh;
-        maizeResult[harvest] = mc + ms + mh;
+    for(var i = 0; i <= mHarA.length; i++){
+        var harvest = mHarA[i] - 1;
+        maizeResultA[harvest] = mcA + msA + mhA;
     }
-    if(option == "A"){
-        riceResultA = riceResult;
-        maizeResultA = maizeResult;
-        sugarResultA = sugarResult;
-
+    // Option B
+    for(var i = 0; i <= rHarB.length; i++){
+        var harvest = rHarB[i] - 1;
+        riceResultB[harvest] = rsB + rhB;
     }
-    if(option == "B"){
-        riceResultB = riceResult;
-        maizeResultB = maizeResult;
-        sugarResultB = sugarResult;
-
+    for(var i = 0; i <= sHarB.length; i++){
+        var harvest = sHarB[i] - 1;
+        sugarResultB[harvest] = sttB + sbB;
     }
-    if(option == "C"){
-        riceResultC = riceResult;
-        maizeResultC = maizeResult;
-        sugarResultC = sugarResult;
+    for(var i = 0; i <= mHarB.length; i++){
+        var harvest = mHarB[i] - 1;
+        maizeResultB[harvest] = mcB + msB + mhB;
     }
-    if(option == "D"){
-        riceResultD = riceResult;
-        maizeResultD = maizeResult;
-        sugarResultD = sugarResult;
-
+    // Option C
+    for(var i = 0; i <= rHarC.length; i++){
+        var harvest = rHarC[i] - 1;
+        riceResultC[harvest] = rsC + rhC;
+    }
+    for(var i = 0; i <= sHarC.length; i++){
+        var harvest = sHarC[i] - 1;
+        sugarResultB[harvest] = sttC + sbC;
+    }
+    for(var i = 0; i <= mHarC.length; i++){
+        var harvest = mHarC[i] - 1;
+        maizeResultC[harvest] = mcC + msC + mhC;
+    }
+    // Option D
+    for(var i = 0; i <= rHarD.length; i++){
+        var harvest = rHarD[i] - 1;
+        riceResultD[harvest] = rsD + rhD;
+    }
+    for(var i = 0; i <= sHarD.length; i++){
+        var harvest = sHarD[i] - 1;
+        sugarResultD[harvest] = sttD + sbD;
+    }
+    for(var i = 0; i <= mHarD.length; i++){
+        var harvest = mHarD[i] - 1;
+        maizeResultD[harvest] = mcD + msD + mhD;
     }
 }
 
