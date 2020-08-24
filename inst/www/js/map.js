@@ -5,6 +5,7 @@ var totalHHdemand;
 var lat;
 var lng;
 
+
 // Basemap options
 
 var satellite = L.tileLayer.provider('MapBox',{
@@ -23,6 +24,31 @@ mapnik = L.tileLayer.provider('OpenStreetMap',{
 topomap = L.tileLayer.provider('OpenTopoMap',{
     maxZoom: 18
 });
+
+/* TIF layers */
+
+var solarPotential = L.leafletGeotiff('data/solar_potential_kwhperkwp.tif',
+    {band: 0,
+    opacity: .1,
+    renderer: new L.LeafletGeotiff.Plotty({
+      colorScale: 'rdbu',
+      clampLow: false,
+      clampHigh: true,
+      displayMin: 3.5,
+      displayMax: 6,
+        }),
+    });
+var windspeed = L.leafletGeotiff('data/wind_potential.tif',
+    {band: 0,
+    opacity: .1,
+    renderer: new L.LeafletGeotiff.Plotty({
+      colorScale: 'rdbu',
+      clampLow: false,
+      clampHigh: true,
+      displayMin: 0.1,
+      displayMax: 6.5,
+        })
+    });
 
 /* Map interactivity for each layer. */
 
@@ -124,6 +150,8 @@ map.on('click', function (e){
     lng = e.latlng.lng;
     console.log("Lat: " + lat + " Lng: " + lng);
     drawArea(lat,lng);
+    console.log("Windspeed at location: " + windspeed.getValueAtLatLng(e.latlng.lat,e.latlng.lng).toFixed(1)+ " m/s.");
+    console.log("Solar potential (kwh / kwp) at location: " + solarPotential.getValueAtLatLng(e.latlng.lat,e.latlng.lng).toFixed(1));
 });
 
 //Layers
@@ -133,7 +161,9 @@ var overlayMaps = {
     "Towns": townLayer,
     "Rivers": riversLayer,
     "Villages": villagePoints,
-    "Power Grid": powerGrid
+    "Power Grid": powerGrid,
+    "Wind Potential" : windspeed,
+    "Solar potential kWh / kWp" : solarPotential
 };
 /* Search control for villages */
 var searchControl = new L.Control.Search({
@@ -330,4 +360,3 @@ function initAtlas(){
 
     L.control.layers(baseMaps2, overlayMaps).addTo(atlasMap);
 }
-
