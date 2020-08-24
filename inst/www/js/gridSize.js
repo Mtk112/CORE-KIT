@@ -18,14 +18,14 @@ function initGrid(){
   document.getElementById("dtDem").innerHTML = day;
   document.getElementById("ntDem").innerHTML = night;
   var month = document.getElementById("month").value;
-  savedSolarA = getSolarABCD(A);
-  savedSolarB = getSolarABCD(B);
-  savedSolarC = getSolarABCD(C);
-  savedSolarD = getSolarABCD(D);
-  savedWindA = getWindABCD(A);
-  savedWindB = getWindABCD(B);
-  savedWindC = getWindABCD(C);
-  savedWindD = getWindABCD(D);
+  savedSolarA = getSolarABCD('A');
+  savedSolarB = getSolarABCD('B');
+  savedSolarC = getSolarABCD('C');
+  savedSolarD = getSolarABCD('D');
+  savedWindA = getWindABCD('A');
+  savedWindB = getWindABCD('B');
+  savedWindC = getWindABCD('C');
+  savedWindD = getWindABCD('D');
   bio = getBio();
 
   

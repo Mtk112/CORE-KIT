@@ -320,5 +320,3 @@ function yearlyGeneration(){
     return ([A, B, C, D]);
 }
 
-
-
