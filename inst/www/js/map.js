@@ -4,6 +4,8 @@ var lastVillage;
 var totalHHdemand;
 var lat;
 var lng;
+var atlasWind = 0;
+var atlasSolar = 0;
 
 
 // Basemap options
@@ -184,7 +186,8 @@ searchControl.on('search_locationfound', function (e) {
 });
 
 //Adds layer and search control to the map.
-L.control.layers(baseMaps, overlayMaps).addTo(map);
+L.control.layers(baseMaps).addTo(map);
+L.control.layers(overlayMaps).addTo(map);
 map.addControl(searchControl);
 
 /* Circular area map */
@@ -316,47 +319,4 @@ function designClicks(lat ,lng){
             console.log("Should not see this.");
         break;
     }
-}
-
-var atlasMap;
-function initAtlas(){
-
-    //Have to duplicate these Layers for the map in modal, else the tilesets will be bugging out on the Location selection map.
-    var satellite2 = L.tileLayer.provider('MapBox',{
-        maxZoom: 18,
-        id: 'mapbox/satellite-v9',
-        accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
-    }),
-    streets2 = L.tileLayer.provider('MapBox',{
-        maxZoom: 18,
-        id: 'mapbox/streets-v11',
-        accessToken: 'pk.eyJ1IjoibWthbGxpbzIiLCJhIjoiY2pyN3Fha2hyMDBxNzN4cW5sYm12MWkwbyJ9.q1pVLHFRx0Cav6vmyACAYw'
-    }),
-    mapnik2 = L.tileLayer.provider('OpenStreetMap',{
-        maxZoom: 18,
-    }),
-    topomap2 = L.tileLayer.provider('OpenTopoMap',{
-        maxZoom: 18
-    });
-
-    var baseMaps2 = {
-        "Satellite": satellite2,
-        "Streets": streets2,
-        "Mapnik" : mapnik2,
-        "TopoMap" : topomap2
-    };
-
-    atlasMap = L.map('atlasMap', {
-        center: [20.7888, 97.0337],
-        zoom: 7,
-        maxZoom: 18,
-        minZoom: 6,
-        layers: [streets2, villagePoints]
-    });
-
-    atlasMap.on('click', function (e){
-        console.log(" You clicked on the atlas map.");
-    });
-
-    L.control.layers(baseMaps2, overlayMaps).addTo(atlasMap);
 }
