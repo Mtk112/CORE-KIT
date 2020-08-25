@@ -107,9 +107,9 @@ function initAtlas(){
         onEachFeature: function (feature, layer){
             layer.on('click', function (e){
             lastVillage = e.target;
-            document.getElementById("villagePopulation").value = lastVillage.feature.properties.Population;
-            document.getElementById("villageHouseholds").value = lastVillage.feature.properties.Village_HH;
-            document.getElementById("villageName").value = lastVillage.feature.properties.Name;
+            document.getElementById("atlasVillagePopulation").innerHTML = lastVillage.feature.properties.Population;
+            document.getElementById("atlasVillageHouseholds").innerHTML = lastVillage.feature.properties.Village_HH;
+            document.getElementById("atlasVillageName").innerHTML = lastVillage.feature.properties.Name;
             })}
     });
 
@@ -142,8 +142,8 @@ function initAtlas(){
         "Rivers": riversLayer2,
         "Villages": villagePoints2,
         "Power Grid": powerGrid2,
-        "Wind Potential" : windspeed2,
-        "Solar potential kWh / kWp" : solarPotential2
+        "Windspeed" : windspeed2,
+        "Solar Potential kWh / kWp" : solarPotential2
     };
 
     atlasMap = L.map('atlasMap', {
@@ -156,14 +156,29 @@ function initAtlas(){
 
     atlasMap.on('click', function (e){
         atlasWind = windspeed.getValueAtLatLng(e.latlng.lat,e.latlng.lng).toFixed(1);
-        console.log("Windspeed at location: " + atlasWind + " m/s.");
+        document.getElementById("atlasWindValue").innerHTML = atlasWind;
         atlasSolar = solarPotential.getValueAtLatLng(e.latlng.lat,e.latlng.lng).toFixed(1);
-        console.log("Solar potential (kwh / kwp) at location: " + atlasSolar);
-
+        document.getElementById("atlasSolarValue").innerHTML = atlasSolar;
     });
-    function onOverlayAdd(e){
-        console.log("You just selected " + e.Name + "as your currently shown overlay.");
-    }
+
+    atlasMap.on('baselayerchange', function (e){
+        console.log("You've just selected " + e.name + " as your currently shown overlay.");
+        if(e.name == "Solar Potential kWh / kWp"){
+            document.getElementById("atlasVillages").style.display = "none";
+            document.getElementById("atlasWind").style.display = "none";
+            document.getElementById("atlasSolar").style.display = "block";
+        }
+        if(e.name == "Windspeed"){
+            document.getElementById("atlasVillages").style.display = "none";
+            document.getElementById("atlasWind").style.display = "block";
+            document.getElementById("atlasSolar").style.display = "none";
+        }
+        if(e.name == "Villages"){
+            document.getElementById("atlasVillages").style.display = "block";
+            document.getElementById("atlasWind").style.display = "none";
+            document.getElementById("atlasSolar").style.display = "none";
+        }
+    });
 
     L.control.layers(baseMaps2).addTo(atlasMap);
     L.control.layers(overlayMaps2).addTo(atlasMap);

@@ -24,7 +24,26 @@
       <span class="close">&times;</span>
       <div id="atlasMap"></div>
       <div id="atlasDesc">
-          <p>This is just a test description area at the moment.</p>
+        <div id="atlasVillages">
+            <h3>General Village Information: </h3>
+                <a> Village name: <a id="atlasVillageName"> Unknown </a>
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Name of the village.</span></div>
+                </a>
+                </br>
+                <a> Village population: <a id="atlasVillagePopulation"> 0 </a></a>
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Population of the village.</span></div>
+                </a>
+                </br>
+                <a> Households in the village: <a id="atlasVillageHouseholds">0</a></a>
+                    <div class="tooltip"><i class="far fa-question-circle"></i><span class="tooltiptext">Number of households in the village.</span></div>
+                </a>
+        </div>
+        <div id="atlasSolar" style="display:none">
+            <a>Solar potential at selected location (kWh / kWp): <a id="atlasSolarValue">0</a> </a>
+        </div>
+        <div id="atlasWind" style="display:none">
+            <a>Windspeed at selected location (m/s): <a id="atlasWindValue">0</a> </a>
+        </div>
       </div>
     </div>
   
